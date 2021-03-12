@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:university/features/login/domain/repositories/login_repositories.dart';
 import 'package:university/core/error/failures.dart';
 
-class LoginRepositoriesImplimination implements LoginRepositories {
+class LoginRepositoriesImplimentation implements LoginRepositories {
   @override
   Future<Either<Failure, LoginModel>> loginUseEmail({Map<String, dynamic> items}) async {
     final result=await RemoteLoginByEmailDataSource().loginByEmail(items);

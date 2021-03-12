@@ -10,7 +10,7 @@ mixin HandlingExceptionRequest {
   Exception getException({@required int statusCode}) {
     if (statusCode == 330)
       return DataDuplicatesException();
-    else if (statusCode == 400)
+    else if (statusCode == 400 || statusCode == 422)
       return MissingParamException();
     else if (statusCode == 430)
       return NotAuthenticatedException();

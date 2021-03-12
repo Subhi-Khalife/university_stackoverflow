@@ -5,11 +5,13 @@ import 'package:university/features/login/domain/repositories/login_repositories
 import 'package:university/core/error/failures.dart';
 
 class LoginUseEmail implements UseCase<LoginModel, LoginByEmailParam> {
-  LoginRepositories loginRepositories;
+  final LoginRepositories loginRepositories;
+  LoginUseEmail({this.loginRepositories});
   @override
   Future<Either<Failure, LoginModel>> call(LoginByEmailParam params) async {
     final paramLoginJson = params.getParam();
     final value = await loginRepositories.loginUseEmail(items: paramLoginJson);
+    return value.fold((failure) => Left(failure), (body) => Right(body));
   }
 }
 

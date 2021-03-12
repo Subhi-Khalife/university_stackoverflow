@@ -11,12 +11,11 @@ class RemoteLoginByEmailDataSource with HandlingExceptionRequest {
     PostApi postApi = PostApi<LoginModel>(
       fromJson: loginModelFromJson,
       param: param,
-      url: "",
+      url: "login",
       requestName: "Login By Email",
     );
     final request = postApi.callRequest;
-    final response =
-        await handlingExceptionRequest<LoginModel>(requestCall: request);
+    final response = await handlingExceptionRequest<LoginModel>(requestCall: request);
     return response.fold((failure) => Left(failure), (body) => Right(body));
   }
 }

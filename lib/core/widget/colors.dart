@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Color colorThemApp = Color(0xffFFD31D);
+Color colorThemApp = Color(0xFF2661B2);
 
 Color colorOrange = Color(0xffFF9F1D);
 
