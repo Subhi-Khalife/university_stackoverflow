@@ -6,27 +6,22 @@ import 'dart:convert';
 
 import 'package:university/core/entities/user.dart';
 
-LoginModel loginModelFromJson(String str) =>
-    LoginModel.fromJson(json.decode(str));
+LoginModel loginModelFromJson(String str) => LoginModel.fromJson(json.decode(str));
 
 String loginModelToJson(LoginModel data) => json.encode(data.toJson());
 
 class LoginModel {
-  LoginModel({
-    this.token,
-    this.user,
-  });
+    LoginModel({
+        this.user,
+    });
 
-  String token;
-  User user;
+    User user;
 
-  factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
-        token: json["token"],
+    factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
         user: User.fromJson(json["user"]),
-      );
+    );
 
-  Map<String, dynamic> toJson() => {
-        "token": token,
+    Map<String, dynamic> toJson() => {
         "user": user.toJson(),
-      };
+    };
 }

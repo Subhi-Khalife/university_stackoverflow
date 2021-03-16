@@ -1,6 +1,5 @@
 class ServerException implements Exception {}
 
-
 class CacheException implements Exception {}
 
 class DataDuplicatesException implements Exception {}
@@ -19,4 +18,4 @@ class InvalidEmailException implements Exception {}
 
 class InvalidPhoneException implements Exception {}
 
-class NotAuthenticatedException implements Exception{}
+class NotAuthenticatedException implements Exception {}

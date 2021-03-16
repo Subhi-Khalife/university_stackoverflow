@@ -33,17 +33,7 @@ class WidgetSize {
     initValue();
   }
   void initValue() {
-    if (configScreen.screenHeight >= 480 && configScreen.screenHeight < 588) {
-      Constant.cardHeight = 0.2;
-    } else if (configScreen.screenHeight >= 588 &&
-        configScreen.screenHeight < 736) {
-      Constant.cardHeight = 0.17;
-    } else if (configScreen.screenHeight >= 736 &&
-        configScreen.screenHeight < 812) {
-      Constant.cardHeight = 0.16;
-    } else {
-      Constant.cardHeight = 0.209;
-    }
+    
 
     if (configScreen.screenType == ScreenType.SMALL) {
       Constant.verySmallFont = 10;

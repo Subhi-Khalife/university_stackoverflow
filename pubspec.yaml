@@ -56,7 +56,16 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/svg/
-    
+  fonts:
+    - family: nexa_book
+      fonts:
+        - asset: fonts/nexa_book.otf
+    - family: nexa_bold
+      fonts:
+        - asset: fonts/nexa_bold.otf
+    - family: nexa_light
+      fonts:
+        - asset: fonts/nexa_light.otf    
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

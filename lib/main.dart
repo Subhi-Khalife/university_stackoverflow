@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:university/core/widget/config_screeen.dart';
-import 'package:university/features/login/presentation/pages/login_screen.dart';
+import 'features/sign_up/presentation/pages/sign_up_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,10 +8,9 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-  
     return MaterialApp(
       title: 'Flutter Demo',
-      home: LoginScreen(),
+      home: SignUpScreen(),
     );
   }
 }

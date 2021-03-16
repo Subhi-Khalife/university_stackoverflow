@@ -1,47 +1,50 @@
+
 class User {
-  User({
-    this.id,
-    this.firstName,
-    this.middleName,
-    this.lastName,
-    this.collageNumber,
-    this.verifiedAt,
-    this.email,
-    this.emailVerifiedAt,
-    this.profilePic,
-    this.mobile,
-    this.facebookUrl,
-    this.linkedInUrl,
-    this.suspendedAt,
-    this.createdAt,
-    this.updatedAt,
-    this.deletedAt,
-    this.userTypeId,
-    this.collegeId,
-    this.universityId,
-  });
+    User({
+        this.id,
+        this.firstName,
+        this.middleName,
+        this.lastName,
+        this.collageNumber,
+        this.verifiedAt,
+        this.email,
+        this.emailVerifiedAt,
+        this.profilePic,
+        this.mobile,
+        this.facebookUrl,
+        this.linkedInUrl,
+        this.suspendedAt,
+        this.createdAt,
+        this.updatedAt,
+        this.deletedAt,
+        this.userTypeId,
+        this.collegeId,
+        this.universityId,
+        this.token,
+    });
 
-  int id;
-  String firstName;
-  dynamic middleName;
-  String lastName;
-  dynamic collageNumber;
-  DateTime verifiedAt;
-  String email;
-  dynamic emailVerifiedAt;
-  dynamic profilePic;
-  dynamic mobile;
-  dynamic facebookUrl;
-  dynamic linkedInUrl;
-  dynamic suspendedAt;
-  DateTime createdAt;
-  DateTime updatedAt;
-  dynamic deletedAt;
-  int userTypeId;
-  dynamic collegeId;
-  dynamic universityId;
+    int id;
+    String firstName;
+    dynamic middleName;
+    String lastName;
+    dynamic collageNumber;
+    DateTime verifiedAt;
+    String email;
+    dynamic emailVerifiedAt;
+    dynamic profilePic;
+    dynamic mobile;
+    dynamic facebookUrl;
+    dynamic linkedInUrl;
+    dynamic suspendedAt;
+    DateTime createdAt;
+    DateTime updatedAt;
+    dynamic deletedAt;
+    int userTypeId;
+    int collegeId;
+    int universityId;
+    String token;
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+    factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         firstName: json["first_name"],
         middleName: json["middle_name"],
@@ -61,9 +64,10 @@ class User {
         userTypeId: json["user_type_id"],
         collegeId: json["college_id"],
         universityId: json["university_id"],
-      );
+        token: json["token"],
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "id": id,
         "first_name": firstName,
         "middle_name": middleName,
@@ -83,5 +87,6 @@ class User {
         "user_type_id": userTypeId,
         "college_id": collegeId,
         "university_id": universityId,
-      };
+        "token": token,
+    };
 }

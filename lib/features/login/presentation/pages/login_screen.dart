@@ -31,6 +31,14 @@ class _LoginScreen extends State<LoginScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    loginBloc.close();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     ConfigScreen configScreen = ConfigScreen(context);
     WidgetSize widgetSize = WidgetSize(configScreen);
