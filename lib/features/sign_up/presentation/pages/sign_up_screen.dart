@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/core/widget/app_button.dart';
 import 'package:university/core/widget/colors.dart';
 import 'package:university/core/widget/config_screeen.dart';
 import 'package:university/core/widget/constant.dart';
@@ -19,8 +20,8 @@ class _SignUpScreen extends State<SignUpScreen> {
   TextEditingController _firstNameController;
   TextEditingController _secondNameController;
   TextEditingController _emailNameController;
-  TextEditingController _passWordNameController;
-  TextEditingController _confirmPassWordController;
+  TextEditingController _passwordNameController;
+  TextEditingController _confirmPasswordController;
   TextEditingController _phoneNumberController;
   TextEditingController _collageNumberContoller;
 
@@ -32,8 +33,8 @@ class _SignUpScreen extends State<SignUpScreen> {
     _firstNameController = TextEditingController();
     _secondNameController = TextEditingController();
     _emailNameController = TextEditingController();
-    _passWordNameController = TextEditingController();
-    _confirmPassWordController = TextEditingController();
+    _passwordNameController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
     _phoneNumberController = TextEditingController();
     _collageNumberContoller = TextEditingController();
   }
@@ -45,8 +46,8 @@ class _SignUpScreen extends State<SignUpScreen> {
     _firstNameController.dispose();
     _secondNameController.dispose();
     _emailNameController.dispose();
-    _passWordNameController.dispose();
-    _confirmPassWordController.dispose();
+    _passwordNameController.dispose();
+    _confirmPasswordController.dispose();
     _phoneNumberController.dispose();
     _collageNumberContoller.dispose();
   }
@@ -85,6 +86,14 @@ class _SignUpScreen extends State<SignUpScreen> {
                 SizedBox(height: 10),
                 collageNumberController(),
                 SizedBox(height: 10),
+                passwordController(),
+                SizedBox(height: 10),
+                confirmPasswordController(),
+                SizedBox(height: 10),
+                AppButton(
+                  function: () {},
+                  name: "Sign up",
+                ),
               ],
             );
           },
@@ -93,10 +102,34 @@ class _SignUpScreen extends State<SignUpScreen> {
     );
   }
 
+  Widget passwordController() {
+    return TextFieldApp(
+      controller: _passwordNameController,
+      hintText: "your password",
+      withIcon: true,
+      icon: Icons.email,
+      isTextFieldPassword: false,
+      style: TextStyle(color: Colors.black),
+      prefixSvg: "lib/svg/mail_icon.svg",
+    );
+  }
+
+  Widget confirmPasswordController() {
+    return TextFieldApp(
+      controller: _confirmPasswordController,
+      hintText: "confirm your password",
+      withIcon: true,
+      icon: Icons.email,
+      isTextFieldPassword: false,
+      style: TextStyle(color: Colors.black),
+      prefixSvg: "lib/svg/mail_icon.svg",
+    );
+  }
+
   Widget collageNumberController() {
     return TextFieldApp(
-      controller: _secondNameController,
-      hintText: "Enter first name",
+      controller: _collageNumberContoller,
+      hintText: "Enter collage number",
       withIcon: true,
       icon: Icons.email,
       isTextFieldPassword: false,
@@ -107,8 +140,8 @@ class _SignUpScreen extends State<SignUpScreen> {
 
   Widget mobilePhoneController() {
     return TextFieldApp(
-      controller: _secondNameController,
-      hintText: "Enter first name",
+      controller: _phoneNumberController,
+      hintText: "Enter mobile phone",
       withIcon: true,
       icon: Icons.email,
       isTextFieldPassword: false,
@@ -119,8 +152,8 @@ class _SignUpScreen extends State<SignUpScreen> {
 
   Widget emailController() {
     return TextFieldApp(
-      controller: _secondNameController,
-      hintText: "Enter first name",
+      controller: _emailNameController,
+      hintText: "Enter your email",
       withIcon: true,
       icon: Icons.email,
       isTextFieldPassword: false,
@@ -132,7 +165,7 @@ class _SignUpScreen extends State<SignUpScreen> {
   Widget secondNameController() {
     return TextFieldApp(
       controller: _secondNameController,
-      hintText: "Enter first name",
+      hintText: "Enter second name",
       withIcon: true,
       icon: Icons.email,
       isTextFieldPassword: false,
