@@ -1,16 +1,19 @@
-import 'package:university/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
-import 'package:university/core/use_case/use_case.dart';
-import 'package:university/features/sign_up/data/models/sign_up_model.dart';
-import 'package:university/features/sign_up/data/repositories/sign_up_repositories_implementation.dart';
 import 'package:university/features/sign_up/domain/repositories/sign_up_repositories.dart';
 
+import '../../../../core/error/failures.dart';
+import '../../../../core/use_case/use_case.dart';
+import '../../data/models/sign_up_model.dart';
+import '../../data/repositories/sign_up_repositories_implementation.dart';
+
 class SignUpByEmail extends UseCase<SignUpModel, SignUpParam> {
+  final SignUpRepositories signUpRepositories;
+
+  SignUpByEmail({this.signUpRepositories});
   @override
   Future<Either<Failure, SignUpModel>> call(SignUpParam params) async {
     final param = params.getParam();
-    final result =
-        await SignUpRepositoriesImplimentation().signUpByEmail(param);
+    final result = await signUpRepositories.signUpByEmail(param: param);
     return result.fold((failure) => Left(failure), (body) => Right(body));
   }
 }
@@ -21,12 +24,12 @@ class SignUpParam {
   String firstName;
   String lastName;
   String mobile;
-  int collegaId;
+  int collegeId;
   int universityId;
   String collageNumber;
   SignUpParam(
       {this.collageNumber,
-      this.collegaId,
+      this.collegeId,
       this.email,
       this.firstName,
       this.lastName,
@@ -39,7 +42,7 @@ class SignUpParam {
         "first_name": lastName,
         "last_name": lastName,
         "mobile": mobile,
-        "college_id": collegaId,
+        "college_id": collegeId,
         "university_id": universityId,
         "collage_number": collageNumber
       };

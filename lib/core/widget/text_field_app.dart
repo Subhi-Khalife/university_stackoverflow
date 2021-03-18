@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:university/core/widget/constant.dart';
-import 'package:university/core/widget/show_svg_image.dart';
 
 import 'colors.dart';
+import 'constant.dart';
+import 'show_svg_image.dart';
 
 class TextFieldApp extends StatelessWidget {
   final TextInputType textInputType;

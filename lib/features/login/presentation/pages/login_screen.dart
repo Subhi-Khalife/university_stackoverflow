@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university/core/widget/app_button.dart';
-import 'package:university/core/widget/colors.dart';
-import 'package:university/core/widget/config_screeen.dart';
-import 'package:university/core/widget/constant.dart';
-import 'package:university/core/widget/font_style.dart';
-import 'package:university/core/widget/loading_dialog.dart';
-import 'package:university/core/widget/text_field_app.dart';
-import 'package:university/features/login/presentation/bloc/login/login_bloc.dart';
+
+import '../../../../core/widget/app_button.dart';
+import '../../../../core/widget/colors.dart';
+import '../../../../core/widget/config_screeen.dart';
+import '../../../../core/widget/constant.dart';
+import '../../../../core/widget/font_style.dart';
+import '../../../../core/widget/text_field_app.dart';
+import '../bloc/login/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -73,7 +73,9 @@ class _LoginScreen extends State<LoginScreen> {
         builder: (context, state) {
           if (state is LoginSuccess) {
             print("Done");
-            return Container();
+            return Container(
+              color: Colors.green,
+            );
           } else if (state is LoadingState) {
             return Center(
                 child: CircularProgressIndicator(

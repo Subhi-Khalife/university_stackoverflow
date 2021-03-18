@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university/core/widget/app_button.dart';
-import 'package:university/core/widget/colors.dart';
-import 'package:university/core/widget/config_screeen.dart';
-import 'package:university/core/widget/constant.dart';
-import 'package:university/core/widget/font_style.dart';
-import 'package:university/core/widget/text_field_app.dart';
-import 'package:university/features/sign_up/presentation/bloc/sign_up/sign_up_bloc.dart';
+
+import '../../../../core/widget/app_button.dart';
+import '../../../../core/widget/colors.dart';
+import '../../../../core/widget/config_screeen.dart';
+import '../../../../core/widget/constant.dart';
+import '../../../../core/widget/font_style.dart';
+import '../../../../core/widget/text_field_app.dart';
+import '../bloc/sign_up/sign_up_bloc.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -24,8 +25,8 @@ class _SignUpScreen extends State<SignUpScreen> {
   TextEditingController _confirmPasswordController;
   TextEditingController _phoneNumberController;
   TextEditingController _collageNumberContoller;
-
   SignUpBloc signUpBloc;
+
   @override
   void initState() {
     super.initState();
@@ -61,41 +62,67 @@ class _SignUpScreen extends State<SignUpScreen> {
         create: (context) => signUpBloc,
         child: BlocBuilder<SignUpBloc, SignUpState>(
           builder: (context, state) {
-            return ListView(
-              padding: EdgeInsets.only(top: 30, left: 12, right: 12),
-              children: [
-                Text(
-                  "New Account",
-                  style: boldStyle(
-                      color: colorThemApp, fontSize: Constant.xlargeFont),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Welcome to our community in order to sign up, please fill out all filed below",
-                  style: regularStyle(
-                      color: secondColor, fontSize: Constant.mediumFont),
-                ),
-                SizedBox(height: 10),
-                firstNameController(),
-                SizedBox(height: 10),
-                secondNameController(),
-                SizedBox(height: 10),
-                emailController(),
-                SizedBox(height: 10),
-                mobilePhoneController(),
-                SizedBox(height: 10),
-                collageNumberController(),
-                SizedBox(height: 10),
-                passwordController(),
-                SizedBox(height: 10),
-                confirmPasswordController(),
-                SizedBox(height: 10),
-                AppButton(
-                  function: () {},
-                  name: "Sign up",
-                ),
-              ],
-            );
+            if (state is SuccessSignUp) {
+              print("Done");
+              return Container(
+                color: Colors.green,
+              );
+            } else if (state is LoadingState) {
+              return Center(
+                  child: CircularProgressIndicator(
+                backgroundColor: colorThemApp,
+              ));
+            } else {
+              return ListView(
+                padding: EdgeInsets.only(top: 30, left: 12, right: 12),
+                children: [
+                  Text(
+                    "New Account",
+                    style: boldStyle(
+                        color: colorThemApp, fontSize: Constant.xlargeFont),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Welcome to our community in order to sign up, please fill out all filed below",
+                    style: regularStyle(
+                        color: secondColor, fontSize: Constant.mediumFont),
+                  ),
+                  SizedBox(height: 10),
+                  firstNameController(),
+                  SizedBox(height: 10),
+                  secondNameController(),
+                  SizedBox(height: 10),
+                  emailController(),
+                  SizedBox(height: 10),
+                  mobilePhoneController(),
+                  SizedBox(height: 10),
+                  collageNumberController(),
+                  SizedBox(height: 10),
+                  passwordController(),
+                  SizedBox(height: 10),
+                  confirmPasswordController(),
+                  SizedBox(height: 10),
+                  AppButton(
+                    function: () {
+                      BlocProvider.of<SignUpBloc>(context)
+                        ..add(
+                          SendSignUpRequestEvent(
+                            collageNumber: _collageNumberContoller.text,
+                            email: _emailNameController.text,
+                            lastName: _secondNameController.text,
+                            firstName: _firstNameController.text,
+                            mobile: _phoneNumberController.text,
+                            password: _passwordNameController.text,
+                            collegeId: 6,
+                            universityId: 6,
+                          ),
+                        );
+                    },
+                    name: "Sign up",
+                  ),
+                ],
+              );
+            }
           },
         ),
       ),
@@ -108,6 +135,7 @@ class _SignUpScreen extends State<SignUpScreen> {
       hintText: "your password",
       withIcon: true,
       icon: Icons.email,
+      isLookAtPassword: false,
       isTextFieldPassword: false,
       style: TextStyle(color: Colors.black),
       prefixSvg: "lib/svg/mail_icon.svg",

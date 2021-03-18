@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:university/core/error/exception.dart';
-import 'package:university/core/error/failures.dart';
+
+import '../error/exception.dart';
+import '../error/failures.dart';
 
 typedef Future<T> _RequestCall<T>();
 

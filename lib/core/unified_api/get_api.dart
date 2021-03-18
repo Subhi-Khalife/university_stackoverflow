@@ -1,8 +1,9 @@
 import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:university/core/unified_api/initial_api.dart';
-import 'package:university/core/unified_api/printing.dart';
+
+import 'initial_api.dart';
 
 typedef T _FromJson<T>(String body);
 
