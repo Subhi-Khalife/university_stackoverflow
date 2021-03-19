@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:university/features/university_with_collage/presentation/bloc/bloc/university_bloc.dart';
 import '../../../../core/widget/app_button.dart';
 import '../../../../core/widget/colors.dart';
 import '../../../../core/widget/config_screeen.dart';
@@ -26,11 +26,18 @@ class _SignUpScreen extends State<SignUpScreen> {
   TextEditingController _phoneNumberController;
   TextEditingController _collageNumberContoller;
   SignUpBloc signUpBloc;
+  UniversityBloc universityBloc;
+  String _selectedUniversity;
+  String _selectedCollage;
+  String universityName;
+  String collageName;
+  int _universityIndex;
 
   @override
   void initState() {
     super.initState();
     signUpBloc = SignUpBloc();
+    universityBloc = UniversityBloc();
     _firstNameController = TextEditingController();
     _secondNameController = TextEditingController();
     _emailNameController = TextEditingController();
@@ -69,9 +76,10 @@ class _SignUpScreen extends State<SignUpScreen> {
               );
             } else if (state is LoadingState) {
               return Center(
-                  child: CircularProgressIndicator(
-                backgroundColor: colorThemApp,
-              ));
+                child: CircularProgressIndicator(
+                  backgroundColor: colorThemApp,
+                ),
+              );
             } else {
               return ListView(
                 padding: EdgeInsets.only(top: 30, left: 12, right: 12),
@@ -96,7 +104,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                   SizedBox(height: 10),
                   mobilePhoneController(),
                   SizedBox(height: 10),
-                  collageNumberController(),
+                  dropDownCollage(),
                   SizedBox(height: 10),
                   passwordController(),
                   SizedBox(height: 10),
@@ -127,6 +135,82 @@ class _SignUpScreen extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  Widget dropDownCollage() {
+    return
+//      BlocProvider(
+//      (context) => universityBloc,
+//      child:
+        BlocBuilder<UniversityBloc, UniversityState>(builder: (context, state) {
+      if (state is UniversityIsLoadedState) {
+        print("Done");
+        return DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            hint: Text(
+              "الجامعة",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            isExpanded: true,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            onChanged: (String newValue) {
+              setState(() {
+                _selectedUniversity = newValue;
+                print("the select is $_selectedUniversity");
+              });
+            },
+            value: _selectedUniversity,
+            icon: Icon(
+              Icons.arrow_downward,
+              color: Colors.grey,
+            ),
+            items: state.university.data.map(
+              (e) {
+                return DropdownMenuItem<String>(
+                  child: Text(e.name),
+                  value: e.id.toString(),
+                  onTap: () {
+                    setState(() {
+                      _selectedCollage = null;
+                      _universityIndex = e.id;
+                      universityName = e.name;
+                    });
+                  },
+                );
+              },
+            ).toList(),
+            dropdownColor: Colors.red,
+            elevation: 5,
+          ),
+        );
+      } else if (state is UniversityIsLoadingState) {
+        return Center(
+            child: CircularProgressIndicator(
+          backgroundColor: colorThemApp,
+        ));
+      } else if (state is UniversityIsLoadErrorState) {
+        return Container(
+          color: Colors.red,
+          width: 50,
+          height: 50,
+        );
+      } else {
+        return Container(
+          color: Colors.orange,
+          width: 50,
+          height: 50,
+        );
+      }
+    });
+//    );
   }
 
   Widget passwordController() {
