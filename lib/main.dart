@@ -7,21 +7,11 @@ import 'features/university_with_collage/presentation/bloc/bloc/university_bloc.
 
 void main() {
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider<UniversityBloc>(
-          create: (context) {
-            return UniversityBloc()
-              ..add(FetchUiversity());
-          },
-        ),
-        BlocProvider<SignUpBloc>(
-          create: (context) {
-            return SignUpBloc()
-              ..add(SendSignUpRequestEvent());
-          },
-        )
-      ],
+    BlocProvider<UniversityBloc>(
+      create: (context) {
+        return UniversityBloc()
+          ..add(FetchUiversity());
+      },
       child: MyApp(),
     ),
   );

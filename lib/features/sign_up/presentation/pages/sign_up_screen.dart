@@ -67,98 +67,95 @@ class _SignUpScreen extends State<SignUpScreen> {
     ConfigScreen configScreen = ConfigScreen(context);
     WidgetSize widgetSize = WidgetSize(configScreen);
     return Scaffold(
-      body: ListView(
-        padding: EdgeInsets.only(top: 30, left: 12, right: 12),
-        children: [
-          Text(
-            "New Account",
-            style:
-            boldStyle(color: colorThemApp, fontSize: Constant.xlargeFont),
-          ),
-          SizedBox(height: 10),
-          Text(
-            "Welcome to our community in order to sign up, please fill out all filed below",
-            style:
-            regularStyle(color: secondColor, fontSize: Constant.mediumFont),
-          ),
-          SizedBox(height: 10),
-          firstNameController(),
-          SizedBox(height: 10),
-          secondNameController(),
-          SizedBox(height: 10),
-          emailController(),
-          SizedBox(height: 10),
-          mobilePhoneController(),
-          SizedBox(height: 10),
-          dropDownCollage(),
-          SizedBox(height: 10),
-          passwordController(),
-          SizedBox(height: 10),
-          confirmPasswordController(),
-          SizedBox(height: 10),
-          BlocBuilder<SignUpBloc, SignUpState>(
-            builder: (context, state) {
-              if (state is SuccessSignUp) {
-                print("Done");
-                return Container(
-                  color: Colors.green,
-                );
-              } else if (state is LoadingState) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: colorThemApp,
+      body: BlocProvider(
+        create: (context) => signUpBloc,
+        child: BlocBuilder<SignUpBloc, SignUpState>(
+          builder: (context, state) {
+            if (state is SuccessSignUp) {
+              print("Done");
+              return Container(
+                color: Colors.green,
+              );
+            } else if (state is LoadingState) {
+              return Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: colorThemApp,
+                ),
+              );
+            } else {
+              return ListView(
+                padding: EdgeInsets.only(top: 30, left: 12, right: 12),
+                children: [
+                  Text(
+                    "New Account",
+                    style: boldStyle(
+                        color: colorThemApp, fontSize: Constant.xlargeFont),
                   ),
-                );
-              } else {
-                return AppButton(
-                  function: () {
-                    BlocProvider.of<SignUpBloc>(context)
-                      ..add(
-                        SendSignUpRequestEvent(
-                          collageNumber: _collageNumberContoller.text,
-                          email: _emailNameController.text,
-                          lastName: _secondNameController.text,
-                          firstName: _firstNameController.text,
-                          mobile: _phoneNumberController.text,
-                          password: _passwordNameController.text,
-                          collegeId: 6,
-                          universityId: 6,
-                        ),
-                      );
-                  },
-                  name: "Sign up",
-                );
-              }
-            },
-          ),
-        ],
+                  SizedBox(height: 10),
+                  Text(
+                    "Welcome to our community in order to sign up, please fill out all filed below",
+                    style: regularStyle(
+                        color: secondColor, fontSize: Constant.mediumFont),
+                  ),
+                  SizedBox(height: 10),
+                  firstNameController(),
+                  SizedBox(height: 10),
+                  secondNameController(),
+                  SizedBox(height: 10),
+                  emailController(),
+                  SizedBox(height: 10),
+                  mobilePhoneController(),
+                  SizedBox(height: 10),
+                  dropDownCollage(),
+                  SizedBox(height: 10),
+                  passwordController(),
+                  SizedBox(height: 10),
+                  confirmPasswordController(),
+                  SizedBox(height: 10),
+                  AppButton(
+                    function: () {
+                      BlocProvider.of<SignUpBloc>(context)
+                        ..add(
+                          SendSignUpRequestEvent(
+                            collageNumber: _collageNumberContoller.text,
+                            email: _emailNameController.text,
+                            lastName: _secondNameController.text,
+                            firstName: _firstNameController.text,
+                            mobile: _phoneNumberController.text,
+                            password: _passwordNameController.text,
+                            collegeId: 6,
+                            universityId: 6,
+                          ),
+                        );
+                    },
+                    name: "Sign up",
+                  ),
+//          BlocBuilder<SignUpBloc, SignUpState>(
+//            builder: (context, state) {
+//              if (state is SuccessSignUp) {
+//                print("Done");
+//                return Container(
+//                  color: Colors.green,
+//                );
+//              } else if (state is LoadingState) {
+//                return Center(
+//                  child: CircularProgressIndicator(
+//                    backgroundColor: colorThemApp,
+//                  ),
+//                );
+//              } else {
+//                return
+//              }
+//            },
+//          ),
+                ],
+              );
+            }
+          },
+        ),
       ),
     );
   }
-
-  //  BlocProvider(
-  //   create: (context) => signUpBloc,
-  //   child:
-
-  //   BlocBuilder<SignUpBloc, SignUpState>(
-  //     builder: (context, state) {
-  //       if (state is SuccessSignUp) {
-  //         print("Done");
-  //         return Container(
-  //           color: Colors.green,
-  //         );
-  //       } else if (state is LoadingState) {
-  //         return Center(
-  //           child: CircularProgressIndicator(
-  //             backgroundColor: colorThemApp,
-  //           ),
-  //         );
-  //       } else {
-  //         return
-  //       }
-  //     },
-  //   ),
-  // ),
 
   Widget dropDownCollage() {
     return
