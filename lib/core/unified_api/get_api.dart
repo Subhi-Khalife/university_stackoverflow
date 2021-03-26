@@ -13,6 +13,7 @@ class GetApi<T> extends InitialApi<T> {
       {@required String url,
       @required String token,
       @required this.fromJson,
+      
       @required String requestName})
       : super(requestName: requestName, token: token, url: url);
 
