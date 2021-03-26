@@ -26,7 +26,7 @@ class GetApi<T> extends InitialApi<T> {
 
       printResponse(response);
 
-      if (response.statusCode == 220)
+      if (response.statusCode == 200)
         return fromJson(response.body);
       else {
         Exception exception = getException(statusCode: response.statusCode);
