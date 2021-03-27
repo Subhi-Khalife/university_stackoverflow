@@ -15,7 +15,6 @@ class SignUpRepositoriesImplimentation implements SignUpRepositories {
   Future<Either<Failure, SignUpModel>> signUpByEmail({Map<String, dynamic> param}) async {
     final callRequestResult =
     await SignUpByEmailDataSource().signUpByEmail(param);
-    prefs.setString("User", json.encode(callRequestResult));
     return callRequestResult.fold(
             (failure) => Left(failure), (body) => Right(body));
   }

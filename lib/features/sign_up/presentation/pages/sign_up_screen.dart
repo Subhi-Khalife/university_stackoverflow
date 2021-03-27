@@ -116,6 +116,8 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
                   SizedBox(height: 10),
                   confirmPasswordController(),
                   SizedBox(height: 10),
+                  collageNumberController(),
+                  SizedBox(height: 10),
                   dropDownCollage(),
                   SizedBox(height: 10),
                   SizedBox(height: 10),

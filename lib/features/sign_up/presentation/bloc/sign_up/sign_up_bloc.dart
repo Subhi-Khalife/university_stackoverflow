@@ -31,10 +31,14 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         password: event.password,
         universityId: event.universityId,
       ));
+      print("the result is ");
       yield result.fold(
         (failure) =>
             failure is MissingParamException ? FailedSignUp() : FailedSignUp(),
-        (success) => SuccessSignUp(),
+        (success){
+          print("the state is ${success}");
+          return SuccessSignUp();
+        },
       );
     }
   }

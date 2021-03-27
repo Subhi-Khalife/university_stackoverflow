@@ -18,11 +18,10 @@ class SignUpModel {
     User user;
 
     factory SignUpModel.fromJson(Map<String, dynamic> json) => SignUpModel(
-        user: User.fromJson(json["user"]),
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
     );
 
     Map<String, dynamic> toJson() => {
-        "user": user.toJson(),
+        "user": user == null ? null : user.toJson(),
     };
 }
-

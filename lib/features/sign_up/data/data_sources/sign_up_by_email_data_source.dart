@@ -17,12 +17,11 @@ class SignUpByEmailDataSource with HandlingExceptionRequest {
       fromJson: signUpModelFromJson,
       param: param,
       url: "register",
-      requestName: "Sign up by Emai",
+      requestName: "Sign up by Emai"
     );
     final callRequest = postApi.callRequest;
     final result =
-    await postApi.handlingExceptionRequest(requestCall: callRequest);
-    await prefs.setString("User", json.encode(result));
+    await handlingExceptionRequest<SignUpModel>(requestCall: callRequest);
     return result.fold((failure) => Left(failure), (body) => Right(body));
   }
 }
