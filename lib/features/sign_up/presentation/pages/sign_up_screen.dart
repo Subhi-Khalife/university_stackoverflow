@@ -130,24 +130,6 @@ class _SignUpScreen extends State<SignUpScreen> {
                     },
                     name: "Sign up",
                   ),
-//          BlocBuilder<SignUpBloc, SignUpState>(
-//            builder: (context, state) {
-//              if (state is SuccessSignUp) {
-//                print("Done");
-//                return Container(
-//                  color: Colors.green,
-//                );
-//              } else if (state is LoadingState) {
-//                return Center(
-//                  child: CircularProgressIndicator(
-//                    backgroundColor: colorThemApp,
-//                  ),
-//                );
-//              } else {
-//                return
-//              }
-//            },
-//          ),
                 ],
               );
             }
@@ -158,22 +140,18 @@ class _SignUpScreen extends State<SignUpScreen> {
   }
 
   Widget dropDownCollage() {
-    return
-//      BlocProvider(
-//      (context) => universityBloc,
-//      child:
-      BlocBuilder<UniversityBloc, UniversityState>(
-        builder: (context, state) {
-          if (state is UniversityIsLoadedState) {
-            print("Done");
-            return UniversityDropDown(
-              elevation: 5,
-              icon: Icon(
-                Icons.arrow_downward,
-                color: Colors.grey,
+    return BlocBuilder<UniversityBloc, UniversityState>(
+      builder: (context, state) {
+        if (state is UniversityIsLoadedState) {
+          print("Done");
+          return UniversityDropDown(
+            elevation: 5,
+            icon: Icon(
+              Icons.arrow_downward,
+              color: Colors.grey,
             ),
-              hintText: "الجامعة",
-              valueChanged: (String newValue) {
+            hintText: "الجامعة",
+            valueChanged: (String newValue) {
               setState(() {
                 _selectedUniversity = newValue;
                 print("the select is $_selectedUniversity");
@@ -194,76 +172,29 @@ class _SignUpScreen extends State<SignUpScreen> {
                 );
               },
             ).toList(),
-//          value: _selectedUniversity,
             dropdownColor: Colors.red,
-              isExpandedDropDown: true,
-            );
-//        return DropdownButtonHideUnderline(
-//          child: DropdownButton<String>(
-//            hint: Text(
-//              "الجامعة",
-//              style: TextStyle(
-//                color: Colors.black,
-//                fontSize: 20,
-//                fontWeight: FontWeight.bold,
-//              ),
-//            ),
-//            isExpanded: true,
-//            style: TextStyle(
-//              color: Colors.black,
-//              fontSize: 20,
-//              fontWeight: FontWeight.bold,
-//            ),
-//            onChanged: (String newValue) {
-//              setState(() {
-//                _selectedUniversity = newValue;
-//                print("the select is $_selectedUniversity");
-//              });
-//            },
-//            value: _selectedUniversity,
-//            icon: Icon(
-//              Icons.arrow_downward,
-//              color: Colors.grey,
-//            ),
-//            items: state.university.data.map(
-//              (e) {
-//                return DropdownMenuItem<String>(
-//                  child: Text(e.name),
-//                  value: e.id.toString(),
-//                  onTap: () {
-//                    setState(() {
-//                      _selectedCollage = null;
-//                      _universityIndex = e.id;
-//                      universityName = e.name;
-//                    });
-//                  },
-//                );
-//              },
-//            ).toList(),
-//            dropdownColor: Colors.red,
-//            elevation: 5,
-//          ),
-//        );
-          } else if (state is UniversityIsLoadingState) {
-            return Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: colorThemApp,
-                ));
-          } else if (state is UniversityIsLoadErrorState) {
-            return Container(
-              color: Colors.red,
-              width: 50,
-              height: 50,
-            );
-          } else {
-            return Container(
-              color: Colors.orange,
-              width: 50,
-              height: 50,
-            );
-          }
-        },
-      );
+            isExpandedDropDown: true,
+          );
+        } else if (state is UniversityIsLoadingState) {
+          return Center(
+              child: CircularProgressIndicator(
+                backgroundColor: colorThemApp,
+              ));
+        } else if (state is UniversityIsLoadErrorState) {
+          return Container(
+            color: Colors.red,
+            width: 50,
+            height: 50,
+          );
+        } else {
+          return Container(
+            color: Colors.orange,
+            width: 50,
+            height: 50,
+          );
+        }
+      },
+    );
 //    );
   }
 
