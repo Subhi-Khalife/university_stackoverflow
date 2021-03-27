@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/core/entities/collega.dart';
+import 'package:university/features/university_with_collage/data/models/universities_with_collages_model.dart';
+import 'package:university/features/university_with_collage/presentation/pages/drop_down.dart';
 import 'package:university/core/widget/university_drop_down.dart';
 import 'package:university/features/university_with_collage/presentation/bloc/bloc/university_bloc.dart';
 import '../../../../core/widget/app_button.dart';
@@ -18,7 +21,7 @@ class SignUpScreen extends StatefulWidget {
   }
 }
 
-class _SignUpScreen extends State<SignUpScreen> {
+class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
   TextEditingController _firstNameController;
   TextEditingController _secondNameController;
   TextEditingController _emailNameController;
@@ -61,6 +64,8 @@ class _SignUpScreen extends State<SignUpScreen> {
     _phoneNumberController.dispose();
     _collageNumberContoller.dispose();
   }
+
+  bool isOpened = false;
 
   @override
   Widget build(BuildContext context) {
@@ -106,11 +111,12 @@ class _SignUpScreen extends State<SignUpScreen> {
                   SizedBox(height: 10),
                   mobilePhoneController(),
                   SizedBox(height: 10),
-                  dropDownCollage(),
-                  SizedBox(height: 10),
                   passwordController(),
                   SizedBox(height: 10),
                   confirmPasswordController(),
+                  SizedBox(height: 10),
+                  dropDownCollage(),
+                  SizedBox(height: 10),
                   SizedBox(height: 10),
                   AppButton(
                     function: () {
@@ -140,62 +146,57 @@ class _SignUpScreen extends State<SignUpScreen> {
   }
 
   Widget dropDownCollage() {
-    return BlocBuilder<UniversityBloc, UniversityState>(
-      builder: (context, state) {
-        if (state is UniversityIsLoadedState) {
-          print("Done");
-          return UniversityDropDown(
-            elevation: 5,
-            icon: Icon(
-              Icons.arrow_downward,
-              color: Colors.grey,
-            ),
-            hintText: "الجامعة",
-            valueChanged: (String newValue) {
-              setState(() {
-                _selectedUniversity = newValue;
-                print("the select is $_selectedUniversity");
-              });
-            },
-            items: state.university.data.map(
-              (e) {
-                return DropdownMenuItem<String>(
-                  child: Text(e.name),
-                  value: e.id.toString(),
-                  onTap: () {
-                    setState(() {
-                      _selectedCollage = null;
-                      _universityIndex = e.id;
-                      universityName = e.name;
-                    });
-                  },
-                );
-              },
-            ).toList(),
-            dropdownColor: Colors.red,
-            isExpandedDropDown: true,
-          );
-        } else if (state is UniversityIsLoadingState) {
-          return Center(
-              child: CircularProgressIndicator(
-                backgroundColor: colorThemApp,
-              ));
-        } else if (state is UniversityIsLoadErrorState) {
-          return Container(
-            color: Colors.red,
-            width: 50,
-            height: 50,
-          );
-        } else {
-          return Container(
-            color: Colors.orange,
-            width: 50,
-            height: 50,
-          );
-        }
+    return BlocListener<UniversityBloc, UniversityState>(
+      listener: (context, state) {
+       
       },
+      child: BlocBuilder<UniversityBloc, UniversityState>(
+        builder: (context, state) {
+            if (state is UniversityState) {
+            return Column(
+              children: [
+                DropDown(
+                  dropDownListItem: state.univerSityItems,
+                  title: state.universityName,
+                  isOpened: isOpened,
+                  universitySelecetd: true,
+                ),
+                SizedBox(height: 10),
+                AnimatedSize(
+                  duration: Duration(milliseconds: 500),
+                  vsync: this,
+                  child: (state.universityId != -1)
+                      ? DropDown(
+                          dropDownListItem: state.collegeityItems,
+                          title: state.collageName,
+                          isOpened: isOpened,
+                          universitySelecetd: false,
+                        )
+                      : Container(),
+                ),
+              ],
+            );
+          } else if (state is UniversityIsLoadingState) {
+            return Center(
+                child: CircularProgressIndicator(
+              backgroundColor: colorThemApp,
+            ));
+          } else if (state is UniversityIsLoadErrorState) {
+            return Container(
+              color: Colors.red,
+              width: 50,
+              height: 50,
+            );
+          } else {
+            return Container(
+              color: Colors.orange,
+              width: 50,
+              height: 50,
+            );
+          }
+        },
+      ),
     );
-//    );
   }
 
   Widget passwordController() {

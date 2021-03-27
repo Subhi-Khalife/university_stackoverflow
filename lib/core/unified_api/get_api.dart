@@ -13,6 +13,7 @@ class GetApi<T> extends InitialApi<T> {
       {@required String url,
       @required String token,
       @required this.fromJson,
+      
       @required String requestName})
       : super(requestName: requestName, token: token, url: url);
 
@@ -27,7 +28,7 @@ class GetApi<T> extends InitialApi<T> {
 
       printResponse(response);
 
-      if (response.statusCode == 220)
+      if (response.statusCode == 200)
         return fromJson(response.body);
       else {
         Exception exception = getException(statusCode: response.statusCode);
