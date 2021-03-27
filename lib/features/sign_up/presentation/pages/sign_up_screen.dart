@@ -36,7 +36,8 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
   String universityName;
   String collageName;
   int _universityIndex;
-
+  int universityId=0;
+  int collageId=0; 
   @override
   void initState() {
     super.initState();
@@ -148,7 +149,8 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
   Widget dropDownCollage() {
     return BlocListener<UniversityBloc, UniversityState>(
       listener: (context, state) {
-       
+       universityId=state.universityId;
+       collageId=state.collageId;
       },
       child: BlocBuilder<UniversityBloc, UniversityState>(
         builder: (context, state) {
