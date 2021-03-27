@@ -130,8 +130,8 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
                             firstName: _firstNameController.text,
                             mobile: _phoneNumberController.text,
                             password: _passwordNameController.text,
-                            collegeId: 6,
-                            universityId: 6,
+                            collegeId: collageId,
+                            universityId: universityId,
                           ),
                         );
                     },
