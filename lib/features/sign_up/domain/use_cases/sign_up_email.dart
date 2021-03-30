@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 import 'package:university/core/use_case/use_case.dart';
 import 'package:university/features/sign_up/data/models/sign_up_model.dart';
 import 'package:university/features/sign_up/data/repositories/sign_up_repositories_implementation.dart';
-import 'package:university/features/sign_up/domain/repositories/sign_up_repositories.dart';
 
 class SignUpByEmail extends UseCase<SignUpModel, SignUpParam> {
   @override

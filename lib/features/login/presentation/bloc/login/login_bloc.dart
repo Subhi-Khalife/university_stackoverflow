@@ -1,10 +1,7 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:university/core/error/exception.dart';
-import 'package:university/core/error/failures.dart';
 import 'package:university/core/use_case/use_case.dart';
 import 'package:university/features/login/data/repositories/login_repositories_implementation.dart';
 import 'package:university/features/login/domain/use_cases/login_use_email.dart';
