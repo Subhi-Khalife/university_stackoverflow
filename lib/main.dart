@@ -7,11 +7,12 @@ import 'features/sign_up/presentation/pages/sign_up_screen.dart';
 void main() {
   runApp(
     BlocProvider<CollageProfileBloc>(
-      create: (context) =>
-      CollageProfileBloc()
-        ..add(
-          FetchCollageProfile(collageNum: 6),
-        ),
+      create: (context) {
+        return CollageProfileBloc()
+          ..add(
+            FetchCollageProfile(),
+          );
+      },
       child: MyApp(),
     ),
   );
@@ -22,28 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: Scaffold(
-        body: Center(
-          child: FlatButton(
-            child: Text("Test"),
-            onPressed: () {
-              BlocProvider.of<CollageProfileBloc>(context)
-                ..add(
-                  FetchCollageProfile(collageNum: 6),
-                );
-              return CollageProfilePage();
-//                Navigator.pushReplacement(
-//                  context,
-//                  MaterialPageRoute(
-//                    builder: (context) {
-//
-//                    },
-//                  ),
-//                );
-            },
-          ),
-        ),
-      ),
+      home: CollageProfilePage(),
     );
   }
 }

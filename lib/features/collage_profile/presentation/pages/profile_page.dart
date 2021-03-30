@@ -23,7 +23,10 @@ class _ProfilePageState extends State<CollageProfilePage> {
   @override
   void initState() {
     super.initState();
-    collageProfileBloc = CollageProfileBloc();
+    collageProfileBloc = CollageProfileBloc()
+      ..add(
+        FetchCollageProfile(),
+      );
   }
 
   @override
@@ -102,8 +105,14 @@ class _ProfilePageState extends State<CollageProfilePage> {
               ),
             );
           } else {
-            return Container(
-              color: Colors.orangeAccent,
+            return FlatButton(
+              onPressed: () {
+                BlocProvider.of<CollageProfileBloc>(context)
+                  ..add(
+                    FetchCollageProfile(),
+                  );
+              },
+              child: Text("Run"),
             );
           }
         },

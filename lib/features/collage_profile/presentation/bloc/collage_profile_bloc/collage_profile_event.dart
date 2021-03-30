@@ -8,9 +8,9 @@ abstract class CollageProfileEvent extends Equatable {
 }
 
 class FetchCollageProfile extends CollageProfileEvent {
-  final int collageNum;
+//  final int collageNum;
 
-  FetchCollageProfile({this.collageNum});
+  FetchCollageProfile();
 }
 
 class FailedGettingCollageProfile extends CollageProfileEvent {}

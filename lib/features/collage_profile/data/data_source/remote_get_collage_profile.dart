@@ -8,7 +8,7 @@ class RemoteGetCollageProfile with HandlingExceptionRequest {
   Future<Either<Failure, CollageProfileModel>> getCollageProfile(
       int collageNum) async {
     final getApi = GetApi<CollageProfileModel>(
-      fromJson: collageProfileFromJson,
+      fromJson: collageProfileModelFromJson,
       url: "collegedetails/" + collageNum.toString(),
       requestName: "get collage profile",
     );
