@@ -1,8 +1,9 @@
 import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:university/core/unified_api/initial_api.dart';
-import 'package:university/core/unified_api/printing.dart';
+
+import 'initial_api.dart';
 
 typedef T _FromJson<T>(String body);
 
@@ -12,6 +13,7 @@ class GetApi<T> extends InitialApi<T> {
       {@required String url,
       @required String token,
       @required this.fromJson,
+      
       @required String requestName})
       : super(requestName: requestName, token: token, url: url);
 
@@ -26,7 +28,7 @@ class GetApi<T> extends InitialApi<T> {
 
       printResponse(response);
 
-      if (response.statusCode == 220)
+      if (response.statusCode == 200)
         return fromJson(response.body);
       else {
         Exception exception = getException(statusCode: response.statusCode);

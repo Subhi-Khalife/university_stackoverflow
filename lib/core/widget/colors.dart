@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 Color colorThemApp = Color(0xFF2661B2);
 
+Color colorFirstGrident = Color(0xFF1753A7);
+Color colorSecondGrident = Color(0xFF083A7D);
+
 Color colorOrange = Color(0xffFF9F1D);
 
 Color colorShadow = Color(0xffE7BA02);

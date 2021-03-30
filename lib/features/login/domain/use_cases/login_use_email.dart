@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:university/core/use_case/use_case.dart';
-import 'package:university/features/login/data/models/login_model.dart';
-import 'package:university/features/login/domain/repositories/login_repositories.dart';
-import 'package:university/core/error/failures.dart';
+
+import '../../../../core/error/failures.dart';
+import '../../../../core/use_case/use_case.dart';
+import '../../data/models/login_model.dart';
+import '../repositories/login_repositories.dart';
 
 class LoginUseEmail implements UseCase<LoginModel, LoginByEmailParam> {
   final LoginRepositories loginRepositories;

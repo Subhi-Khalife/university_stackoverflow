@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:university/core/widget/colors.dart';
 
+import 'colors.dart';
 
 class LoadingDialog {
   static Future<void> showLoadingDialog(
