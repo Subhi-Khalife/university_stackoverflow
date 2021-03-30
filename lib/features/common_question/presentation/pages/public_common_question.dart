@@ -11,6 +11,8 @@ import 'package:university/core/widget/font_style.dart';
 import 'package:university/core/widget/loading_view.dart';
 import 'package:university/features/common_question/presentation/bloc/common_question/common_question_bloc.dart';
 import 'package:university/features/common_question/presentation/widgets/common_question.dart';
+import 'package:university/features/login/presentation/pages/login_screen.dart';
+import 'package:university/features/sign_up/presentation/pages/sign_up_screen.dart';
 import 'package:university/features/university_with_collage/presentation/bloc/bloc/university_bloc.dart';
 import 'package:university/features/university_with_collage/presentation/pages/drop_down.dart';
 
@@ -24,24 +26,29 @@ class PublicCommonQuestion extends StatefulWidget {
 class _PublicCommonQuestion extends State<PublicCommonQuestion>
     with TickerProviderStateMixin {
   CommonQuestionBloc blocItem;
-  AppBarRestaurant appBar;
   @override
   void initState() {
     super.initState();
     blocItem = CommonQuestionBloc()..add(GetAllCommonQuestionEvent());
-    appBar = AppBarRestaurant(
-        context: context,
-        title: "Common Question",
-        appColor: colorThemApp,
-        centerTitle: true,
-        backIcon: false,
-        actions: [
-          IconButton(
-              icon: Icon(Icons.sort),
-              onPressed: () {
-                return showButtomSheet();
-              })
-        ]);
+    // appBar = AppBarRestaurant(
+    //     context: context,
+    //     title: "Common Question",
+    //     appColor: colorThemApp,
+    //     centerTitle: true,
+    //     backIcon: false,
+    //     leadingWidget: IconButton(
+    //       onPressed: () {
+    //         Scaffold.of(context).openDrawer();
+    //       },
+    //       icon: Icon(Icons.menu),
+    //     ),
+    //     actions: [
+    //       IconButton(
+    //           icon: Icon(Icons.sort),
+    //           onPressed: () {
+    //             return showButtomSheet();
+    //           }),
+    //     ]);
   }
 
   Widget dropDownCollage() {
@@ -129,7 +136,8 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                 ),
                 AppButton(
                   function: () {
-                    blocItem.add(GetAllCommonQuestionForSelectedCollageEvent(collageId: state.collageId.toString()));
+                    blocItem.add(GetAllCommonQuestionForSelectedCollageEvent(
+                        collageId: state.collageId.toString()));
                     Navigator.of(context).pop();
                   },
                   name: "Search",
@@ -153,7 +161,71 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
     ConfigScreen configScreen = ConfigScreen(context);
     WidgetSize widgetSize = WidgetSize(configScreen);
     return Scaffold(
-      appBar: appBar.custom,
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.only(top: 52, bottom: 12, left: 8, right: 8),
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => LoginScreen(),
+                ));
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Login",
+                    style: boldStyle(
+                        fontSize: Constant.mediumFont, color: firstColor),
+                  ),
+                  Icon(Icons.login)
+                ],
+              ),
+            ),
+            SizedBox(height: 18),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SignUpScreen(),
+                ));
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Signup",
+                    style: boldStyle(
+                        fontSize: Constant.mediumFont, color: firstColor),
+                  ),
+                  Icon(Icons.login)
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+      appBar: appBar(
+        leadingWidget: Builder(
+            builder: (context) => IconButton(
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  icon: Icon(Icons.menu),
+                )),
+        widget: Text(
+          "Question Contenet",
+          style: boldStyle(fontSize: Constant.largeFont, color: firstColor),
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+              icon: Icon(Icons.sort),
+              onPressed: () {
+                return showButtomSheet();
+              }),
+        ],
+      ),
       body: BlocProvider<CommonQuestionBloc>(
         create: (context) => blocItem,
         child: BlocBuilder<CommonQuestionBloc, CommonQuestionState>(
