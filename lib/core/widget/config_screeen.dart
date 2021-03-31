@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:university/core/widget/constant.dart';
+
+import 'constant.dart';
 
 enum ScreenType { SMALL, MEDIUM, LARGE, XLARGE }
 
@@ -33,8 +34,6 @@ class WidgetSize {
     initValue();
   }
   void initValue() {
-    
-
     if (configScreen.screenType == ScreenType.SMALL) {
       Constant.verySmallFont = 10;
       Constant.smallFont = 12;

@@ -1,3 +1,5 @@
+import 'package:university/core/entities/collega.dart';
+
 class CommonQuestion {
   CommonQuestion({
     this.id,
@@ -6,6 +8,7 @@ class CommonQuestion {
     this.createdAt,
     this.updatedAt,
     this.collegeId,
+    this.college,
   });
 
   int id;
@@ -14,6 +17,7 @@ class CommonQuestion {
   DateTime createdAt;
   DateTime updatedAt;
   int collegeId;
+  College college;
 
   factory CommonQuestion.fromJson(Map<String, dynamic> json) => CommonQuestion(
         id: json["id"] == null ? null : json["id"],
@@ -26,6 +30,7 @@ class CommonQuestion {
             ? null
             : DateTime.parse(json["updated_at"]),
         collegeId: json["college_id"] == null ? null : json["college_id"],
+        college: json["college"] == null ? null : College.fromJson(json["college"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -35,5 +40,6 @@ class CommonQuestion {
         "created_at": createdAt == null ? null : createdAt.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt.toIso8601String(),
         "college_id": collegeId == null ? null : collegeId,
+        "college": college == null ? null : college.toJson(),
       };
 }

@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'initial_api.dart';
 
@@ -11,7 +10,6 @@ typedef T _FromJson<T>(String body);
 
 class PostApi<T> extends InitialApi<T> {
   Map<String, dynamic> param;
-  SharedPreferences prefs;
   _FromJson fromJson;
   PostApi(
       {@required String url,
@@ -31,7 +29,6 @@ class PostApi<T> extends InitialApi<T> {
       final http.Response response = await http
           .post(baseURL + url, headers: header, body: jsonEncode(param))
           .timeout(Duration(seconds: 30));
-
 
       printResponse(response);
 

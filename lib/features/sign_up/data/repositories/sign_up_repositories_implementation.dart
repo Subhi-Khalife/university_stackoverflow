@@ -1,17 +1,21 @@
-import 'package:university/features/login/data/models/login_model.dart';
-import 'package:university/core/error/failures.dart';
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
-import 'package:university/features/sign_up/data/data_sources/sign_up_by_email_data_source.dart';
-import 'package:university/features/sign_up/data/models/sign_up_model.dart';
-import 'package:university/features/sign_up/domain/repositories/sign_up_repositories.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../core/error/failures.dart';
+import '../../domain/repositories/sign_up_repositories.dart';
+import '../data_sources/sign_up_by_email_data_source.dart';
+import '../models/sign_up_model.dart';
 
 class SignUpRepositoriesImplimentation implements SignUpRepositories {
+  SharedPreferences prefs;
+
   @override
-  Future<Either<Failure, SignUpModel>> signUpByEmail(
-      Map<String, dynamic> param) async {
+  Future<Either<Failure, SignUpModel>> signUpByEmail({Map<String, dynamic> param}) async {
     final callRequestResult =
-        await SignUpByEmailDataSource().signUpByEmail(param);
+    await SignUpByEmailDataSource().signUpByEmail(param);
     return callRequestResult.fold(
-        (failure) => Left(failure), (body) => Right(body));
+            (failure) => Left(failure), (body) => Right(body));
   }
 }
