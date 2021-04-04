@@ -9,7 +9,11 @@ abstract class SignUpState extends Equatable {
 
 class SignUpInitial extends SignUpState {}
 
-class SuccessSignUp extends SignUpState {}
+class SuccessSignUp extends SignUpState {
+  final User user;
+
+  SuccessSignUp({this.user});
+}
 
 class FailedSignUp extends SignUpState {}
 

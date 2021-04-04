@@ -61,20 +61,20 @@ class Data {
 
   int id;
   String firstName;
-  String middleName;
+  dynamic middleName;
   String lastName;
   int collageNumber;
   DateTime verifiedAt;
   String email;
-  DateTime emailVerifiedAt;
+  dynamic emailVerifiedAt;
   String profilePic;
-  String mobile;
+  dynamic mobile;
   String facebookUrl;
   String linkedInUrl;
-  DateTime suspendedAt;
+  dynamic suspendedAt;
   DateTime createdAt;
   DateTime updatedAt;
-  DateTime deletedAt;
+  dynamic deletedAt;
   int userTypeId;
   int collegeId;
   int universityId;
@@ -85,15 +85,17 @@ class Data {
     firstName: json["first_name"] == null ?null : json["first_name"],
     middleName: json["middle_name"],
     lastName: json["last_name"] == null ?null : json["last_name"],
-    collageNumber: json["collage_number"],
+    collageNumber: json["collage_number"] == null
+        ?null
+        : json["collage_number"],
     verifiedAt: json["verified_at"] == null ?null : DateTime.parse(
         json["verified_at"]),
     email: json["email"] == null ?null : json["email"],
     emailVerifiedAt: json["email_verified_at"],
-    profilePic: json["profile_pic"],
+    profilePic: json["profile_pic"] == null ?null : json["profile_pic"],
     mobile: json["mobile"],
-    facebookUrl: json["facebook_url"],
-    linkedInUrl: json["linked_in_url"],
+    facebookUrl: json["facebook_url"] == null ?null : json["facebook_url"],
+    linkedInUrl: json["linked_in_url"] == null ?null : json["linked_in_url"],
     suspendedAt: json["suspended_at"],
     createdAt: json["created_at"] == null ?null : DateTime.parse(
         json["created_at"]),
@@ -111,14 +113,14 @@ class Data {
     "first_name": firstName == null ?null : firstName,
     "middle_name": middleName,
     "last_name": lastName == null ?null : lastName,
-    "collage_number": collageNumber,
+    "collage_number": collageNumber == null ?null : collageNumber,
     "verified_at": verifiedAt == null ?null : verifiedAt.toIso8601String(),
     "email": email == null ?null : email,
     "email_verified_at": emailVerifiedAt,
-    "profile_pic": profilePic,
+    "profile_pic": profilePic == null ?null : profilePic,
     "mobile": mobile,
-    "facebook_url": facebookUrl,
-    "linked_in_url": linkedInUrl,
+    "facebook_url": facebookUrl == null ?null : facebookUrl,
+    "linked_in_url": linkedInUrl == null ?null : linkedInUrl,
     "suspended_at": suspendedAt,
     "created_at": createdAt == null ?null : createdAt.toIso8601String(),
     "updated_at": updatedAt == null ?null : updatedAt.toIso8601String(),
@@ -148,17 +150,18 @@ class College {
     this.generations,
     this.years,
     this.commonQuestions,
+    this.galleries,
   });
 
   int id;
   String name;
   String address;
   String email;
-  dynamic logo;
+  String logo;
   String description;
-  DateTime site;
+  String site;
   DateTime createdAt;
-  DateTime updatedAt;
+  dynamic updatedAt;
   int universityId;
   int specializationId;
   University university;
@@ -166,17 +169,19 @@ class College {
   List<Generation> generations;
   List<Year> years;
   List<CommonQuestion> commonQuestions;
+  List<Gallery> galleries;
 
   factory College.fromJson(Map<String, dynamic> json) =>
       College(
         id: json["id"] == null ?null : json["id"],
         name: json["name"] == null ?null : json["name"],
-        address: json["address"],
-        email: json["email"],
-        logo: json["logo"],
-        description: json["description"],
-        site: json["site"],
-        createdAt: json["created_at"],
+        address: json["address"] == null ?null : json["address"],
+        email: json["email"] == null ?null : json["email"],
+        logo: json["logo"] == null ?null : json["logo"],
+        description: json["description"] == null ?null : json["description"],
+        site: json["site"] == null ?null : json["site"],
+        createdAt: json["created_at"] == null ?null : DateTime.parse(
+            json["created_at"]),
         updatedAt: json["updated_at"],
         universityId: json["university_id"] == null
             ?null
@@ -195,18 +200,20 @@ class College {
         commonQuestions: json["common_questions"] == null ?null : List<
             CommonQuestion>.from(
             json["common_questions"].map((x) => CommonQuestion.fromJson(x))),
+        galleries: json["galleries"] == null ?null : List<Gallery>.from(
+            json["galleries"].map((x) => Gallery.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() =>
       {
         "id": id == null ?null : id,
         "name": name == null ?null : name,
-        "address": address,
-        "email": email,
-        "logo": logo,
-        "description": description,
-        "site": site,
-        "created_at": createdAt,
+        "address": address == null ?null : address,
+        "email": email == null ?null : email,
+        "logo": logo == null ?null : logo,
+        "description": description == null ?null : description,
+        "site": site == null ?null : site,
+        "created_at": createdAt == null ?null : createdAt.toIso8601String(),
         "updated_at": updatedAt,
         "university_id": universityId == null ?null : universityId,
         "specialization_id": specializationId == null ?null : specializationId,
@@ -219,6 +226,8 @@ class College {
             years.map((x) => x.toJson())),
         "common_questions": commonQuestions == null ?null : List<dynamic>.from(
             commonQuestions.map((x) => x.toJson())),
+        "galleries": galleries == null ?null : List<dynamic>.from(
+            galleries.map((x) => x.toJson())),
       };
 }
 
@@ -275,9 +284,9 @@ class Department {
 
   int id;
   String name;
-  String description;
-  DateTime createdAt;
-  DateTime updatedAt;
+  dynamic description;
+  dynamic createdAt;
+  dynamic updatedAt;
   int collegeId;
   List<Subject> subjects;
 
@@ -372,7 +381,7 @@ class FileElement {
   String name;
   String url;
   DateTime createdAt;
-  int userId;
+  dynamic userId;
   int subjectId;
   int generationYearId;
 
@@ -399,6 +408,68 @@ class FileElement {
         "user_id": userId,
         "subject_id": subjectId == null ?null : subjectId,
         "generation_year_id": generationYearId == null ?null : generationYearId,
+      };
+}
+
+class Gallery {
+  Gallery({
+    this.id,
+    this.name,
+    this.description,
+    this.logo,
+    this.createdAt,
+    this.updatedAt,
+    this.departmentId,
+    this.universityCalenderId,
+    this.laravelThroughKey,
+  });
+
+  int id;
+  String name;
+  String description;
+  String logo;
+  DateTime createdAt;
+  DateTime updatedAt;
+  int departmentId;
+  int universityCalenderId;
+  int laravelThroughKey;
+
+  factory Gallery.fromJson(Map<String, dynamic> json) =>
+      Gallery(
+        id: json["id"] == null ?null : json["id"],
+        name: json["name"] == null ?null : json["name"],
+        description: json["description"] == null ?null : json["description"],
+        logo: json["logo"] == null ?null : json["logo"],
+        createdAt: json["created_at"] == null ?null : DateTime.parse(
+            json["created_at"]),
+        updatedAt: json["updated_at"] == null ?null : DateTime.parse(
+            json["updated_at"]),
+        departmentId: json["department_id"] == null
+            ?null
+            : json["department_id"],
+        universityCalenderId: json["university_calender_id"] == null
+            ?null
+            : json["university_calender_id"],
+        laravelThroughKey: json["laravel_through_key"] == null
+            ?null
+            : json["laravel_through_key"],
+      );
+
+  Map<String, dynamic> toJson() =>
+      {
+        "id": id == null ?null : id,
+        "name": name == null ?null : name,
+        "description": description == null ?null : description,
+        "logo": logo == null ?null : logo,
+        "created_at": createdAt == null ?null : createdAt.toIso8601String(),
+        "updated_at": updatedAt == null ?null : updatedAt.toIso8601String(),
+        "department_id": departmentId == null ?null : departmentId,
+        "university_calender_id": universityCalenderId == null
+            ?null
+            : universityCalenderId,
+        "laravel_through_key": laravelThroughKey == null
+            ?null
+            : laravelThroughKey,
       };
 }
 
@@ -479,24 +550,25 @@ class University {
 
   int id;
   String name;
-  DateTime creationDate;
+  dynamic creationDate;
   String city;
-  dynamic logo;
+  String logo;
   String description;
   dynamic site;
   DateTime createdAt;
-  DateTime updatedAt;
+  dynamic updatedAt;
 
   factory University.fromJson(Map<String, dynamic> json) =>
       University(
         id: json["id"] == null ?null : json["id"],
         name: json["name"] == null ?null : json["name"],
         creationDate: json["creation_date"],
-        city: json["city"],
-        logo: json["logo"],
-        description: json["description"],
+        city: json["city"] == null ?null : json["city"],
+        logo: json["logo"] == null ?null : json["logo"],
+        description: json["description"] == null ?null : json["description"],
         site: json["site"],
-        createdAt: json["created_at"],
+        createdAt: json["created_at"] == null ?null : DateTime.parse(
+            json["created_at"]),
         updatedAt: json["updated_at"],
       );
 
@@ -505,11 +577,11 @@ class University {
         "id": id == null ?null : id,
         "name": name == null ?null : name,
         "creation_date": creationDate,
-        "city": city,
-        "logo": logo,
-        "description": description,
+        "city": city == null ?null : city,
+        "logo": logo == null ?null : logo,
+        "description": description == null ?null : description,
         "site": site,
-        "created_at": createdAt,
+        "created_at": createdAt == null ?null : createdAt.toIso8601String(),
         "updated_at": updatedAt,
       };
 }

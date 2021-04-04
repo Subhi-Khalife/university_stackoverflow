@@ -13,7 +13,7 @@ class RemoteGetCollageProfile with HandlingExceptionRequest {
       requestName: "get collage profile",
     );
     final callRequest = getApi.callRequest;
-    final result =
+    Either<Failure, CollageProfileModel> result =
         await getApi.handlingExceptionRequest(requestCall: callRequest);
     return result;
   }

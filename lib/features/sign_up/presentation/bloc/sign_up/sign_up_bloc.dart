@@ -1,7 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:university/core/entities/user.dart';
+import 'package:university/core/error/failures.dart';
+import 'package:university/features/sign_up/data/models/sign_up_model.dart';
 import 'package:university/features/sign_up/data/repositories/sign_up_repositories_implementation.dart';
 
 import '../../../../../core/error/exception.dart';
@@ -21,7 +25,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   Stream<SignUpState> mapEventToState(SignUpEvent event) async* {
     if (event is SendSignUpRequestEvent) {
       yield LoadingState();
-      final result = await signUpUsingEmail(SignUpParam(
+      Either<Failure, SignUpModel> result = await signUpUsingEmail(SignUpParam(
         collageNumber: event.collageNumber,
         collegeId: event.collegeId,
         email: event.email,
@@ -36,8 +40,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         (failure) =>
             failure is MissingParamException ? FailedSignUp() : FailedSignUp(),
         (success){
-          print("the state is ${success}");
-          return SuccessSignUp();
+          print("the state is ${success.user}");
+          return SuccessSignUp(user: success.user);
         },
       );
     }

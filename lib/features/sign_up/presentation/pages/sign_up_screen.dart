@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:university/core/entities/collega.dart';
+import 'package:university/features/collage_profile/presentation/pages/profile_page.dart';
+import 'package:university/features/profile/presentation/pages/profile_page.dart';
 import 'package:university/features/university_with_collage/data/models/universities_with_collages_model.dart';
 import 'package:university/features/university_with_collage/presentation/pages/drop_down.dart';
 import 'package:university/core/widget/university_drop_down.dart';
@@ -36,8 +38,9 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
   String universityName;
   String collageName;
   int _universityIndex;
-  int universityId=0;
-  int collageId=0; 
+  int universityId = 0;
+  int collageId = 0;
+
   @override
   void initState() {
     super.initState();
@@ -78,10 +81,20 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
         child: BlocBuilder<SignUpBloc, SignUpState>(
           builder: (context, state) {
             if (state is SuccessSignUp) {
-              print("Done");
-              return Container(
-                color: Colors.green,
-              );
+              if (state.user.userTypeId == 5) {
+                return Container(
+                  color: Colors.green,
+                );
+//                Navigator.pushReplacement(
+//                  context,
+//                  MaterialPageRoute(builder: (context) {
+//                    return ProfilePage();
+//                  }),
+//                );
+//                return ProfilePage();
+              } else {
+                return CollageProfilePage();
+              }
             } else if (state is LoadingState) {
               return Center(
                 child: CircularProgressIndicator(
@@ -151,12 +164,12 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
   Widget dropDownCollage() {
     return BlocListener<UniversityBloc, UniversityState>(
       listener: (context, state) {
-       universityId=state.universityId;
-       collageId=state.collageId;
+        universityId = state.universityId;
+        collageId = state.collageId;
       },
       child: BlocBuilder<UniversityBloc, UniversityState>(
         builder: (context, state) {
-            if (state is UniversityState) {
+          if (state is UniversityState) {
             return Column(
               children: [
                 DropDown(

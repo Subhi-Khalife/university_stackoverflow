@@ -14,9 +14,17 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final ProfileBloc profileBloc;
+  ProfileBloc profileBloc;
 
   _ProfilePageState({this.profileBloc});
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    profileBloc = ProfileBloc()
+      ..add(FetchProfile());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 250,
                     width: double.infinity,
                     child: CachedNetworkImageView(
-                      url: state.user.profilePic,
+                      url: "https://miro.medium.com/max/1838/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
                     ),
                   ),
                   Container(
@@ -52,7 +60,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               child: userMainInfo(context, state.user),
                             ),
-                            userImage(state.user.profilePic),
+                            userImage(
+                                "https://miro.medium.com/max/1838/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg"),
                           ],
                         ),
                         SizedBox(
@@ -78,8 +87,14 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             );
           } else {
-            return Container(
-              color: Colors.green,
+            return FlatButton(
+              onPressed: () {
+                BlocProvider.of<ProfileBloc>(context)
+                  ..add(
+                    FetchProfile(),
+                  );
+              },
+              child: Text("Test"),
             );
           }
         },
@@ -190,12 +205,12 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         SocialInfoListTile(
           socialType: "Facebook",
-          userInfo: user.facebookUrl,
+          userInfo: "Test@gmail.com",
           socialIcon: LineIcons.facebook,
         ),
         SocialInfoListTile(
           socialType: "LinkedIn",
-          userInfo: user.linkedInUrl,
+          userInfo: "Test@gmail.com",
           socialIcon: LineIcons.linkedin,
         ),
         SocialInfoListTile(

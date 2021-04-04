@@ -11,8 +11,9 @@ class SignUpByEmail extends UseCase<SignUpModel, SignUpParam> {
   @override
   Future<Either<Failure, SignUpModel>> call(SignUpParam params) async {
     final param = params.getParam();
-    final result = await signUpRepositories.signUpByEmail(param: param);
-    return result.fold((failure) => Left(failure), (body) => Right(body));
+    Either<Failure, SignUpModel> result = await signUpRepositories
+        .signUpByEmail(param: param);
+    return result;
   }
 }
 

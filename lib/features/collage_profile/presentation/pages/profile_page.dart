@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university/core/entities/user.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:university/core/widget/cached_newtwok_image_view.dart';
 import 'package:university/core/widget/colors.dart';
 import 'package:university/core/widget/social_info_list_tile.dart';
@@ -105,14 +105,8 @@ class _ProfilePageState extends State<CollageProfilePage> {
               ),
             );
           } else {
-            return FlatButton(
-              onPressed: () {
-                BlocProvider.of<CollageProfileBloc>(context)
-                  ..add(
-                    FetchCollageProfile(),
-                  );
-              },
-              child: Text("Run"),
+            return Container(
+              color: Colors.orangeAccent,
             );
           }
         },
@@ -140,7 +134,7 @@ class _ProfilePageState extends State<CollageProfilePage> {
               ListTile(
                 contentPadding: EdgeInsets.all(0),
                 title: Text(
-                  "ITE",
+                  data.college.university.name + "\t" + data.college.name,
                   style: TextStyle(
                     color: colorWhite,
                     fontSize: 20,
@@ -164,8 +158,8 @@ class _ProfilePageState extends State<CollageProfilePage> {
               label: "Views",
             ),
             StaticsWidget(
-              number: 60,
-              label: "Videos",
+              number: data.college.galleries.length,
+              label: "Gallery",
             ),
           ],
         )
@@ -216,21 +210,21 @@ class _ProfilePageState extends State<CollageProfilePage> {
           userInfo: data.email,
           socialIcon: Icons.email,
         ),
-//        SocialInfoListTile(
-//          socialType: "instagram",
-//          userInfo: "mohamedatta900@gmail.com",
-//          socialIcon: LineIcons.instagram,
-//        ),
-//        SocialInfoListTile(
-//          socialType: "Facebook",
-//          userInfo: user.facebookUrl??"test@gmail.com",
-//          socialIcon: LineIcons.facebook,
-//        ),
-//        SocialInfoListTile(
-//          socialType: "LinkedIn",
-//          userInfo: user.linkedInUrl??"Test@gmail.com",
-//          socialIcon: LineIcons.linkedin,
-//        ),
+        SocialInfoListTile(
+          socialType: "instagram",
+          userInfo: "mohamedatta900@gmail.com",
+          socialIcon: LineIcons.instagram,
+        ),
+        SocialInfoListTile(
+          socialType: "Facebook",
+          userInfo: data.facebookUrl ?? "test@gmail.com",
+          socialIcon: LineIcons.facebook,
+        ),
+        SocialInfoListTile(
+          socialType: "LinkedIn",
+          userInfo: data.linkedInUrl ?? "Test@gmail.com",
+          socialIcon: LineIcons.linkedin,
+        ),
         SocialInfoListTile(
           socialType: "Mobile",
           userInfo: data.mobile ?? "003544",
