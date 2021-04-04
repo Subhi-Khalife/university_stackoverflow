@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/features/collage_profile/presentation/pages/profile_page.dart';
 import 'package:university/features/profile/presentation/bloc/bloc/profile_bloc.dart';
 import 'package:university/features/sign_up/presentation/bloc/sign_up/sign_up_bloc.dart';
 
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: SignUpScreen(),
+      home: CollageProfilePage(),
     );
   }
 }
