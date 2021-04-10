@@ -13,7 +13,6 @@ class GetApi<T> extends InitialApi<T> {
       {@required String url,
       @required String token,
       @required this.fromJson,
-      
       @required String requestName})
       : super(requestName: requestName, token: token, url: url);
 
@@ -23,7 +22,7 @@ class GetApi<T> extends InitialApi<T> {
       print("Getting.......");
 
       final http.Response response = await http
-          .get(baseURL + url, headers: header)
+          .get(Uri.parse(baseURL + url), headers: header)
           .timeout(Duration(seconds: 30));
 
       printResponse(response);

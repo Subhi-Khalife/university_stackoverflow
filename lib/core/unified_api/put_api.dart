@@ -26,7 +26,8 @@ class PutApi<T> extends InitialApi<T> {
 
       print("Putting.......");
       final http.Response response = await http
-          .put(baseURL + url, headers: header, body: jsonEncode(param))
+          .put(Uri.parse(baseURL + url),
+              headers: header, body: jsonEncode(param))
           .timeout(Duration(seconds: 30));
 
       printResponse(response);
