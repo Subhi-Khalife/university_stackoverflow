@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/features/collage_profile/presentation/pages/profile_page.dart';
+import 'package:university/features/profile/presentation/pages/profile_page.dart';
 
 import '../../../../core/widget/app_button.dart';
 import '../../../../core/widget/colors.dart';
@@ -22,6 +24,7 @@ class _LoginScreen extends State<LoginScreen> {
   TextEditingController _emailController;
   TextEditingController _passwordController;
   LoginBloc loginBloc;
+
   @override
   void initState() {
     super.initState();
@@ -73,9 +76,11 @@ class _LoginScreen extends State<LoginScreen> {
         builder: (context, state) {
           if (state is LoginSuccess) {
             print("Done");
-            return Container(
-              color: Colors.green,
-            );
+            if (state.user.userTypeId == 5) {
+              return ProfilePage();
+            } else {
+              return CollageProfilePage();
+            }
           } else if (state is LoadingState) {
             return Center(
                 child: CircularProgressIndicator(

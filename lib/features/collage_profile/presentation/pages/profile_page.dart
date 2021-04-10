@@ -1,40 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:university/core/entities/user.dart';
 import 'package:university/core/widget/cached_newtwok_image_view.dart';
 import 'package:university/core/widget/colors.dart';
 import 'package:university/core/widget/social_info_list_tile.dart';
 import 'package:university/core/widget/statics.dart';
-import 'package:university/features/profile/presentation/bloc/bloc/profile_bloc.dart';
+import 'package:university/features/collage_profile/data/models/collage_profile.dart';
+import 'package:university/features/collage_profile/presentation/bloc/collage_profile_bloc/collage_profile_bloc.dart';
 
-class ProfilePage extends StatefulWidget {
+class CollageProfilePage extends StatefulWidget {
+  const CollageProfilePage({
+    Key key,
+  }) : super(key: key);
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  ProfileBloc profileBloc;
-
-  _ProfilePageState({this.profileBloc});
+class _ProfilePageState extends State<CollageProfilePage> {
+  CollageProfileBloc collageProfileBloc;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    profileBloc = ProfileBloc()
-      ..add(FetchProfile());
+    collageProfileBloc = CollageProfileBloc()
+      ..add(
+        FetchCollageProfile(),
+      );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    collageProfileBloc.close();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: BlocProvider(
-      create: (context) => profileBloc,
-      child: BlocBuilder<ProfileBloc, ProfileState>(
+      create: (context) => collageProfileBloc,
+      child: BlocBuilder<CollageProfileBloc, CollageProfileState>(
         builder: (context, state) {
-          if (state is ProfileIsLoadedState) {
+          if (state is GettingCollageProfileFailed) {
             print("Done");
+            return Container(
+              color: Colors.red,
+            );
+          } else if (state is GettingCollageProfileLoadingState) {
+            return Center(
+              child: CircularProgressIndicator(
+                backgroundColor: colorThemApp,
+              ),
+            );
+          } else if (state is GettingCollageProfileSuccess) {
             return SingleChildScrollView(
               child: Stack(
                 children: [
@@ -42,7 +62,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 250,
                     width: double.infinity,
                     child: CachedNetworkImageView(
-                      url: "https://miro.medium.com/max/1838/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
+                      url: state.collageProfileModel.data.profilePic ??
+                          "https://miro.medium.com/max/1838/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
                     ),
                   ),
                   Container(
@@ -58,10 +79,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                 color: colorThemApp,
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
-                              child: userMainInfo(context, state.user),
+                              child: userMainInfo(
+                                  context, state.collageProfileModel.data),
                             ),
                             userImage(
-                                "https://miro.medium.com/max/1838/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg"),
+                              state.collageProfileModel.data.profilePic ??
+                                  "https://miro.medium.com/max/1838/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -72,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: colorThemApp,
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          child: userSubInfo(state.user),
+                          child: userSubInfo(state.collageProfileModel.data),
                         ),
                       ],
                     ),
@@ -80,21 +104,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             );
-          } else if (state is ProfileIsLoadingState) {
-            return Center(
-              child: CircularProgressIndicator(
-                backgroundColor: colorThemApp,
-              ),
-            );
           } else {
-            return FlatButton(
-              onPressed: () {
-                BlocProvider.of<ProfileBloc>(context)
-                  ..add(
-                    FetchProfile(),
-                  );
-              },
-              child: Text("Test"),
+            return Container(
+              color: Colors.orangeAccent,
             );
           }
         },
@@ -102,7 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
     ));
   }
 
-  Widget userMainInfo(BuildContext context, User user) {
+  Widget userMainInfo(BuildContext context, Data data) {
     return Column(
       children: [
         Container(
@@ -113,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                user.firstName,
+                data.firstName,
                 style: TextStyle(
                   color: colorWhite,
                   fontSize: 25,
@@ -122,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ListTile(
                 contentPadding: EdgeInsets.all(0),
                 title: Text(
-                  "ITE",
+                  data.college.university.name + "\t" + data.college.name,
                   style: TextStyle(
                     color: colorWhite,
                     fontSize: 20,
@@ -146,8 +158,8 @@ class _ProfilePageState extends State<ProfilePage> {
               label: "Views",
             ),
             StaticsWidget(
-              number: 60,
-              label: "Videos",
+              number: data.college.galleries.length,
+              label: "Gallery",
             ),
           ],
         )
@@ -179,7 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget userSubInfo(User user) {
+  Widget userSubInfo(Data data) {
     return Column(
       children: [
         ListTile(
@@ -195,7 +207,7 @@ class _ProfilePageState extends State<ProfilePage> {
         Divider(),
         SocialInfoListTile(
           socialType: "e-mail",
-          userInfo: user.email,
+          userInfo: data.email,
           socialIcon: Icons.email,
         ),
         SocialInfoListTile(
@@ -205,17 +217,17 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         SocialInfoListTile(
           socialType: "Facebook",
-          userInfo: "Test@gmail.com",
+          userInfo: data.facebookUrl ?? "test@gmail.com",
           socialIcon: LineIcons.facebook,
         ),
         SocialInfoListTile(
           socialType: "LinkedIn",
-          userInfo: "Test@gmail.com",
+          userInfo: data.linkedInUrl ?? "Test@gmail.com",
           socialIcon: LineIcons.linkedin,
         ),
         SocialInfoListTile(
           socialType: "Mobile",
-          userInfo: user.mobile,
+          userInfo: data.mobile ?? "003544",
           socialIcon: Icons.phone_android,
         ),
       ],

@@ -13,9 +13,8 @@ class SignUpRepositoriesImplimentation implements SignUpRepositories {
 
   @override
   Future<Either<Failure, SignUpModel>> signUpByEmail({Map<String, dynamic> param}) async {
-    final callRequestResult =
+    Either<Failure, SignUpModel> callRequestResult =
     await SignUpByEmailDataSource().signUpByEmail(param);
-    return callRequestResult.fold(
-            (failure) => Left(failure), (body) => Right(body));
+    return callRequestResult;
   }
 }
