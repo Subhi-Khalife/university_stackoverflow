@@ -1,19 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university/core/entities/collega.dart';
-import 'package:university/features/collage_profile/presentation/pages/profile_page.dart';
-import 'package:university/features/profile/presentation/pages/profile_page.dart';
-import 'package:university/features/university_with_collage/data/models/universities_with_collages_model.dart';
-import 'package:university/features/university_with_collage/presentation/pages/drop_down.dart';
-import 'package:university/core/widget/university_drop_down.dart';
-import 'package:university/features/university_with_collage/presentation/bloc/bloc/university_bloc.dart';
+
 import '../../../../core/widget/app_button.dart';
 import '../../../../core/widget/colors.dart';
 import '../../../../core/widget/config_screeen.dart';
 import '../../../../core/widget/constant.dart';
 import '../../../../core/widget/font_style.dart';
 import '../../../../core/widget/text_field_app.dart';
+import '../../../collage_profile/presentation/pages/profile_page.dart';
+import '../../../university_with_collage/presentation/bloc/bloc/university_bloc.dart';
+import '../../../university_with_collage/presentation/pages/drop_down.dart';
 import '../bloc/sign_up/sign_up_bloc.dart';
 
 class SignUpScreen extends StatefulWidget {

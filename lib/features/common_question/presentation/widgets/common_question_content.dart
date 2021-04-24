@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:university/core/entities/common_question.dart';
-import 'package:university/core/widget/app_bar.dart';
-import 'package:university/core/widget/colors.dart';
-import 'package:university/core/widget/constant.dart';
-import 'package:university/core/widget/font_style.dart';
+
+import '../../../../core/entities/common_question.dart';
+import '../../../../core/widget/app_bar.dart';
+import '../../../../core/widget/colors.dart';
+import '../../../../core/widget/constant.dart';
+import '../../../../core/widget/font_style.dart';
 
 class CommonQuestionContent extends StatelessWidget {
   final CommonQuestion commonQuestionItem;

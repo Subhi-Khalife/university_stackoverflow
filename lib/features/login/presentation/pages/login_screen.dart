@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university/features/collage_profile/presentation/pages/profile_page.dart';
-import 'package:university/features/profile/presentation/pages/profile_page.dart';
 
 import '../../../../core/widget/app_button.dart';
 import '../../../../core/widget/colors.dart';
@@ -10,6 +8,8 @@ import '../../../../core/widget/config_screeen.dart';
 import '../../../../core/widget/constant.dart';
 import '../../../../core/widget/font_style.dart';
 import '../../../../core/widget/text_field_app.dart';
+import '../../../collage_profile/presentation/pages/profile_page.dart';
+import '../../../profile/presentation/pages/profile_page.dart';
 import '../bloc/login/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {

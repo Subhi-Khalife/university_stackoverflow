@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university/core/widget/colors.dart';
-import 'package:university/core/widget/constant.dart';
-import 'package:university/core/widget/font_style.dart';
-import 'package:university/features/university_with_collage/presentation/bloc/bloc/university_bloc.dart';
+
+import '../../../../core/widget/colors.dart';
+import '../../../../core/widget/constant.dart';
+import '../../../../core/widget/font_style.dart';
+import '../bloc/bloc/university_bloc.dart';
 
 class DropDown extends StatefulWidget {
   final List<DropDownItem> dropDownListItem;

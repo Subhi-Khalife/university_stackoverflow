@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:university/features/university_with_collage/domain/repositories/university_with_collage_repositories.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/use_case/use_case.dart';
 import '../../data/models/universities_with_collages_model.dart';
+import '../repositories/university_with_collage_repositories.dart';
 
 class GetAllUniversityWithCollage
     extends UseCase<UniversitiesWithCollegesModel, NoParams> {

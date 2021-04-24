@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:university/core/entities/user.dart';
-import 'package:university/core/error/failures.dart';
-import 'package:university/features/profile/data/data_source/local_profile_data_source.dart';
-import 'package:university/features/profile/domain/repositories/profile_repositories.dart';
+
+import '../../../../core/entities/user.dart';
+import '../../../../core/error/failures.dart';
+import '../../domain/repositories/profile_repositories.dart';
+import '../data_source/local_profile_data_source.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   @override

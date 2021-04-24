@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university/features/collage_profile/presentation/pages/profile_page.dart';
-import 'package:university/features/profile/presentation/bloc/bloc/profile_bloc.dart';
-import 'package:university/features/sign_up/presentation/bloc/sign_up/sign_up_bloc.dart';
-
-import 'features/common_question/presentation/pages/public_common_question.dart';
-import 'features/sign_up/presentation/pages/sign_up_screen.dart';
+import 'features/collage_profile/presentation/pages/edit_profile.dart';
+import 'features/profile/presentation/bloc/bloc/profile_bloc.dart';
 import 'features/university_with_collage/presentation/bloc/bloc/university_bloc.dart';
 
 void main() {
@@ -35,7 +31,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: CollageProfilePage(),
+      home: EditProfilePage(),
     );
   }
+
 }

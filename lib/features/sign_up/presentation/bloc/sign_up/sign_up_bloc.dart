@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:university/core/entities/user.dart';
-import 'package:university/core/error/failures.dart';
-import 'package:university/features/sign_up/data/models/sign_up_model.dart';
-import 'package:university/features/sign_up/data/repositories/sign_up_repositories_implementation.dart';
+import '../../../../../core/entities/user.dart';
+import '../../../../../core/error/failures.dart';
+import '../../../data/models/sign_up_model.dart';
+import '../../../data/repositories/sign_up_repositories_implementation.dart';
 
 import '../../../../../core/error/exception.dart';
 import '../../../../../core/use_case/use_case.dart';

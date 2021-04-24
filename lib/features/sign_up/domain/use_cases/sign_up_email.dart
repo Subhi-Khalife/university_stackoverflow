@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:university/features/sign_up/domain/repositories/sign_up_repositories.dart';
+
 import '../../../../core/error/failures.dart';
 import '../../../../core/use_case/use_case.dart';
 import '../../data/models/sign_up_model.dart';
+import '../repositories/sign_up_repositories.dart';
 
 class SignUpByEmail extends UseCase<SignUpModel, SignUpParam> {
   final SignUpRepositories signUpRepositories;

@@ -1,4 +1,4 @@
-import 'package:university/core/entities/collega.dart';
+import 'collega.dart';
 
 class CommonQuestion {
   CommonQuestion({

@@ -1,8 +1,9 @@
-import 'package:university/core/entities/user.dart';
-import 'package:university/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
-import 'package:university/core/use_case/use_case.dart';
-import 'package:university/features/profile/domain/repositories/profile_repositories.dart';
+
+import '../../../../core/entities/user.dart';
+import '../../../../core/error/failures.dart';
+import '../../../../core/use_case/use_case.dart';
+import '../repositories/profile_repositories.dart';
 
 class GetProfileForUser extends UseCase<User, NoParams> {
   final ProfileRepository profileRepository;

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:university/core/widget/colors.dart';
+
+import 'colors.dart';
 
 class LoadingView extends StatelessWidget{
   @override

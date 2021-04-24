@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:university/core/widget/cached_newtwok_image_view.dart';
-import 'package:university/core/widget/colors.dart';
-import 'package:university/core/widget/social_info_list_tile.dart';
-import 'package:university/core/widget/statics.dart';
-import 'package:university/features/collage_profile/data/models/collage_profile.dart';
-import 'package:university/features/collage_profile/presentation/bloc/collage_profile_bloc/collage_profile_bloc.dart';
+
+import '../../../../core/widget/cached_newtwok_image_view.dart';
+import '../../../../core/widget/colors.dart';
+import '../../../../core/widget/social_info_list_tile.dart';
+import '../../../../core/widget/statics.dart';
+import '../../data/models/collage_profile.dart';
+import '../bloc/collage_profile_bloc/collage_profile_bloc.dart';
+import 'gallery_page.dart';
 
 class CollageProfilePage extends StatefulWidget {
   const CollageProfilePage({
@@ -160,6 +162,16 @@ class _ProfilePageState extends State<CollageProfilePage> {
             StaticsWidget(
               number: data.college.galleries.length,
               label: "Gallery",
+              gestureTapCallback: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return GalleryPage(
+                      galleries: data.college.galleries,
+                    );
+                  }),
+                );
+              },
             ),
           ],
         )

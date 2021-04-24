@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:university/core/widget/colors.dart';
-import 'package:university/core/widget/constant.dart';
-import 'package:university/core/widget/font_style.dart';
+
+import 'colors.dart';
+import 'constant.dart';
+import 'font_style.dart';
 
 class BlocErrorScreen extends StatelessWidget {
   final Function function;

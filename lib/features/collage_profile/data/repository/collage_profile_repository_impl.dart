@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:university/core/error/failures.dart';
-import 'package:university/features/collage_profile/data/data_source/remote_get_collage_profile.dart';
-import 'package:university/features/collage_profile/data/models/collage_profile.dart';
-import 'package:university/features/collage_profile/domain/repositories/collage_profile_repository.dart';
+
+import '../../../../core/error/failures.dart';
+import '../../domain/repositories/collage_profile_repository.dart';
+import '../data_source/remote_get_collage_profile.dart';
+import '../models/collage_profile.dart';
 
 class CollageProfileRepositoryImpl implements CollageProfileRepository {
   @override
