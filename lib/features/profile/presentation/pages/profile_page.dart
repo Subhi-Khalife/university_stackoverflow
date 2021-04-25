@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:university/core/entities/user.dart';
-import 'package:university/core/widget/cached_newtwok_image_view.dart';
-import 'package:university/core/widget/colors.dart';
-import 'package:university/core/widget/social_info_list_tile.dart';
-import 'package:university/core/widget/statics.dart';
-import 'package:university/features/profile/presentation/bloc/bloc/profile_bloc.dart';
+
+import '../../../../core/entities/user.dart';
+import '../../../../core/widget/cached_newtwok_image_view.dart';
+import '../../../../core/widget/colors.dart';
+import '../../../../core/widget/social_info_list_tile.dart';
+import '../../../../core/widget/statics.dart';
+import '../bloc/bloc/profile_bloc.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -25,7 +26,6 @@ class _ProfilePageState extends State<ProfilePage> {
     profileBloc = ProfileBloc()
       ..add(FetchProfile());
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:university/core/entities/collega.dart';
-import 'package:university/core/error/exception.dart';
-import 'package:university/core/use_case/use_case.dart';
-import 'package:university/features/university_with_collage/data/models/universities_with_collages_model.dart';
-import 'package:university/features/university_with_collage/data/repositories/university_with_collage_impl.dart';
-import 'package:university/features/university_with_collage/domain/use_cases/get_all_university_with_collage.dart';
-import 'package:university/features/university_with_collage/presentation/pages/drop_down.dart';
+
+import '../../../../../core/entities/collega.dart';
+import '../../../../../core/error/exception.dart';
+import '../../../../../core/use_case/use_case.dart';
+import '../../../data/models/universities_with_collages_model.dart';
+import '../../../data/repositories/university_with_collage_impl.dart';
+import '../../../domain/use_cases/get_all_university_with_collage.dart';
+import '../../pages/drop_down.dart';
 
 part 'university_event.dart';
 part 'university_state.dart';

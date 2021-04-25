@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:university/core/error/failures.dart';
-import 'package:university/core/unified_api/get_api.dart';
-import 'package:university/core/unified_api/handling_exception.dart';
-import 'package:university/features/university_with_collage/data/models/universities_with_collages_model.dart';
+
+import '../../../../core/error/failures.dart';
+import '../../../../core/unified_api/get_api.dart';
+import '../../../../core/unified_api/handling_exception.dart';
+import '../models/universities_with_collages_model.dart';
 
 class RemoteGetUniversityWithCollage with HandlingExceptionRequest {
   Future<Either<Failure, UniversitiesWithCollegesModel>>

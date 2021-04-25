@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:university/core/entities/user.dart';
 
+import '../../../../../core/entities/user.dart';
 import '../../../../../core/error/exception.dart';
 import '../../../../../core/use_case/use_case.dart';
 import '../../../data/repositories/login_repositories_implementation.dart';

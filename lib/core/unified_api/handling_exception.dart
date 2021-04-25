@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +49,7 @@ mixin HandlingExceptionRequest {
       return Left(MissingParamFailure());
     } on UserNotAllowedToAccessException {
       print("<< UserNotAllowedToAccessException >> ");
+      log("message");
       return Left(UserNotAllowedToAccessFailure());
     } on OperationFailedException {
       print("<< OperationFailedException >> ");

@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:university/core/entities/user.dart';
-import 'package:university/core/error/exception.dart';
-import 'package:university/core/use_case/use_case.dart';
-import 'package:university/features/profile/data/repositories/profile_repositories_impl.dart';
-import 'package:university/features/profile/domain/usecases/get_profile_for_user.dart';
+
+import '../../../../../core/entities/user.dart';
+import '../../../../../core/error/exception.dart';
+import '../../../../../core/use_case/use_case.dart';
+import '../../../data/repositories/profile_repositories_impl.dart';
+import '../../../domain/usecases/get_profile_for_user.dart';
 
 part 'profile_event.dart';
-
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
