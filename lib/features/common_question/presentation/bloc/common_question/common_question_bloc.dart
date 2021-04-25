@@ -49,7 +49,7 @@ yield * _mapGetAllCommonQuestionForSelectedCollageEvent(event);
       },
       (body) {
         CommonQuestionModel model = body;
-        return GetAllCommonQuestionSuccess(commonItemsList: model.data);
+        return GetAllCommonQuestionSuccess(commonItemsList: model.data.data);
       },
     );
   }
@@ -67,7 +67,7 @@ yield * _mapGetAllCommonQuestionForSelectedCollageEvent(event);
       },
       (body) {
         CommonQuestionModel model = body;
-        return GetAllCommonQuestionSuccess(commonItemsList: model.data);
+        return GetAllCommonQuestionSuccess(commonItemsList: model.data.data);
       },
     );
   }

@@ -23,7 +23,7 @@ class DeleteApi<T> extends InitialApi<T> {
 
       final http.Response response = await http
           .delete(
-            baseURL + url,
+            Uri.parse(baseURL + url),
             headers: header,
           )
           .timeout(Duration(seconds: 30));

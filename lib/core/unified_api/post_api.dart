@@ -27,7 +27,8 @@ class PostApi<T> extends InitialApi<T> {
       print("Posting.......");
 
       final http.Response response = await http
-          .post(baseURL + url, headers: header, body: jsonEncode(param))
+          .post(Uri.parse(baseURL + url),
+              headers: header, body: jsonEncode(param))
           .timeout(Duration(seconds: 30));
 
       printResponse(response);
