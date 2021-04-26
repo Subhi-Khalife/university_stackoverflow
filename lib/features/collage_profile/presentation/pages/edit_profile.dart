@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university/core/widget/custom_paint.dart';
-import 'package:university/core/widget/user_main_info.dart';
 
 import '../../../../core/widget/colors.dart';
+import '../../../../core/widget/custom_paint.dart';
+import '../../../../core/widget/user_main_info.dart';
 import '../../data/models/collage_profile.dart';
 import '../bloc/collage_profile_bloc/collage_profile_bloc.dart';
 
@@ -27,8 +27,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void dispose() {
     // TODO: implement dispose
-    collageProfileBloc.close();
+
     super.dispose();
+    collageProfileBloc.close();
   }
 
   @override
@@ -94,7 +95,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         child: ListView(
                           children: [
                             UserMainInfo(
-                              userDart: user,
+                              userData: user,
                             ),
                             editUserInfo(context),
                           ],

@@ -4,7 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:university/core/entities/collega.dart';
 import 'package:university/core/entities/common_question.dart';
 import 'package:university/core/entities/link.dart';
 
