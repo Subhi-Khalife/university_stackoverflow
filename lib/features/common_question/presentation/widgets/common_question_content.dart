@@ -13,65 +13,74 @@ class CommonQuestionContent extends StatelessWidget {
   CommonQuestionContent({@required this.commonQuestionItem});
   @override
   Widget build(BuildContext context) {
-    // AppBarRestaurant appBar = AppBarRestaurant(
-    //   context: context,
-    //   title: "",
-    //   appColor: colorThemApp,
-    //   centerTitle: true,
-    //   backIcon: false,
-
-    // );
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: appBar(
         leadingWidget: IconButton(
           onPressed: () {
-            Scaffold.of(context).openDrawer();
+            Navigator.pop(context);
           },
-          icon: Icon(Icons.menu),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
-        widget: Text(
-          "Question Contenet",
-          style: boldStyle(fontSize: Constant.largeFont, color: firstColor),
-        ),
+        widget: Text(""),
         centerTitle: true,
         actions: [],
       ),
-      body: Card(
-        elevation: 4,
-        color: Colors.grey.shade100,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: 16, bottom: 12, left: 6, right: 6),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    DateFormat('yyyy-MM-dd – kk:mm')
-                        .format(commonQuestionItem.createdAt),
-                    style: regularStyle(
-                        fontSize: Constant.mediumFont, color: firstColor),
-                  ),
-                  Text(
-                    "Aleppo university",
-                    style: regularStyle(
-                        fontSize: Constant.mediumFont, color: secondColor),
-                  ),
-                ],
-              ),
+            Column(
+              children: [
+                Text(
+                  "Question?",
+                  style: boldStyle(
+                      fontSize: Constant.xlargeFont + 4, color: greyColor),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "${commonQuestionItem.question}",
+                  style:
+                      boldStyle(fontSize: Constant.largeFont, color: greyColor),
+                ),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 12, bottom: 12, left: 6, right: 6),
-              child: Text(
-                commonQuestionItem.answer,
-                style: regularStyle(
-                    fontSize: Constant.mediumFont, color: firstColor),
+            Spacer(),
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    colors: [
+                      colorFirstGrident,
+                      colorSecondGrident,
+                    ],
+                    stops: [0.4, 0.77],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  )),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text(
+                      "Answer",
+                      style: boldStyle(
+                          fontSize: Constant.xlargeFont + 4, color: greyColor),
+                    ),
+                    SizedBox(height: 5),
+                    Padding(
+                      padding:  EdgeInsets.only(bottom: 80),
+                      child: Text(
+                        "${commonQuestionItem.answer}",
+                        textAlign: TextAlign.center,
+                        style: boldStyle(
+                            fontSize: Constant.mediumFont, color: greyColor),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+            )
           ],
         ),
       ),

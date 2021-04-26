@@ -25,3 +25,6 @@ class LoadingDialog {
         });
   }
 }
+
+///   LoadingDialog.showLoadingDialog(context, _keyLoader);
+///  Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();

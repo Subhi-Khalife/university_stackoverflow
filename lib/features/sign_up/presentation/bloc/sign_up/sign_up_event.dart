@@ -40,3 +40,5 @@ class SendSignUpRequestEvent extends SignUpEvent {
 }
 
 class FailedSignUpRequest extends SignUpEvent {}
+
+class ChangeToSecondScreen extends SignUpEvent{}

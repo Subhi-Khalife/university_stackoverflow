@@ -8,16 +8,11 @@ import 'package:university/core/widget/colors.dart';
     return PreferredSize(
       preferredSize: Size.fromHeight(60),
       child: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         centerTitle: centerTitle ?? true,
         actions: actions,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(10.0),
-              bottomLeft: Radius.circular(10.0)
-          ),
-        ),
-        elevation: 4.0,
+      
+        elevation: 0.0,
         iconTheme: IconThemeData(color: firstColor,),
         title:widget,
         leading: leadingWidget,
