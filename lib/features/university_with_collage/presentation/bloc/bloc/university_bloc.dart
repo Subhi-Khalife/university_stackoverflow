@@ -36,7 +36,7 @@ class UniversityBloc extends Bloc<UniversityEvent, UniversityState> {
 
   Stream<UniversityState> _mapSelectedUniversityEvent(
       SelectedUniversityEvent event) async* {
-    List<DropDownItem> collegeItem = List<DropDownItem>();
+    List<DropDownItem> collegeItem = [];
     List<College> _collegeList =
         state.universityObject.data[event.index].colleges;
     for (int i = 0; i < _collegeList.length; i++) {

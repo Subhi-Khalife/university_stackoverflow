@@ -20,12 +20,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is SendLoginRequest) {
-      yield* _mapSendLoginRequest(event);
+      {
+        print("inside theis");
+        yield* _mapSendLoginRequest(event);
+      }
     }
   }
 
   Stream<LoginState> _mapSendLoginRequest(SendLoginRequest event) async* {
     yield LoadingState();
+    print("asdasdas");
     final result = await loginUseEmail(
         LoginByEmailParam(email: event.email, password: event.password));
 

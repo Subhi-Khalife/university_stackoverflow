@@ -11,23 +11,14 @@ import '../models/sign_up_model.dart';
 class SignUpByEmailDataSource with HandlingExceptionRequest {
   Future<Either<Failure, SignUpModel>> signUpByEmail(
       Map<String, dynamic> param) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     final postApi = PostApi<SignUpModel>(
         fromJson: signUpModelFromJson,
         param: param,
         url: "register",
         requestName: "Sign up by Emai");
     final callRequest = postApi.callRequest;
-    final cacheResult = await prefs.setString(
-        "User",
-        json.encode(await handlingExceptionRequest<SignUpModel>(
-            requestCall: callRequest)));
     Either<Failure, SignUpModel> result =
     await handlingExceptionRequest<SignUpModel>(requestCall: callRequest);
-//    await prefs.setString(
-//      "User",
-//      json.encode(result),
-//    );
     return result;
   }
 }

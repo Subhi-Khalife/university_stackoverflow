@@ -18,3 +18,8 @@ class SuccessSignUp extends SignUpState {
 class FailedSignUp extends SignUpState {}
 
 class LoadingState extends SignUpState {}
+
+class ChangeToSecondScreenState extends SignUpState {
+  final bool state;
+  ChangeToSecondScreenState({this.state});
+}
