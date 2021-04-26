@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/features/sign_up/presentation/pages/sign_up_screen.dart';
 
 import '../../../../core/widget/app_button.dart';
 import '../../../../core/widget/colors.dart';
@@ -46,34 +47,126 @@ class _LoginScreen extends State<LoginScreen> {
     ConfigScreen configScreen = ConfigScreen(context);
     WidgetSize widgetSize = WidgetSize(configScreen);
     return Scaffold(
-      body: ListView(
-        padding: EdgeInsets.only(top: 30, left: 12, right: 12),
+      backgroundColor: backGroupColor,
+      body: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.7,
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    colors: [
+                      colorFirstGrident,
+                      colorSecondGrident,
+                    ],
+                            stops: [0.0, 1],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )),
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10),
+                    loginAndSignUpButton(),
+                    SizedBox(height: 28),
+                    emailTextField(),
+                    SizedBox(height: 10),
+                    passwordTextField(),
+                    SizedBox(height: 28),
+                    loginButton()
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    //    ListView(
+    //     padding: EdgeInsets.only(top: 30, left: 12, right: 12),
+    //     children: [
+    //       Column(
+    //         mainAxisAlignment: MainAxisAlignment.start,
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         children: [
+    //           showSignInText(),
+    //           SizedBox(height: 20),
+    //           showDescription(),
+    //           SizedBox(height: 20),
+    //           emailTextField(),
+    //           SizedBox(height: 20),
+    //           passwordTextField(),
+    //           SizedBox(height: 20),
+    //           loginButton()
+    //         ],
+    //       )
+    //     ],
+    //   ),
+    // );
+  }
+
+  Widget loginAndSignUpButton() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        textDirection: TextDirection.rtl,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              showSignInText(),
-              SizedBox(height: 20),
-              showDescription(),
-              SizedBox(height: 20),
-              emailTextField(),
-              SizedBox(height: 20),
-              passwordTextField(),
-              SizedBox(height: 20),
-              loginButton()
-            ],
-          )
+          Flexible(
+              child: Transform.scale(
+            scale: 1.1,
+            origin: Offset(5, 1),
+            child: AppButton(
+              function: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignUpScreen()),
+                    (Route<dynamic> route) =>
+                        false); //  Navigator.pushAndRemoveUntil(context, LoginScreen(), (route) => false);
+              },
+              name: "Sign up",
+              elevationValue: 10,
+              fontColor: colorSecondGrident,
+              buttonColor: greyColor,
+            ),
+          )),
+          Flexible(
+              child: Transform.scale(
+            scale: 1.1,
+            origin: Offset(5, 1),
+            child: AppButton(
+              function: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    (Route<dynamic> route) => false);
+              },
+              name: "Login",
+              fontColor: Colors.black,
+              elevationValue: 10,
+              buttonColor: Color(0xff315786),
+            ),
+          )),
         ],
       ),
     );
   }
 
   Widget loginButton() {
-    return BlocProvider(
+    return BlocProvider<LoginBloc>(
       create: (context) => loginBloc,
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
+          print("the current state is $state");
           if (state is LoginSuccess) {
             print("Done");
             if (state.user.userTypeId == 5) {
@@ -88,6 +181,9 @@ class _LoginScreen extends State<LoginScreen> {
             ));
           } else {
             return AppButton(
+              buttonColor: Color(0xff315786),
+              fontColor: Colors.black,
+              elevationValue: 8,
               function: () {
                 BlocProvider.of<LoginBloc>(context)
                   ..add(

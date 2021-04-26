@@ -51,6 +51,7 @@ class _DropDown extends State<DropDown> with TickerProviderStateMixin {
         width: MediaQuery.of(context).size.width,
         child: Card(
           semanticContainer: false,
+          
           child: ListView.separated(
             separatorBuilder: (context, index) {
               return Divider();
@@ -64,12 +65,10 @@ class _DropDown extends State<DropDown> with TickerProviderStateMixin {
                     if (widget.universitySelecetd == true) {
                       BlocProvider.of<UniversityBloc>(context)
                         ..add(SelectedUniversityEvent(
-                          universityName: widget.dropDownListItem[index].title,
-                          
-                          universityId: widget.dropDownListItem[index].id,
-
-                          index: index
-                        ));
+                            universityName:
+                                widget.dropDownListItem[index].title,
+                            universityId: widget.dropDownListItem[index].id,
+                            index: index));
                     } else {
                       BlocProvider.of<UniversityBloc>(context)
                         ..add(SelectedCollageEvent(
@@ -111,18 +110,21 @@ class _DropDown extends State<DropDown> with TickerProviderStateMixin {
                 },
               );
             },
-            child: Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 8, left: 6, right: 6),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    widget.title,
-                    style: regularStyle(
-                        fontSize: Constant.mediumFont, color: firstColor),
-                  ),
-                  Icon(Icons.vertical_align_bottom)
-                ],
+            child: Container(
+              color: Colors.grey.shade200,
+              child: Padding(
+                padding: EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(Icons.arrow_downward_sharp),
+                    Text(
+                      widget.title,
+                      style: regularStyle(
+                          fontSize: Constant.mediumFont, color: firstColor),
+                    ),
+                  ],
+                ),
               ),
             )),
       ),
@@ -131,7 +133,7 @@ class _DropDown extends State<DropDown> with TickerProviderStateMixin {
 }
 
 class DropDownItem {
-   String title;
-   int id;
+  String title;
+  int id;
   DropDownItem({@required this.id, @required this.title});
 }

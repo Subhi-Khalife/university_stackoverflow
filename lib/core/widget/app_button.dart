@@ -8,20 +8,29 @@ import 'font_style.dart';
 class AppButton extends StatelessWidget {
   final Function function;
   final String name;
-  AppButton({@required this.function, @required this.name});
+  final double elevationValue;
+  final Color buttonColor;
+  final Color fontColor;
+  AppButton(
+      {@required this.function,
+      @required this.name,
+      this.elevationValue = 0,
+      this.buttonColor,
+      this.fontColor});
   @override
   Widget build(BuildContext context) {
     return Center(
       child: MaterialButton(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
         clipBehavior: Clip.antiAlias,
         onPressed: function,
-        color: colorThemApp,
-        minWidth: MediaQuery.of(context).size.width * 0.75,
+        color: buttonColor??colorThemApp,
+        elevation: elevationValue,
+        height: 40,
+        minWidth: MediaQuery.of(context).size.width * 0.4,
         child: Text(
           name,
-          style: boldStyle(color: Colors.white, fontSize: Constant.mediumFont),
+          style: boldStyle(color:fontColor?? Colors.white, fontSize: Constant.mediumFont),
         ),
       ),
     );
