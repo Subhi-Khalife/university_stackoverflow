@@ -56,9 +56,16 @@ class _LoginScreen extends State<LoginScreen> {
             padding: const EdgeInsets.all(18.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    colors: [
+                      colorFirstGrident,
+                      colorSecondGrident,
+                    ],
+                            stops: [0.0, 1],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )),
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Column(
@@ -128,8 +135,8 @@ class _LoginScreen extends State<LoginScreen> {
               },
               name: "Sign up",
               elevationValue: 10,
-              fontColor: Colors.black,
-              buttonColor: Colors.white,
+              fontColor: colorSecondGrident,
+              buttonColor: greyColor,
             ),
           )),
           Flexible(
@@ -144,7 +151,9 @@ class _LoginScreen extends State<LoginScreen> {
                     (Route<dynamic> route) => false);
               },
               name: "Login",
+              fontColor: Colors.black,
               elevationValue: 10,
+              buttonColor: Color(0xff315786),
             ),
           )),
         ],
@@ -172,6 +181,9 @@ class _LoginScreen extends State<LoginScreen> {
             ));
           } else {
             return AppButton(
+              buttonColor: Color(0xff315786),
+              fontColor: Colors.black,
+              elevationValue: 8,
               function: () {
                 BlocProvider.of<LoginBloc>(context)
                   ..add(

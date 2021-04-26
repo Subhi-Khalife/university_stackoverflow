@@ -28,9 +28,9 @@ class CommonQuestionView extends StatelessWidget {
                 colorFirstGrident,
                 colorSecondGrident,
               ],
-              stops: [0.4, 0.77],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
+                            stops: [0.0, 1],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             )),
         child: Padding(
           padding: const EdgeInsets.all(8.0),

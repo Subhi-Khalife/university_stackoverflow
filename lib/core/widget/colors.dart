@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 Color colorThemApp =const Color(0xFF034EA3);
 
-Color colorFirstGrident = Color(0xFF315786);
+Color colorFirstGrident =  Color(0xFF3A4655) ;
 
-Color colorSecondGrident = Color(0xFF034EA3);
+Color colorSecondGrident =Color(0xFF315786);
 
 Color blackWithOpacity = Color(0xFF434F5E);
 

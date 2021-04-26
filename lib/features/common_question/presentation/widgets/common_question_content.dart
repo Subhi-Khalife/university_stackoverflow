@@ -54,7 +54,7 @@ class CommonQuestionContent extends StatelessWidget {
                       colorFirstGrident,
                       colorSecondGrident,
                     ],
-                    stops: [0.4, 0.77],
+                            stops: [0.0, 1],
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                   )),

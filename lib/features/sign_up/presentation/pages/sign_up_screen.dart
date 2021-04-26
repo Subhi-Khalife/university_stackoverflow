@@ -87,22 +87,31 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
             } else if (state is ChangeToSecondScreenState) {
               isFirstSignUpScreen = state.state;
             }
-            return SingleChildScrollView(
-              child: Center(
+            return Center(
+              child: SingleChildScrollView(
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(16),
+                          gradient: LinearGradient(
+                            colors: [
+                              colorFirstGrident,
+                              colorSecondGrident,
+                            ],
+                            stops: [0.0, 1],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          )),
+                      child: Center(
+                        child: Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: (isFirstSignUpScreen)
+                                ? firstScreenData()
+                                : scondScreenData()),
                       ),
-                      child: Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: (isFirstSignUpScreen)
-                              ? firstScreenData()
-                              : scondScreenData()),
                     ),
                   ),
                 ),
@@ -191,18 +200,21 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
         AppButton(
             function: () {
               signUpBloc.add(
-                  SendSignUpRequestEvent(
-                    collageNumber: _collageNumberContoller.text,
-                    email: _emailNameController.text,
-                    lastName: _secondNameController.text,
-                    firstName: _firstNameController.text,
-                    mobile: _phoneNumberController.text,
-                    password: _passwordNameController.text,
-                    collegeId: collageId,
-                    universityId: universityId,
-                  ),
-                );
+                SendSignUpRequestEvent(
+                  collageNumber: _collageNumberContoller.text,
+                  email: _emailNameController.text,
+                  lastName: _secondNameController.text,
+                  firstName: _firstNameController.text,
+                  mobile: _phoneNumberController.text,
+                  password: _passwordNameController.text,
+                  collegeId: collageId,
+                  universityId: universityId,
+                ),
+              );
             },
+            buttonColor: Color(0xff315786),
+            elevationValue: 8,
+            fontColor: Colors.black,
             name: "Sign up"),
       ],
     );
@@ -212,7 +224,7 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(height: 10),
         loginAndSignUpButton(),
@@ -220,9 +232,12 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
         dropDownCollage(),
         SizedBox(height: 20),
         AppButton(
+            buttonColor: Color(0xff315786),
+            fontColor: Colors.black,
             function: () {
               signUpBloc..add(ChangeToSecondScreen());
             },
+            elevationValue: 8,
             name: "Next"),
         SizedBox(height: 28),
       ],
@@ -250,8 +265,8 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
               },
               name: "Login",
               elevationValue: 10,
-              fontColor: Colors.black,
-              buttonColor: Colors.white,
+              fontColor: colorSecondGrident,
+              buttonColor: greyColor,
             ),
           )),
           Flexible(
@@ -265,8 +280,10 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
                     MaterialPageRoute(builder: (context) => SignUpScreen()),
                     (Route<dynamic> route) => false);
               },
-              name: "Sign up",
+              name: "SignUp",
+              fontColor: Colors.black,
               elevationValue: 10,
+              buttonColor: Color(0xff315786),
             ),
           )),
         ],
