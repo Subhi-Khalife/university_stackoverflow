@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/features/collage_profile/presentation/pages/new_collage_profile.dart';
 
 import '../../../../core/widget/colors.dart';
 import '../../../../core/widget/custom_paint.dart';
@@ -26,8 +27,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
-
     super.dispose();
     collageProfileBloc.close();
   }
@@ -37,11 +36,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Color(0xff555555),
+        backgroundColor: colorFirstGrident,
         leading: IconButton(
           icon: Icon(Icons.menu),
           onPressed: () {},
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.save_alt),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => NewCollageProfile(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: BlocProvider(
         create: (context) => collageProfileBloc,
@@ -74,7 +85,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           style: TextStyle(
                             fontSize: 35,
                             letterSpacing: 1.5,
-                            color: Colors.white,
+                            color: greyColor,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -88,6 +99,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       SizedBox(),
                       Container(
                         height: 350,
+                        //color: colorFirstGrident,
                         width: double.infinity,
                         margin: EdgeInsets.symmetric(
                           horizontal: 10,
@@ -119,13 +131,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
 Widget editUserInfo(BuildContext context) {
   return Container(
+    //color: colorFirstGrident,
     width: MediaQuery.of(context).size.width,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           "Edit Profile",
-          style: TextStyle(color: Colors.black45, fontSize: 20),
+          style: TextStyle(
+            color: colorFirstGrident,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         SizedBox(height: 10),
         textFieldWidget(
@@ -155,9 +172,16 @@ Widget textFieldWidget(String hintText, {bool showPassword}) {
   return TextField(
     controller: TextEditingController(),
     enabled: true,
+    style: TextStyle(
+      color: colorWhite,
+    ),
     decoration: InputDecoration(
       filled: true,
+      fillColor: blackWithOpacity,
       hintText: hintText,
+      hintStyle: TextStyle(
+        color: colorWhite,
+      ),
     ),
   );
 }
@@ -169,11 +193,11 @@ Widget profilePicWidget(BuildContext context, Data user) {
     height: MediaQuery.of(context).size.height / 4.3,
     decoration: BoxDecoration(
       border: Border.all(
-        color: Colors.white,
+        color: greyColor,
         width: 5,
       ),
       shape: BoxShape.circle,
-      color: Colors.white,
+      color: colorFirstGrident,
       image: DecorationImage(
         image: NetworkImage(
           user.profilePic ??

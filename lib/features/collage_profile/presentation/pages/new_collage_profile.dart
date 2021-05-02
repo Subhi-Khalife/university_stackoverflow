@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:university/features/collage_profile/presentation/pages/edit_profile.dart';
 
 import '../../../../core/widget/cached_newtwok_image_view.dart';
 import '../../../../core/widget/colors.dart';
@@ -28,7 +29,6 @@ class _NewCollageProfileState extends State<NewCollageProfile> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     collageProfileBloc.close();
   }
@@ -38,11 +38,23 @@ class _NewCollageProfileState extends State<NewCollageProfile> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Color(0xff555555),
+        backgroundColor: colorFirstGrident,
         leading: IconButton(
           icon: Icon(Icons.menu),
           onPressed: () {},
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => EditProfilePage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: BlocProvider(
         create: (context) => collageProfileBloc,
@@ -75,7 +87,7 @@ class _NewCollageProfileState extends State<NewCollageProfile> {
                           style: TextStyle(
                             fontSize: 35,
                             letterSpacing: 1.5,
-                            color: Colors.white,
+                            color: greyColor,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -124,11 +136,11 @@ Widget profilePicWidget(BuildContext context, Data user) {
     height: MediaQuery.of(context).size.height / 4.3,
     decoration: BoxDecoration(
       border: Border.all(
-        color: Colors.white,
+        color: greyColor,
         width: 5,
       ),
       shape: BoxShape.circle,
-      color: Colors.white,
+      color: colorFirstGrident,
       image: DecorationImage(
         image: NetworkImage(
           user.profilePic ??
@@ -144,6 +156,7 @@ Widget swiperWidget(BuildContext context, Data user) {
   return Container(
     height: MediaQuery.of(context).size.height / 3,
     width: MediaQuery.of(context).size.width,
+    color: blueAccentWithOpacity,
     child: Swiper(
       itemBuilder: (context, index) {
         return CachedNetworkImageView(

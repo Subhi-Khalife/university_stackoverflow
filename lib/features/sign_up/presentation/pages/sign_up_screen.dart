@@ -270,22 +270,23 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
             ),
           )),
           Flexible(
-              child: Transform.scale(
-            scale: 1.1,
-            origin: Offset(5, 1),
-            child: AppButton(
-              function: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignUpScreen()),
-                    (Route<dynamic> route) => false);
-              },
-              name: "SignUp",
-              fontColor: Colors.black,
-              elevationValue: 10,
-              buttonColor: Color(0xff315786),
+            child: Transform.scale(
+              scale: 1.1,
+              origin: Offset(5, 1),
+              child: AppButton(
+                function: () {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUpScreen()),
+                          (Route<dynamic> route) => false);
+                },
+                name: "SignUp",
+                fontColor: Colors.black,
+                elevationValue: 10,
+                buttonColor: Color(0xff315786),
+              ),
             ),
-          )),
+          ),
         ],
       ),
     );

@@ -29,9 +29,9 @@ class CollageProfileBloc
       Either<Failure, CollageProfileModel> result = await getCollageProfile(6);
       yield result.fold(
         (failure) => GettingCollageProfileFailed(),
-        (r) => GettingCollageProfileSuccess(r),
+            (successCollageProfileModel) =>
+            GettingCollageProfileSuccess(successCollageProfileModel),
       );
     }
-    // TODO: implement mapEventToState
   }
 }

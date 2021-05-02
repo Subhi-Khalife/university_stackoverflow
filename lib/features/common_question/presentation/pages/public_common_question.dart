@@ -9,6 +9,7 @@ import 'package:university/core/widget/config_screeen.dart';
 import 'package:university/core/widget/constant.dart';
 import 'package:university/core/widget/font_style.dart';
 import 'package:university/core/widget/loading_view.dart';
+import 'package:university/features/collage_profile/presentation/pages/new_collage_profile.dart';
 import 'package:university/features/common_question/presentation/bloc/common_question/common_question_bloc.dart';
 import 'package:university/features/common_question/presentation/widgets/common_question.dart';
 import 'package:university/features/login/presentation/pages/login_screen.dart';
@@ -181,7 +182,27 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                   Icon(Icons.login)
                 ],
               ),
-            )
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => NewCollageProfile(),
+                  ),
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Collage Profile",
+                    style: boldStyle(
+                        fontSize: Constant.mediumFont, color: firstColor),
+                  ),
+                  Icon(Icons.login)
+                ],
+              ),
+            ),
           ],
         ),
       ),

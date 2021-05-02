@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../features/collage_profile/data/models/collage_profile.dart';
+import 'colors.dart';
 
 class UserMainInfo extends StatelessWidget {
   final Data userData;
@@ -20,7 +21,7 @@ class UserMainInfo extends StatelessWidget {
         Text(
           userData.firstName + " " + userData.lastName ?? "NoLast",
           style: TextStyle(
-            color: Colors.black,
+            color: blackWithOpacity,
             fontWeight: FontWeight.w600,
             fontSize: 30,
           ),
@@ -32,12 +33,14 @@ class UserMainInfo extends StatelessWidget {
           userData.college.university.name + "  " + userData.college.name,
           style: TextStyle(
             fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: blackWithOpacity,
           ),
         ),
         SizedBox(
           height: 10,
         ),
-        swiperWidget,
+        swiperWidget ?? Container(),
       ],
     );
   }
