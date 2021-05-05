@@ -11,7 +11,7 @@ class GetApi<T> extends InitialApi<T> {
   _FromJson fromJson;
   GetApi(
       {@required String url,
-      @required String token,
+        String token,
       @required this.fromJson,
       @required String requestName})
       : super(requestName: requestName, token: token, url: url);

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:university/features/collage_profile/data/models/collage_profile.dart';
+
+import '../../features/collage_profile/data/models/collage_profile.dart';
+import 'colors.dart';
 
 class UserMainInfo extends StatelessWidget {
-  final Data userDart;
+  final Data userData;
+  final Widget swiperWidget;
 
   const UserMainInfo({
     Key key,
-    this.userDart,
+    this.userData,
+    this.swiperWidget,
   }) : super(key: key);
 
   @override
@@ -15,9 +19,9 @@ class UserMainInfo extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          userDart.firstName + " " + userDart.lastName ?? "NoLast",
+          userData.firstName + " " + userData.lastName ?? "NoLast",
           style: TextStyle(
-            color: Colors.black,
+            color: blackWithOpacity,
             fontWeight: FontWeight.w600,
             fontSize: 30,
           ),
@@ -26,14 +30,17 @@ class UserMainInfo extends StatelessWidget {
           height: 10,
         ),
         Text(
-          userDart.college.university.name + "  " + userDart.college.name,
+          userData.college.university.name + "  " + userData.college.name,
           style: TextStyle(
             fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: blackWithOpacity,
           ),
         ),
         SizedBox(
           height: 10,
         ),
+        swiperWidget ?? Container(),
       ],
     );
   }

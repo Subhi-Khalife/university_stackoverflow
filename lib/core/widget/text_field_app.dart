@@ -33,7 +33,7 @@ class TextFieldApp extends StatelessWidget {
   final double paddingRight;
   final Widget suffixIcon;
   final bool enabled;
-  Key key;
+  final Key key;
 
   TextFieldApp(
       {@required this.controller,

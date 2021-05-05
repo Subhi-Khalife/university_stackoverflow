@@ -6,8 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'colors.dart';
 
 class CachedNetworkImageView extends StatelessWidget {
-  String url;
-  Function function;
+  final String url;
+  final Function function;
   CachedNetworkImageView({this.url = "", this.function});
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,10 @@ class CachedNetworkImageView extends StatelessWidget {
         errorWidget: (context, imageUrl, error) => Container(
           color: Colors.white,
 //          client.svg
-          child: SvgPicture.asset('lib/svgFiles/client.svg',
-              semanticsLabel: 'client'),
+          child: SvgPicture.asset(
+            'lib/svgFiles/client.svg',
+            semanticsLabel: 'client',
+          ),
         ),
       ),
     );
