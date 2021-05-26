@@ -33,6 +33,7 @@ dependencies:
   equatable: ^1.2.5
   tuple: ^1.0.3
   cached_network_image: ^2.5.0
+  font_awesome_flutter: ^8.2.0
   carousel_slider: ^3.0.0
   flutter_swiper: ^1.1.6
   fluttertoast: ^7.1.4

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university/core/widget/main_screen_dialog.dart';
-import 'core/widget/splash_screen.dart';
-import 'features/collage_profile/presentation/pages/new_collage_profile.dart';
+import 'package:university/features/feedback/presentation/pages/feedback_screen.dart';
+import 'package:university/features/tabs/presentation/pages/tabs_screen.dart';
 import 'features/profile/presentation/bloc/bloc/profile_bloc.dart';
+import 'features/rate/presentation/screen/rate_screen.dart';
 import 'features/university_with_collage/presentation/bloc/bloc/university_bloc.dart';
 
 void main() {
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: SplashScreen(),
+      home: RateScreen(),
     );
   }
 }

@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university/features/sign_up/presentation/pages/sign_up_screen.dart';
-
 import '../../../../core/widget/app_button.dart';
 import '../../../../core/widget/colors.dart';
 import '../../../../core/widget/config_screeen.dart';
@@ -11,6 +9,7 @@ import '../../../../core/widget/font_style.dart';
 import '../../../../core/widget/text_field_app.dart';
 import '../../../collage_profile/presentation/pages/profile_page.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
+import '../../../sign_up/presentation/pages/sign_up_screen.dart';
 import '../bloc/login/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -62,7 +61,7 @@ class _LoginScreen extends State<LoginScreen> {
                       colorFirstGrident,
                       colorSecondGrident,
                     ],
-                            stops: [0.0, 1],
+                    stops: [0.0, 1],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   )),
@@ -89,28 +88,6 @@ class _LoginScreen extends State<LoginScreen> {
         ),
       ),
     );
-
-    //    ListView(
-    //     padding: EdgeInsets.only(top: 30, left: 12, right: 12),
-    //     children: [
-    //       Column(
-    //         mainAxisAlignment: MainAxisAlignment.start,
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         children: [
-    //           showSignInText(),
-    //           SizedBox(height: 20),
-    //           showDescription(),
-    //           SizedBox(height: 20),
-    //           emailTextField(),
-    //           SizedBox(height: 20),
-    //           passwordTextField(),
-    //           SizedBox(height: 20),
-    //           loginButton()
-    //         ],
-    //       )
-    //     ],
-    //   ),
-    // );
   }
 
   Widget loginAndSignUpButton() {

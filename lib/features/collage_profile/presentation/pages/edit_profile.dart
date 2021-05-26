@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university/features/collage_profile/presentation/pages/new_collage_profile.dart';
 
 import '../../../../core/widget/colors.dart';
 import '../../../../core/widget/custom_paint.dart';
 import '../../../../core/widget/user_main_info.dart';
 import '../../data/models/collage_profile.dart';
 import '../bloc/collage_profile_bloc/collage_profile_bloc.dart';
+import 'new_collage_profile.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override

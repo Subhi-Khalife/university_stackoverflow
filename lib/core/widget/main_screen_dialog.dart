@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:university/features/common_question/presentation/pages/public_common_question.dart';
-import 'package:university/features/login/presentation/pages/login_screen.dart';
+
+import '../../features/common_question/presentation/pages/public_common_question.dart';
+import '../../features/login/presentation/pages/login_screen.dart';
 
 class MainScreenDialog extends StatelessWidget {
   static const double padding = 20;

@@ -1,21 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university/core/widget/app_button.dart';
-import 'package:university/core/widget/bloc_error_screen.dart';
-import 'package:university/core/widget/colors.dart';
-import 'package:university/core/widget/comment_text_field.dart';
-import 'package:university/core/widget/config_screeen.dart';
-import 'package:university/core/widget/constant.dart';
-import 'package:university/core/widget/font_style.dart';
-import 'package:university/core/widget/loading_view.dart';
-import 'package:university/features/collage_profile/presentation/pages/new_collage_profile.dart';
-import 'package:university/features/common_question/presentation/bloc/common_question/common_question_bloc.dart';
-import 'package:university/features/common_question/presentation/widgets/common_question.dart';
-import 'package:university/features/login/presentation/pages/login_screen.dart';
-import 'package:university/features/sign_up/presentation/pages/sign_up_screen.dart';
-import 'package:university/features/university_with_collage/presentation/bloc/bloc/university_bloc.dart';
-import 'package:university/features/university_with_collage/presentation/pages/drop_down.dart';
+
+import '../../../../core/widget/app_button.dart';
+import '../../../../core/widget/bloc_error_screen.dart';
+import '../../../../core/widget/colors.dart';
+import '../../../../core/widget/comment_text_field.dart';
+import '../../../../core/widget/config_screeen.dart';
+import '../../../../core/widget/constant.dart';
+import '../../../../core/widget/font_style.dart';
+import '../../../../core/widget/loading_view.dart';
+import '../../../collage_profile/presentation/pages/new_collage_profile.dart';
+import '../../../login/presentation/pages/login_screen.dart';
+import '../../../sign_up/presentation/pages/sign_up_screen.dart';
+import '../../../university_with_collage/presentation/bloc/bloc/university_bloc.dart';
+import '../../../university_with_collage/presentation/pages/drop_down.dart';
+import '../bloc/common_question/common_question_bloc.dart';
+import '../widgets/common_question.dart';
 
 class PublicCommonQuestion extends StatefulWidget {
   @override
