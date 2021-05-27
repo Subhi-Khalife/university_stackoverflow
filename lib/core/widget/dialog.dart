@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:university/core/entities/dialog_item.dart';
+
+import '../entities/dialog_item.dart';
 
 class DialogView extends StatelessWidget {
   final List<DialogItem> items;

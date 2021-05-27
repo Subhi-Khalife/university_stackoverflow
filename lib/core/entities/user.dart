@@ -1,62 +1,87 @@
 class User {
     User({
-      this.email,
-        this.firstName,
-        this.lastName,
-        this.mobile,
-        this.collegeId,
-        this.universityId,
-      this.collageNumber,
-      this.updatedAt,
-      this.createdAt,
       this.id,
+        this.firstName,
+      this.middleName,
+        this.lastName,
+      this.collageNumber,
+      this.verifiedAt,
+      this.email,
+      this.emailVerifiedAt,
+      this.profilePic,
+        this.mobile,
+      this.facebookUrl,
+      this.linkedInUrl,
+      this.suspendedAt,
+      this.createdAt,
+      this.updatedAt,
+      this.deletedAt,
       this.userTypeId,
-        this.token,
+      this.collegeId,
+      this.universityId,
     });
 
-    String email;
+    int id;
     String firstName;
+    dynamic middleName;
     String lastName;
-    String mobile;
+    int collageNumber;
+    DateTime verifiedAt;
+    String email;
+    dynamic emailVerifiedAt;
+    String profilePic;
+    dynamic mobile;
+    String facebookUrl;
+    String linkedInUrl;
+    dynamic suspendedAt;
+    DateTime createdAt;
+    DateTime updatedAt;
+    dynamic deletedAt;
+    int userTypeId;
     int collegeId;
     int universityId;
-    int collageNumber;
-    DateTime updatedAt;
-    DateTime createdAt;
-    int id;
-    int userTypeId;
-    String token;
 
     factory User.fromJson(Map<String, dynamic> json) => User(
-      email: json["email"] == null ?null : json["email"],
-      firstName: json["first_name"] == null ?null : json["first_name"],
-      lastName: json["last_name"] == null ?null : json["last_name"],
-      mobile: json["mobile"] == null ?null : json["mobile"],
-      collegeId: json["college_id"] == null ?null : json["college_id"],
-      universityId: json["university_id"] == null ?null : json["university_id"],
-      collageNumber: json["collage_number"] == null
-          ?null
-          : json["collage_number"],
-      updatedAt: json["updated_at"] == null ?null : DateTime.parse(
-          json["updated_at"]),
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-      id: json["id"] == null ?null : json["id"],
-      userTypeId: json["user_type_id"] == null ?null : json["user_type_id"],
-      token: json["token"] == null ?null : json["token"],
+      id: json["id"],
+      firstName: json["first_name"],
+      middleName: json["middle_name"],
+      lastName: json["last_name"],
+      collageNumber: json["collage_number"],
+      verifiedAt: DateTime.parse(json["verified_at"]),
+      email: json["email"],
+      emailVerifiedAt: json["email_verified_at"],
+      profilePic: json["profile_pic"],
+      mobile: json["mobile"],
+      facebookUrl: json["facebook_url"],
+      linkedInUrl: json["linked_in_url"],
+      suspendedAt: json["suspended_at"],
+      createdAt: DateTime.parse(json["created_at"]),
+      updatedAt: DateTime.parse(json["updated_at"]),
+      deletedAt: json["deleted_at"],
+      userTypeId: json["user_type_id"],
+      collegeId: json["college_id"],
+      universityId: json["university_id"],
     );
 
     Map<String, dynamic> toJson() => {
-      "email": email == null ?null : email,
-      "first_name": firstName == null ?null : firstName,
-      "last_name": lastName == null ?null : lastName,
-      "mobile": mobile == null ?null : mobile,
-      "college_id": collegeId == null ?null : collegeId,
-      "university_id": universityId == null ?null : universityId,
-      "collage_number": collageNumber == null ?null : collageNumber,
-        "updated_at": updatedAt == null ? null : updatedAt.toIso8601String(),
-      "created_at": createdAt == null ?null : createdAt.toIso8601String(),
-      "id": id == null ?null : id,
-      "user_type_id": userTypeId == null ?null : userTypeId,
-      "token": token == null ?null : token,
+      "id": id,
+      "first_name": firstName,
+      "middle_name": middleName,
+      "last_name": lastName,
+      "collage_number": collageNumber,
+      "verified_at": verifiedAt.toIso8601String(),
+      "email": email,
+      "email_verified_at": emailVerifiedAt,
+      "profile_pic": profilePic,
+      "mobile": mobile,
+      "facebook_url": facebookUrl,
+      "linked_in_url": linkedInUrl,
+      "suspended_at": suspendedAt,
+      "created_at": createdAt.toIso8601String(),
+      "updated_at": updatedAt.toIso8601String(),
+      "deleted_at": deletedAt,
+      "user_type_id": userTypeId,
+      "college_id": collegeId,
+      "university_id": universityId,
     };
 }
