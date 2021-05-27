@@ -13,8 +13,13 @@ class CommentWidget extends StatelessWidget {
   Function updateFunction = () {};
   final CommentItem commentItem;
   List<Function> popMenuFunction = [];
-  CommentWidget(
-      {@required this.commentItem, this.deleteFunction, this.updateFunction}) {
+  final bool withPopMenu;
+  CommentWidget({
+    @required this.commentItem,
+    this.deleteFunction,
+    this.updateFunction,
+    this.withPopMenu = true,
+  }) {
     popMenuFunction = [deleteFunction, updateFunction];
   }
   @override
@@ -22,10 +27,10 @@ class CommentWidget extends StatelessWidget {
     return Stack(
       children: [
         InkWell(
-          onTap: (){
-         commentItem.function();
+          onTap: () {
+            commentItem.function();
           },
-                  child: Card(
+          child: Card(
             elevation: 4,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -85,6 +90,7 @@ class CommentWidget extends StatelessWidget {
   }
 
   Widget myPopMenu(BuildContext context) {
+    if (!withPopMenu) return Container();
     return Align(
         alignment: Alignment.topRight,
         child: Padding(

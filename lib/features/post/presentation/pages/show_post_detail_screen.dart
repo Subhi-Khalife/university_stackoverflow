@@ -199,9 +199,13 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                     commentItem: CommentItem(
                       description: comments[index].description,
                       function: () {
-                         Navigator.of(context).push(MaterialPageRoute(
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
                                 builder: (context) =>
-                                    ShowAllReplay(comment: comments[index])));
+                                    ShowAllReplay(comment: comments[index])))
+                            .then((value) {
+                          postBloc.add(GetPostDetail(postId: widget.postId));
+                        });
                       },
                       imageUrl: comments[index]?.user?.profilePic ?? "",
                       userName: comments[index].user.firstName +
@@ -222,7 +226,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                 ),
                 if (leng != 0)
                   Padding(
-                    padding: const EdgeInsets.only(left: 8,top: 4,bottom:4),
+                    padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4),
                     child: CommentWidget(
                       commentItem: CommentItem(
                           description: comments[index].comments[0].description,

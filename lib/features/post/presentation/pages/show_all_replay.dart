@@ -103,6 +103,7 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                           userName: widget.comment.user.firstName +
                               widget.comment.user.lastName,
                         ),
+                        withPopMenu: false,
                       ),
                       ListView(
                         shrinkWrap: true,
@@ -184,17 +185,28 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                   padding: const EdgeInsets.all(8.0),
                   child: CommentWidget(
                     commentItem: CommentItem(
-                        description: comments[0].comments[index].description,
-                        imageUrl: comments[0].comments[index].user.profilePic,
+                        description: comments[index].description,
+                        imageUrl: comments[index].user.profilePic,
                         function: () {},
-                        userName: comments[0].comments[index].user.firstName +
-                            comments[0].comments[index].user.lastName),
+                        userName: comments[index].user.firstName +
+                            comments[index].user.lastName),
+                    deleteFunction: () {
+                      Dialogs.showLoadingDialog(context, _keyLoader);
+                      commentBloc.add(DeleteComment(
+                          commentId: comments[index].id, commentIndex: index));
+                    },
+                    updateFunction: () {
+                      isUpdate.value = true;
+                      commentController.text = comments[index].description;
+                      commentId = comments[index].id;
+                      index = index;
+                    },
                   ),
                 )
               ],
             );
           },
-          itemCount: comments[0].comments.length,
+          itemCount: comments.length,
         );
       },
     );
