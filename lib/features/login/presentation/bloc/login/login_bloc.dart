@@ -1,9 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:university/core/entities/user.dart';
+import 'package:university/core/error/failures.dart';
+import 'package:university/features/login/data/models/login_model.dart';
 
-import '../../../../../core/entities/user.dart';
 import '../../../../../core/error/exception.dart';
 import '../../../../../core/use_case/use_case.dart';
 import '../../../data/repositories/login_repositories_implementation.dart';
@@ -28,9 +34,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapSendLoginRequest(SendLoginRequest event) async* {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     yield LoadingState();
-    print("asdasdas");
-    final result = await loginUseEmail(
+    Either<Failure, LoginModel> result = await loginUseEmail(
         LoginByEmailParam(email: event.email, password: event.password));
 
     yield result.fold((failure) {
@@ -40,7 +46,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         return LoginFailed();
       }
     }, (body) {
-      return LoginSuccess();
+      sharedPreferences.setBool("loginSuccess", true);
+      sharedPreferences.setString("user", loginModelToJson(body));
+      return LoginSuccess(user: body.user);
     });
   }
 }

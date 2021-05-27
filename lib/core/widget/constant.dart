@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class Constant {
-  static final String baseUrl = 'http://food.404developers.com/';
+  static final String baseUrl = 'https://aramlab.com';
   static double verySmallFont;
   static double veryVerySmallFont;
   static double smallFont;

@@ -1,58 +1,63 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:university/core/widget/colors.dart';
 
 class DropDownTextField extends StatelessWidget {
-  final TextEditingController controller;
+  const DropDownTextField(
+      {Key key,
+      @required this.hintText,
+      @required this.errorText,
+      @required this.handleTap,
+      this.controller,
+      this.node,
+      this.color})
+      : super(key: key);
   final String hintText;
-  final Function function;
-
-  DropDownTextField({this.controller, this.hintText = "", this.function});
+  final String errorText;
+  final Function handleTap;
+  final TextEditingController controller;
+  final FocusNode node;
+  final Color color;
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        child: Padding(
-          padding: EdgeInsets.only(top: 8),
-          child: TextField(
-            onTap: function,
-            textDirection: Localizations.localeOf(context).toString() == 'ar'
-                ?TextDirection.rtl
-                : TextDirection.ltr,
-            textAlign: Localizations.localeOf(context).toString() == 'ar'
-                ?TextAlign.right
-                : TextAlign.left,
-            controller: controller,
-            minLines: 1,
-            autocorrect: true,
-            maxLines: 6,
-            scrollPhysics: ScrollPhysics(),
-            scrollPadding: EdgeInsets.all(5),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              fillColor: Color(0xfff2f2f2),
-              filled: true,
-              hintText: hintText,
-              hintStyle: TextStyle(color: Theme
-                  .of(context)
-                  .primaryColor),
-              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 9),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-                borderRadius: new BorderRadius.all(new Radius.circular(22.0)),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-                borderRadius: new BorderRadius.all(new Radius.circular(22.0)),
+    return Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 7,
+        ),
+        child: TextField(
+          readOnly: true,
+          controller: controller,
+          focusNode: node,
+          autofocus: false,
+          style: TextStyle(
+            fontWeight: FontWeight.w300,
+            color: Colors.black,
+          ),
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(
+              left: 16,
+              top: 25,
+            ),
+            isDense: true,
+            hintText: hintText,
+            hintStyle: TextStyle(
+              fontWeight: FontWeight.w300,
+              color: Colors.black,
+            ),
+            suffixIcon: Padding(
+              padding: const EdgeInsets.only(top: 25),
+              child: Icon(
+                Icons.arrow_drop_down,
+                size: 22,
+                color: color ?? Theme.of(context).primaryColor,
               ),
             ),
-            smartDashesType: SmartDashesType.enabled,
-            smartQuotesType: SmartQuotesType.enabled,
+            errorText: errorText,
+            errorStyle: TextStyle(color: colorThemApp),
+            errorBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: colorThemApp),
+            ),
           ),
-        ),
-      ),
-    );
+          onTap: handleTap,
+        ));
   }
 }

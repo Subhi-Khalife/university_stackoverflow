@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/core/widget/container_app_decoration.dart';
+import 'package:university/core/widget/splash_screen.dart';
+import 'package:university/features/post/presentation/pages/show_all_posts.dart';
 import 'package:university/features/sign_up/presentation/pages/sign_up_screen.dart';
 
 import '../../../../core/widget/app_button.dart';
@@ -55,17 +58,7 @@ class _LoginScreen extends State<LoginScreen> {
           child: Padding(
             padding: const EdgeInsets.all(18.0),
             child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: LinearGradient(
-                    colors: [
-                      colorFirstGrident,
-                      colorSecondGrident,
-                    ],
-                            stops: [0.0, 1],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  )),
+              decoration: containerDecoration(),
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Column(
@@ -164,38 +157,46 @@ class _LoginScreen extends State<LoginScreen> {
   Widget loginButton() {
     return BlocProvider<LoginBloc>(
       create: (context) => loginBloc,
-      child: BlocBuilder<LoginBloc, LoginState>(
-        builder: (context, state) {
-          print("the current state is $state");
+      child: BlocListener<LoginBloc, LoginState>(
+        listener: (context, state) {
           if (state is LoginSuccess) {
-            print("Done");
-            if (state.user.userTypeId == 5) {
-              return ProfilePage();
-            } else {
-              return CollageProfilePage();
-            }
-          } else if (state is LoadingState) {
-            return Center(
-                child: CircularProgressIndicator(
-              backgroundColor: colorThemApp,
-            ));
-          } else {
-            return AppButton(
-              buttonColor: Color(0xff315786),
-              fontColor: Colors.black,
-              elevationValue: 8,
-              function: () {
-                BlocProvider.of<LoginBloc>(context)
-                  ..add(
-                    SendLoginRequest(
-                        email: _emailController.text,
-                        password: _passwordController.text),
-                  );
-              },
-              name: "Login",
-            );
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => SplashScreen()));
           }
         },
+        child: BlocBuilder<LoginBloc, LoginState>(
+          builder: (context, state) {
+            print("the current state is ");
+            if (state is LoginSuccess) {
+              return Container();
+              // if (state.user.userTypeId == 5) {
+              //   return ProfilePage();
+              // } else {
+              //   return CollageProfilePage();
+              // }
+            } else if (state is LoadingState) {
+              return Center(
+                  child: CircularProgressIndicator(
+                backgroundColor: colorThemApp,
+              ));
+            } else {
+              return AppButton(
+                buttonColor: Color(0xff315786),
+                fontColor: Colors.black,
+                elevationValue: 8,
+                function: () {
+                  BlocProvider.of<LoginBloc>(context)
+                    ..add(
+                      SendLoginRequest(
+                          email: _emailController.text,
+                          password: _passwordController.text),
+                    );
+                },
+                name: "Login",
+              );
+            }
+          },
+        ),
       ),
     );
   }
@@ -212,14 +213,15 @@ class _LoginScreen extends State<LoginScreen> {
 
   Widget passwordTextField() {
     return TextFieldApp(
-      controller: _passwordController,
-      hintText: "Enter your password",
-      withIcon: true,
-      icon: Icons.email,
-      isTextFieldPassword: false,
-      style: TextStyle(color: Colors.black),
-      prefixSvg: "lib/svg/mail_icon.svg",
-    );
+        controller: _passwordController,
+        hintText: "Enter your password",
+        withIcon: true,
+        icon: Icons.email,
+        isTextFieldPassword: false,
+        style: TextStyle(color: Colors.black),
+        prefixSvg: "lib/svg/mail_icon.svg",
+        colorText: Colors.white,
+        colorFill: Colors.white);
   }
 
   Widget emailTextField() {

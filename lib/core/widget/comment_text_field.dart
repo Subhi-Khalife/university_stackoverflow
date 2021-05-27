@@ -36,8 +36,8 @@ class _CommentTextField extends State<CommentTextField>
                 curve: Curves.easeOut,
                 duration: Duration(milliseconds: 400),
                 child: Container(
-                  color: Colors.white,
-                  height: (widget.isUpdateClickIcon) ?40 : 0,
+                  color: blackWithOpacity,
+                  height: (widget.isUpdateClickIcon) ? 40 : 0,
                   child: Padding(
                     padding: EdgeInsets.only(left: 10, right: 10),
                     child: Row(
@@ -48,12 +48,12 @@ class _CommentTextField extends State<CommentTextField>
                         Expanded(
                           child: Text(
                             oldMessage,
-                            style: TextStyle(color: Colors.black, fontSize: 16),
+                            style: TextStyle(color: Colors.white, fontSize: 16),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         IconButton(
-                            icon: Icon(Icons.clear),
+                            icon: Icon(Icons.clear,color: Colors.white),
                             onPressed: widget.cancelUpdate)
                       ],
                     ),
@@ -61,13 +61,14 @@ class _CommentTextField extends State<CommentTextField>
                 ),
               ),
               TextField(
+                style: TextStyle(color: Colors.white),
                 textInputAction: TextInputAction.done,
                 textDirection:
-                Localizations.localeOf(context).toString() == 'ar'
-                    ?TextDirection.rtl
-                    : TextDirection.ltr,
+                    Localizations.localeOf(context).toString() == 'ar'
+                        ? TextDirection.rtl
+                        : TextDirection.ltr,
                 textAlign: Localizations.localeOf(context).toString() == 'ar'
-                    ?TextAlign.right
+                    ? TextAlign.right
                     : TextAlign.left,
                 controller: widget.commentController,
                 minLines: 1,
@@ -77,9 +78,9 @@ class _CommentTextField extends State<CommentTextField>
                 scrollPadding: EdgeInsets.all(5),
                 decoration: InputDecoration(
                   suffixIcon: Localizations.localeOf(context).toString() != 'ar'
-                      ?IconButton(
-                      icon: Icon(Icons.sort, color: greyColor),
-                      onPressed: widget.sendMessage)
+                      ? IconButton(
+                          icon: Icon(Icons.send, color: greyColor),
+                          onPressed: widget.sendMessage)
                       : null,
                   border: InputBorder.none,
                   errorBorder: InputBorder.none,
@@ -88,22 +89,23 @@ class _CommentTextField extends State<CommentTextField>
                   filled: true,
                   hintText: "search hear",
                   prefixIcon: Localizations.localeOf(context).toString() == 'ar'
-                      ?IconButton(
-                      icon: Icon(Icons.sort, color: greyColor),
-                      onPressed: widget.sendMessage)
+                      ? IconButton(
+                          icon: Icon(Icons.sort, color: greyColor),
+                          onPressed: widget.sendMessage)
                       : null,
                   hintStyle: TextStyle(color: greyColor),
-                  contentPadding:
-                  EdgeInsets.symmetric(horizontal: 15, vertical: 9),
+                  contentPadding: EdgeInsets.only(left: 8, right: 8),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: blackWithOpacity),
-                    borderRadius:
-                    new BorderRadius.all(new Radius.circular(22.0)),
+                    borderRadius: new BorderRadius.only(
+                        topLeft: Radius.circular(4),
+                        topRight: Radius.circular(4)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: blackWithOpacity),
-                    borderRadius:
-                    new BorderRadius.all(new Radius.circular(22.0)),
+                    borderRadius: new BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12)),
                   ),
                 ),
                 onSubmitted: (c) => widget.sendMessage,

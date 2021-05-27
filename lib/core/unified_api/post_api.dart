@@ -33,7 +33,7 @@ class PostApi<T> extends InitialApi<T> {
 
       printResponse(response);
 
-      if (response.statusCode == 200)
+      if (response.statusCode == 200||response.statusCode==230)
         return fromJson(response.body);
       else {
         Exception exception = getException(statusCode: response.statusCode);

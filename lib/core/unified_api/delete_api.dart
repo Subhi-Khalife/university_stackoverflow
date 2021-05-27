@@ -30,9 +30,9 @@ class DeleteApi<T> extends InitialApi<T> {
 
       printResponse(response);
 
-      if (response.statusCode == 250)
+      if (response.statusCode == 250 || response.statusCode == 220) {
         return fromJson(response.body);
-      else {
+      } else {
         Exception exception = getException(statusCode: response.statusCode);
 
         throw (exception);
