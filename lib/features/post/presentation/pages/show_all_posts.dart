@@ -142,7 +142,7 @@ class _ShowAllPosts extends State<ShowAllPosts> {
             elevation: 4,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            color: Colors.white,
+            color: blackWithOpacity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,7 +162,7 @@ class _ShowAllPosts extends State<ShowAllPosts> {
                           item.title,
                           style: regularStyle(
                             fontSize: Constant.mediumFont,
-                            color: colorThemApp,
+                            color: Colors.white,
                           ),
                           maxLines: 3,
                           overflow: TextOverflow.clip,
@@ -190,13 +190,13 @@ class _ShowAllPosts extends State<ShowAllPosts> {
             Text(
               count.toString(),
               style: regularStyle(
-                  fontSize: Constant.mediumFont, color: secondColor),
+                  fontSize: Constant.mediumFont, color: Colors.white70),
             ),
             SizedBox(height: 4),
             Text(
               title,
               style: regularStyle(
-                  fontSize: Constant.mediumFont, color: secondColor),
+                  fontSize: Constant.mediumFont, color: Colors.white70),
             ),
           ],
         ),

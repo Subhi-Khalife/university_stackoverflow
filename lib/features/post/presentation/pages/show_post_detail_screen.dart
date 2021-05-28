@@ -35,7 +35,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
   ScrollController controller = new ScrollController();
   List<Comment> comments = [];
   int commentId = -1;
-  int index = 0;
+  int selectedIndex = 0;
   ValueNotifier<bool> isUpdate = ValueNotifier(false);
   @override
   void initState() {
@@ -78,7 +78,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                 } else if (state is SuccessUpdateComment) {
                   comments[state.index] = state.addCommentResponse;
                   commentId = -1;
-                  index = 0;
+                  selectedIndex = 0;
                   isUpdate.value = false;
                 } else if (state is SuccessDeleteComment) {
                   comments.removeAt(state.index);
@@ -157,9 +157,10 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                           ),
                         );
                       else {
+                        print("the index value si $selectedIndex");
                         commentBloc.add(UpdateComment(
                           commentId: commentId,
-                          commentIndex: index,
+                          commentIndex: selectedIndex,
                           description: commentController.text,
                         ));
                       }
@@ -167,7 +168,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                     cancelUpdate: () {
                       isUpdate.value = false;
                       commentId = -1;
-                      index = 0;
+                      selectedIndex = 0;
                     },
                   );
                 },
@@ -220,13 +221,13 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                       isUpdate.value = true;
                       commentController.text = comments[index].description;
                       commentId = comments[index].id;
-                      index = index;
+                      selectedIndex =index;
                     },
                   ),
                 ),
                 if (leng != 0)
                   Padding(
-                    padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4),
+                    padding: const EdgeInsets.only(left: 24, top: 4, bottom: 4),
                     child: CommentWidget(
                       commentItem: CommentItem(
                           description: comments[index].comments[0].description,

@@ -1,10 +1,13 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:university/core/constant_info.dart';
 import 'package:university/core/widget/main_screen_dialog.dart';
 import 'package:university/features/login/data/models/login_model.dart';
 import 'package:university/features/post/presentation/pages/show_all_posts.dart';
+
+import 'main_screen_dialog.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -27,7 +30,6 @@ class VideoState extends State<SplashScreen>
   void navigationPage() {
     WidgetsFlutterBinding.ensureInitialized();
     ConstantInfo constantInfo = ConstantInfo.getInstance();
-    ConstantInfo constantInfo2 = ConstantInfo.getInstance();
 
     if (sharedPreferences.getString("user") != null) {
       String user = sharedPreferences.getString("user");

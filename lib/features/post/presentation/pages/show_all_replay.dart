@@ -93,7 +93,7 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                   comments = state.allReplayesModel.data;
                   print("the comment legth is ${comments.length}");
                   return ListView(
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.only(left: 24, top: 4, bottom: 4),
                     children: [
                       CommentWidget(
                         commentItem: CommentItem(
@@ -146,6 +146,7 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                           ),
                         );
                       else {
+                        print("the index value si $index");
                         commentBloc.add(UpdateComment(
                           commentId: commentId,
                           commentIndex: index,
@@ -199,7 +200,7 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                       isUpdate.value = true;
                       commentController.text = comments[index].description;
                       commentId = comments[index].id;
-                      index = index;
+                      this.index = index;
                     },
                   ),
                 )
