@@ -12,7 +12,7 @@ class LoginInitial extends LoginState {}
 class LoginSuccess extends LoginState {
   final User user;
 
-  LoginSuccess({this.user});
+  LoginSuccess({@required this.user});
 }
 
 class LoginFailed extends LoginState{}

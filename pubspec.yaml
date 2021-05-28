@@ -38,11 +38,12 @@ dependencies:
   flutter_swiper: ^1.1.6
   fluttertoast: ^7.1.4
   intl: ^0.16.0
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
-
+  flutter_summernote: ^0.2.0
+  webview_flutter: ^1.0.7
+  flutter_html: ^1.2.0
+  flutter_image_compress: ^1.0.0
+  material_floating_search_bar: ^0.3.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

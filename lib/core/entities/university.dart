@@ -1,4 +1,4 @@
-import 'collega.dart';
+import 'package:university/core/entities/collega.dart';
 
 class University {
   University({
@@ -17,38 +17,44 @@ class University {
   int id;
   String name;
   dynamic creationDate;
-  dynamic city;
-  dynamic logo;
-  dynamic description;
+  String city;
+  String logo;
+  String description;
   dynamic site;
-  dynamic createdAt;
+  DateTime createdAt;
   dynamic updatedAt;
   List<College> colleges;
 
   factory University.fromJson(Map<String, dynamic> json) => University(
-        id: json["id"],
-        name: json["name"],
+        id: json["id"] == null ? null : json["id"],
+        name: json["name"] == null ? null : json["name"],
         creationDate: json["creation_date"],
-        city: json["city"],
-        logo: json["logo"],
-        description: json["description"],
+        city: json["city"] == null ? null : json["city"],
+        logo: json["logo"] == null ? null : json["logo"],
+        description: json["description"] == null ? null : json["description"],
         site: json["site"],
-        createdAt: json["created_at"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"],
-        colleges: List<College>.from(
-            json["colleges"].map((x) => College.fromJson(x))),
+        colleges: json["colleges"] == null
+            ? null
+            : List<College>.from(
+                json["colleges"].map((x) => College.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
+        "id": id == null ? null : id,
+        "name": name == null ? null : name,
         "creation_date": creationDate,
-        "city": city,
-        "logo": logo,
-        "description": description,
+        "city": city == null ? null : city,
+        "logo": logo == null ? null : logo,
+        "description": description == null ? null : description,
         "site": site,
-        "created_at": createdAt,
+        "created_at": createdAt == null ? null : createdAt.toIso8601String(),
         "updated_at": updatedAt,
-        "colleges": List<dynamic>.from(colleges.map((x) => x.toJson())),
+        "colleges": colleges == null
+            ? null
+            : List<dynamic>.from(colleges.map((x) => x.toJson())),
       };
 }

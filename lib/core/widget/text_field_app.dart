@@ -81,7 +81,7 @@ class TextFieldApp extends StatelessWidget {
             style: style == null
                 ? TextStyle(
                     color: (colorText) ?? colorThemApp,
-                    fontSize: Constant.verySmallFont)
+                    fontSize: Constant.veryVerySmallFont)
                 : style,
             cursorColor: thirdColor,
             obscureText: !isLookAtPassword,

@@ -16,41 +16,41 @@ class College {
 
     int id;
     String name;
-    dynamic address;
-    dynamic email;
-    dynamic logo;
-    dynamic description;
-    dynamic site;
-    dynamic createdAt;
+    String address;
+    String email;
+    String logo;
+    String description;
+    String site;
+    DateTime createdAt;
     dynamic updatedAt;
     int universityId;
     int specializationId;
 
     factory College.fromJson(Map<String, dynamic> json) => College(
-        id: json["id"],
-        name: json["name"],
-        address: json["address"],
-        email: json["email"],
-        logo: json["logo"],
-        description: json["description"],
-        site: json["site"],
-        createdAt: json["created_at"],
+        id: json["id"] == null ? null : json["id"],
+        name: json["name"] == null ? null : json["name"],
+        address: json["address"] == null ? null : json["address"],
+        email: json["email"] == null ? null : json["email"],
+        logo: json["logo"] == null ? null : json["logo"],
+        description: json["description"] == null ? null : json["description"],
+        site: json["site"] == null ? null : json["site"],
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"],
-        universityId: json["university_id"],
+        universityId: json["university_id"] == null ? null : json["university_id"],
         specializationId: json["specialization_id"] == null ? null : json["specialization_id"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "address": address,
-        "email": email,
-        "logo": logo,
-        "description": description,
-        "site": site,
-        "created_at": createdAt,
+        "id": id == null ? null : id,
+        "name": name == null ? null : name,
+        "address": address == null ? null : address,
+        "email": email == null ? null : email,
+        "logo": logo == null ? null : logo,
+        "description": description == null ? null : description,
+        "site": site == null ? null : site,
+        "created_at": createdAt == null ? null : createdAt.toIso8601String(),
         "updated_at": updatedAt,
-        "university_id": universityId,
+        "university_id": universityId == null ? null : universityId,
         "specialization_id": specializationId == null ? null : specializationId,
     };
 }
