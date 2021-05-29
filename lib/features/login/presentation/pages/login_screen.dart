@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:university/core/widget/container_app_decoration.dart';
 import 'package:university/core/widget/splash_screen.dart';
-import 'package:university/features/post/presentation/pages/show_all_posts.dart';
 import 'package:university/features/sign_up/presentation/pages/sign_up_screen.dart';
 
 import '../../../../core/widget/app_button.dart';
@@ -12,8 +11,6 @@ import '../../../../core/widget/config_screeen.dart';
 import '../../../../core/widget/constant.dart';
 import '../../../../core/widget/font_style.dart';
 import '../../../../core/widget/text_field_app.dart';
-import '../../../collage_profile/presentation/pages/profile_page.dart';
-import '../../../profile/presentation/pages/profile_page.dart';
 import '../../../sign_up/presentation/pages/sign_up_screen.dart';
 import '../bloc/login/login_bloc.dart';
 

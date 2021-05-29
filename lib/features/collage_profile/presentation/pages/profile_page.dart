@@ -63,9 +63,9 @@ class _ProfilePageState extends State<CollageProfilePage> {
                   SizedBox(
                     height: 250,
                     width: double.infinity,
-                    child: CachedNetworkImageView(
+                    child: CachedNetworkImageView(withBaseUrl: false,
                       url: state.collageProfileModel.data.profilePic ??
-                          "https://miro.medium.com/max/1838/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
+                          "https://shotkit.com/wp-content/uploads/2021/05/share-photos.jpg",
                     ),
                   ),
                   Container(

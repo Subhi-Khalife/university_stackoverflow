@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:university/core/entities/post.dart';
 import 'package:university/core/widget/bloc_error_screen.dart';
 import 'package:university/core/widget/colors.dart';
@@ -8,7 +9,9 @@ import 'package:university/core/widget/constant.dart';
 import 'package:university/core/widget/container_app_decoration.dart';
 import 'package:university/core/widget/font_style.dart';
 import 'package:university/core/widget/loading_view.dart';
+import 'package:university/features/advertisement/presentation/bloc/bloc/advertisment_bloc.dart';
 import 'package:university/features/collage_profile/presentation/pages/new_collage_profile.dart';
+import 'package:university/features/collage_profile/presentation/pages/profile_page.dart';
 import 'package:university/features/feedback/presentation/pages/feedback_screen.dart';
 import 'package:university/features/post/presentation/bloc/post/post_bloc.dart';
 import 'package:university/features/post/presentation/bloc/tabs/tabs_bloc.dart';
@@ -26,11 +29,14 @@ class ShowAllPosts extends StatefulWidget {
 class _ShowAllPosts extends State<ShowAllPosts> {
   TabsBloc tabsBloc;
   PostBloc postBloc;
+  AdvertismentBloc advertismentBloc;
   @override
   void initState() {
     super.initState();
     tabsBloc = TabsBloc();
     postBloc = PostBloc();
+    advertismentBloc = AdvertismentBloc();
+    advertismentBloc..add(FetchAdvertismentEvent());
     tabsBloc.add(GetAllTaps());
   }
 
@@ -71,6 +77,19 @@ class _ShowAllPosts extends State<ShowAllPosts> {
                   );
                 },
                 child: Text("Profile"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return CollageProfilePage();
+                      },
+                    ),
+                  );
+                },
+                child: Text("CollageProfile"),
               ),
             ],
           ),
@@ -114,6 +133,39 @@ class _ShowAllPosts extends State<ShowAllPosts> {
                         padding: EdgeInsets.only(top: 38),
                         child: ListView(
                           children: [
+                            BlocProvider(
+                              create: (context) => advertismentBloc,
+                              child: BlocBuilder<AdvertismentBloc,
+                                  AdvertismentState>(
+                                builder: (context, state) {
+                                  if (state is SuccessGettingAdsState) {
+                                    final successAds =
+                                        state.advertisementModel.data;
+                                    return Container(
+                                      height: 75,
+                                      color: Colors.white,
+                                      child: Swiper(
+                                        autoplay: true,
+                                        itemCount: successAds.length,
+                                        itemBuilder: (context, index) {
+                                          return Image.network(
+                                            successAds[index].imageUrl,
+                                            fit: BoxFit.fitWidth,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  } else {
+                                    return Container(
+                                      color: Colors.red,
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
                             Container(
                               height: 40,
                               child: ListView.builder(
@@ -132,7 +184,7 @@ class _ShowAllPosts extends State<ShowAllPosts> {
                             (postState.status == PostsStatus.loading)
                                 ? LoadingView()
                                 : (postState.status == PostsStatus.failed)
-                                ? BlocErrorScreen(
+                                ?BlocErrorScreen(
                               function: () {
                                 postBloc.add(GetPostForSelectedTags(
                                     id: state.taps[0].id));
