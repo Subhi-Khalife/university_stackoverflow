@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:university/core/widget/colors.dart';
 import 'package:university/features/feedback/presentation/bloc/bloc/feedback_bloc.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,6 +36,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
+        backgroundColor: colorSecondGrident,
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -50,7 +52,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: Container(
-        color: Color(0xffE5E5E5),
+        color: colorFirstGrident,
         child: ListView(
           children: <Widget>[
             Container(
@@ -60,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                     child: Text(
                   "1. On a scale of 1 to 10, how happy are you at work?",
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 22.0,
                       fontWeight: FontWeight.bold),
                 )),
@@ -69,7 +71,7 @@ class _HomePageState extends State<HomePage> {
             Container(
               child: Align(
                 child: Material(
-                  color: Colors.white,
+                  color: colorSecondGrident,
                   elevation: 14.0,
                   borderRadius: BorderRadius.circular(24.0),
                   shadowColor: Color(0x802196F3),
@@ -84,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                                 child: Text(
                               myFeedbackText,
                               style: TextStyle(
-                                  color: Colors.black, fontSize: 22.0),
+                                  color: Colors.white, fontSize: 22.0),
                             )),
                           ),
                           Padding(
