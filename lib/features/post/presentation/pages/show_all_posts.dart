@@ -1,21 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
 import 'package:university/core/entities/post.dart';
-import 'package:university/core/widget/FontFamily.dart';
 import 'package:university/core/widget/bloc_error_screen.dart';
 import 'package:university/core/widget/colors.dart';
 import 'package:university/core/widget/constant.dart';
 import 'package:university/core/widget/container_app_decoration.dart';
 import 'package:university/core/widget/font_style.dart';
 import 'package:university/core/widget/loading_view.dart';
-import 'package:university/features/post/data/models/posts_model.dart';
+import 'package:university/features/collage_profile/presentation/pages/new_collage_profile.dart';
+import 'package:university/features/feedback/presentation/pages/feedback_screen.dart';
 import 'package:university/features/post/presentation/bloc/post/post_bloc.dart';
 import 'package:university/features/post/presentation/bloc/tabs/tabs_bloc.dart';
 import 'package:university/features/post/presentation/pages/add_new_post.dart';
 import 'package:university/features/post/presentation/pages/show_post_detail_screen.dart';
+import 'package:university/features/rate/presentation/screen/rate_screen.dart';
 
 class ShowAllPosts extends StatefulWidget {
   @override
@@ -38,13 +37,52 @@ class _ShowAllPosts extends State<ShowAllPosts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        elevation: 10.0,
+        child: Container(
+          color: Colors.black,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 15.0,
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return FeedbackScreen();
+                      },
+                    ),
+                  );
+                },
+                child: Text("Feedback"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return NewCollageProfile();
+                      },
+                    ),
+                  );
+                },
+                child: Text("Profile"),
+              ),
+            ],
+          ),
+        ),
+      ),
       backgroundColor: Colors.black,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AddNewPostScreen(
-                    title: "Add new post",
-                  )));
+                title: "Add new post",
+              )));
         },
         child: Icon(Icons.add),
         backgroundColor: colorThemApp,
@@ -94,14 +132,14 @@ class _ShowAllPosts extends State<ShowAllPosts> {
                             (postState.status == PostsStatus.loading)
                                 ? LoadingView()
                                 : (postState.status == PostsStatus.failed)
-                                    ? BlocErrorScreen(
-                                        function: () {
-                                          postBloc.add(GetPostForSelectedTags(
-                                              id: state.taps[0].id));
-                                        },
-                                        title: "Error Happened",
-                                      )
-                                    : showListOfItem(postState.posts)
+                                ? BlocErrorScreen(
+                              function: () {
+                                postBloc.add(GetPostForSelectedTags(
+                                    id: state.taps[0].id));
+                              },
+                              title: "Error Happened",
+                            )
+                                : showListOfItem(postState.posts)
                           ],
                         ),
                       );
@@ -171,7 +209,19 @@ class _ShowAllPosts extends State<ShowAllPosts> {
                       )
                     ],
                   ),
-                )
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return RateScreen();
+                          },
+                        ),
+                      );
+                    },
+                    child: Text("Rate this post")),
               ],
             ),
           ),
