@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/core/widget/show_message.dart';
 import 'package:university/features/feedback/presentation/widgets/feedback_comment.dart';
 
 import '../../../../core/widget/colors.dart';
@@ -46,16 +47,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             );
           } else if (state is SuccessSendingFeedbackState) {
             final successFeedback = state.feedbackModel;
-            return Scaffold(
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    successFeedback.message,
-                  ),
-                ],
-              ),
+            showMessage(
+              successFeedback.message,
             );
+            return HomePage();
           } else {
             return HomePage();
           }
