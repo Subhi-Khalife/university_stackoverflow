@@ -1,13 +1,11 @@
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:university/core/constant_info.dart';
-import 'package:university/core/widget/main_screen_dialog.dart';
-import 'package:university/features/login/data/models/login_model.dart';
-import 'package:university/features/post/presentation/pages/show_all_posts.dart';
-
-import 'main_screen_dialog.dart';
+import 'package:university/features/splash_screen/domain/init_value.dart';
+import 'package:university/features/splash_screen/domain/navigation_handler.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -17,32 +15,30 @@ class SplashScreen extends StatefulWidget {
 class VideoState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   var _visible = true;
-
   AnimationController animationController;
   Animation<double> animation;
-  SharedPreferences sharedPreferences;
   startTime() async {
-    sharedPreferences = await SharedPreferences.getInstance();
+    await InitValue().autoInitialValues();
     var _duration = new Duration(seconds: 2);
-    return new Timer(_duration, navigationPage);
+    return new Timer(_duration, NavigationHandler().navigationPage(context));
   }
 
-  void navigationPage() {
-    WidgetsFlutterBinding.ensureInitialized();
-    ConstantInfo constantInfo = ConstantInfo.getInstance();
+  // void navigationPage() {
+  //   WidgetsFlutterBinding.ensureInitialized();
+  //   ConstantInfo constantInfo = ConstantInfo.getInstance();
 
-    if (sharedPreferences.getString("user") != null) {
-      String user = sharedPreferences.getString("user");
-      constantInfo.setUserInfoValue(loginModelFromJson(user).user);
-    }
-    if (sharedPreferences.getBool("loginSuccess")==true) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => ShowAllPosts()));
-    } else {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => MainScreenDialog()));
-    }
-  }
+  //   if (sharedPreferences.getString("user") != null) {
+  //     String user = sharedPreferences.getString("user");
+  //     constantInfo.setUserInfoValue(loginModelFromJson(user).user);
+  //   }
+  //   if (sharedPreferences.getBool("loginSuccess")==true) {
+  //     Navigator.of(context)
+  //         .push(MaterialPageRoute(builder: (context) => ShowAllPosts()));
+  //   } else {
+  //     Navigator.of(context)
+  //         .push(MaterialPageRoute(builder: (context) => MainScreenDialog()));
+  //   }
+  // }
 
   @override
   void initState() {

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:university/core/widget/container_app_decoration.dart';
-import 'package:university/core/widget/splash_screen.dart';
+import 'package:university/features/splash_screen/presentation/pages/splash_screen.dart';
 import 'package:university/features/post/presentation/pages/show_all_posts.dart';
 import 'package:university/features/sign_up/presentation/pages/sign_up_screen.dart';
 

@@ -7,7 +7,7 @@ import 'printing.dart';
 
 abstract class InitialApi<T> extends Printing with HandlingExceptionRequest {
   String url;
-  final String baseURL = 'https://agile-caverns-65774.herokuapp.com/api/';
+  final String baseURL = 'https://graduation.aramlab.com/api/';
   String token;
   Map<String, String> header;
 

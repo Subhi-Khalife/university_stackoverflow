@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university/core/widget/app_button.dart';
-import 'package:university/core/widget/text_field_app.dart';
 import 'package:university/features/feedback/presentation/widgets/feedback_comment.dart';
-import 'package:university/features/profile/presentation/pages/profile_page.dart';
 
 import '../../../../core/widget/colors.dart';
 import '../bloc/bloc/feedback_bloc.dart';

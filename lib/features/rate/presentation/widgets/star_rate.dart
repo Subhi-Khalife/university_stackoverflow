@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:university/core/widget/colors.dart';
+import 'package:university/features/advertisement/presentation/bloc/bloc/advertisment_bloc.dart';
 import 'package:university/features/rate/presentation/bloc/bloc/rate_bloc.dart';
 
 class StarFeedback extends StatefulWidget {
@@ -21,39 +24,56 @@ class _StarFeedbackState extends State<StarFeedback> {
       myFeedbackColor3 = Colors.grey,
       myFeedbackColor4 = Colors.grey,
       myFeedbackColor5 = Colors.grey;
+  AdvertismentBloc advertismentBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    advertismentBloc = AdvertismentBloc();
+    advertismentBloc..add(FetchAdvertismentEvent());
+  }
+
+  @override
+  void dispose() {
+    advertismentBloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: Column(
-        children: <Widget>[
-          _myAppBar(),
-          Container(
-            color: Color(0xffE5E5E5),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Container(
-                        child: Text(
-                      "1. On a scale of 1 to 5, how do you rate our service?",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.bold),
-                    )),
-                  ),
-                ),
-                SizedBox(height: 30.0),
-                Container(
-                  child: Align(
-                    child: Material(
-                      color: Colors.white,
-                      elevation: 14.0,
-                      borderRadius: BorderRadius.circular(24.0),
-                      shadowColor: Color(0x802196F3),
+      body: Container(
+        color: blackWithOpacity,
+        child: Column(
+          children: <Widget>[
+            _myAppBar(),
+            Container(
+              color: blackWithOpacity,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: Container(
+                          child: Text(
+                            "1. On a scale of 1 to 5, how do you rate our service?",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                  ),
+                  SizedBox(height: 30.0),
+                  Container(
+                    child: Align(
+                      child: Material(
+                        color: colorFirstGrident,
+                        elevation: 14.0,
+                        borderRadius: BorderRadius.circular(24.0),
+                        shadowColor: Color(0x802196F3),
+                        child: Container(
                           width: 350.0,
                           height: 300.0,
                           child: Column(
@@ -64,7 +84,7 @@ class _StarFeedbackState extends State<StarFeedback> {
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
-                                    children: StarWidget(),
+                                    children: starWidget(),
                                   ),
                                 ),
                               ),
@@ -132,7 +152,7 @@ class _StarFeedbackState extends State<StarFeedback> {
                                     child: Text(
                                   "Your Rating : $sliderValue",
                                   style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.white,
                                       fontSize: 22.0,
                                       fontWeight: FontWeight.bold),
                                 )),
@@ -140,45 +160,80 @@ class _StarFeedbackState extends State<StarFeedback> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Container(
-                                    child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            new BorderRadius.circular(30.0)),
-                                    color: Color(0xffed1e79),
-                                    child: Text(
-                                      'Submit',
-                                      style:
-                                          TextStyle(color: Color(0xffffffff)),
+                                  child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          new BorderRadius.circular(30.0)),
+                                      color: Color(0xffed1e79),
+                                      child: Text(
+                                        'Submit',
+                                        style:
+                                        TextStyle(color: Color(0xffffffff)),
+                                      ),
+                                      onPressed: () {
+                                        BlocProvider.of<RateBloc>(context)
+                                          ..add(
+                                            SendingPostRateEvent(
+                                              commentId: "2",
+                                              postId: "1",
+                                              rate: "1",
+                                            ),
+                                          );
+                                      },
                                     ),
-                                    onPressed: () {
-                                      BlocProvider.of<RateBloc>(context)
-                                        ..add(
-                                          SendingPostRateEvent(
-                                            commentId: "2",
-                                            postId: "1",
-                                            rate: "1",
-                                          ),
-                                        );
-                                    },
                                   ),
-                                )),
+                                ),
                               ),
                             ],
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  BlocProvider(
+                    create: (context) => advertismentBloc,
+                    child: BlocBuilder<AdvertismentBloc, AdvertismentState>(
+                      builder: (context, state) {
+                        if (state is SuccessGettingAdsState) {
+                          final successAds = state.advertisementModel.data;
+                          return Container(
+                            height: 150,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width * 2,
+                            child: Swiper(
+                              itemCount: successAds.length,
+                              itemBuilder: (context, index) {
+                                return Image.network(
+                                  successAds[index].imageUrl,
+                                );
+                              },
+                            ),
+                          );
+                        } else {
+                          return Container(
+                            color: Colors.red,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  List<Widget> StarWidget() {
+  List<Widget> starWidget() {
     List<Widget> myContainer = new List();
     myContainer.add(Container(
         child: Icon(
@@ -229,8 +284,8 @@ class _StarFeedbackState extends State<StarFeedback> {
       decoration: BoxDecoration(
         gradient: new LinearGradient(
           colors: [
-            const Color(0xff662d8c),
-            const Color(0xffed1e79),
+            colorThemApp,
+            colorFirstGrident,
           ],
           begin: Alignment.centerRight,
           end: new Alignment(-1.0, -1.0),
