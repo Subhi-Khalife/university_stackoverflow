@@ -28,6 +28,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+          scaffoldBackgroundColor: Color(0xff171F24),
+          primaryColor: Color(0xFF034EA3),
+          hintColor:  Colors.white70,
+          accentColor: Colors.white,
+          cardColor: Colors.white,
+          
+          ),
       title: 'Flutter Demo',
       home: SplashScreen(),
     );

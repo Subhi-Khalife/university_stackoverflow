@@ -202,7 +202,7 @@ class _StarFeedbackState extends State<StarFeedback> {
                         if (state is SuccessGettingAdsState) {
                           final successAds = state.advertisementModel.data;
                           return Container(
-                            height: 150,
+                            height: 100,
                             width: MediaQuery
                                 .of(context)
                                 .size
@@ -212,6 +212,7 @@ class _StarFeedbackState extends State<StarFeedback> {
                               itemBuilder: (context, index) {
                                 return Image.network(
                                   successAds[index].imageUrl,
+                                  fit: BoxFit.fitWidth,
                                 );
                               },
                             ),

@@ -160,6 +160,7 @@ Widget swiperWidget(BuildContext context, Data user) {
     child: Swiper(
       itemBuilder: (context, index) {
         return CachedNetworkImageView(
+          withBaseUrl: false,
           url: user.college.galleries[index].logo,
           function: () {},
         );

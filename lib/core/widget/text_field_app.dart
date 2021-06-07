@@ -24,6 +24,7 @@ class TextFieldApp extends StatelessWidget {
   final String hintText;
   final Color colorText;
   final int maxLength;
+  final Color hintColor;
   final bool withBottomBlackLine;
   final TextStyle style;
   final int maxLines;
@@ -42,6 +43,7 @@ class TextFieldApp extends StatelessWidget {
       this.hintText = "",
       this.textInputType = TextInputType.text,
       this.withIcon = true,
+      this.hintColor,
       this.focusNode,
       this.style,
       this.colorText,
@@ -73,16 +75,14 @@ class TextFieldApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return isTextFieldPassword
         ? TextField(
+            style: TextStyle(
+                color: Theme.of(context).hintColor,
+                fontSize: Constant.veryVerySmallFont),
             controller: controller,
             focusNode: focusNode,
             onChanged: onChanged,
             textInputAction: textInputAction,
             onSubmitted: onSubmitted,
-            style: style == null
-                ? TextStyle(
-                    color: (colorText) ?? colorThemApp,
-                    fontSize: Constant.veryVerySmallFont)
-                : style,
             cursorColor: thirdColor,
             obscureText: !isLookAtPassword,
             decoration: InputDecoration(
@@ -125,11 +125,15 @@ class TextFieldApp extends StatelessWidget {
                 focusedBorder: (withBottomBlackLine == false)
                     ? InputBorder.none
                     : UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: colorThemApp, width: 1.5))),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor,
+                            width: 1.5))),
           )
         : TextField(
             key: key,
+            style: TextStyle(
+                color: colorText??Theme.of(context).hintColor,
+                fontSize: Constant.mediumFont),
             onChanged: onChanged,
             keyboardType: textInputType,
             inputFormatters: (maxLength != 0)
@@ -152,10 +156,7 @@ class TextFieldApp extends StatelessWidget {
             maxLines: maxLines ?? 1,
             textInputAction: textInputAction,
             onSubmitted: onSubmitted,
-            style: style == null
-                ? TextStyle(color: (colorText) ?? colorThemApp, fontSize: 16)
-                : style,
-            cursorColor: thirdColor,
+            cursorColor: Theme.of(context).primaryColor,
             decoration: InputDecoration(
                 filled: filled,
                 fillColor: colorFill,
@@ -175,7 +176,7 @@ class TextFieldApp extends StatelessWidget {
                     left: paddingLeft ?? 4.0),
                 // hintText: hintText,
                 hintStyle: TextStyle(
-                  color: thirdColor,
+                  color:hintColor?? Theme.of(context).hintColor,
                   fontSize: Constant.smallFont,
                 ),
                 suffixIcon: suffixIcon,
@@ -200,8 +201,9 @@ class TextFieldApp extends StatelessWidget {
                 focusedBorder: (withBottomBlackLine == false)
                     ? InputBorder.none
                     : UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: colorThemApp, width: 1.50))),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor,
+                            width: 1.50))),
           );
   }
 }

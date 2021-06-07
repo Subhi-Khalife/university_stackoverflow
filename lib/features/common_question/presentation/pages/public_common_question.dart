@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/core/widget/Drawer.dart';
+import 'package:university/core/widget/FontFamily.dart';
+import 'package:university/core/widget/container_app_decoration.dart';
 
 import '../../../../core/widget/app_button.dart';
 import '../../../../core/widget/bloc_error_screen.dart';
@@ -19,6 +22,8 @@ import '../bloc/common_question/common_question_bloc.dart';
 import '../widgets/common_question.dart';
 
 class PublicCommonQuestion extends StatefulWidget {
+  final int collageId;
+  PublicCommonQuestion({this.collageId=-1});
   @override
   State<StatefulWidget> createState() {
     return _PublicCommonQuestion();
@@ -32,7 +37,14 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
   @override
   void initState() {
     super.initState();
+    if(widget.collageId==-1)
     blocItem = CommonQuestionBloc()..add(GetAllCommonQuestionEvent());
+    else 
+    blocItem = CommonQuestionBloc()..add(GetAllCommonQuestionForSelectedCollageEvent(collageId: widget.collageId.toString()));
+    if(widget.collageId==-1)
+    Future.delayed(Duration(seconds: 0)).then((_) {
+      beginBottomSheet();
+    });
   }
 
   Widget dropDownCollage() {
@@ -89,10 +101,149 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
     );
   }
 
+  Future beginBottomSheet() {
+    ValueNotifier<bool> checkBox = ValueNotifier(false);
+    return showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12), topRight: Radius.circular(12))),
+      enableDrag: true,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.only(left: 12, right: 12),
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    decoration: containerDecoration(),
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          "Continue as visitor",
+                          style: regularStyle(
+                              fontSize: Constant.largeFont,
+                              color: Theme.of(context).accentColor),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "OR",
+                  style: regularStyle(
+                    fontSize: Constant.smallFont,
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 12, right: 12),
+                          child: Container(
+                            decoration: containerDecoration(),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  "Login",
+                                  style: regularStyle(
+                                      fontSize: Constant.mediumFont,
+                                      color: Theme.of(context).accentColor),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SignUpScreen()));
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 12, right: 12),
+                          child: Container(
+                            decoration: containerDecoration(),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  "Sign up",
+                                  style: regularStyle(
+                                      fontSize: Constant.mediumFont,
+                                      color: Theme.of(context).accentColor),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ValueListenableBuilder(
+                        valueListenable: checkBox,
+                        builder: (context, value, _) {
+                          return Checkbox(
+                              fillColor: MaterialStateProperty.all(
+                                  Theme.of(context).primaryColor),
+                              value: value,
+                              onChanged: (c) {
+                                checkBox.value = !checkBox.value;
+                              });
+                        }),
+                    Text(
+                      "Don't show this again ",
+                      style: regularStyle(
+                        fontSize: Constant.smallFont,
+                        color: Theme.of(context).accentColor,
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 15),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
   Future showButtomSheet() {
     return showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(33)),
       enableDrag: true,
       builder: (BuildContext context) {
@@ -107,7 +258,7 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                   child: Text(
                     "Filter your search",
                     style: boldStyle(
-                        fontSize: Constant.mediumFont, color: greyColor),
+                        fontSize: Constant.mediumFont, color: Theme.of(context).hintColor),
                   ),
                 ),
                 SizedBox(height: 4),
@@ -122,6 +273,8 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                     Navigator.of(context).pop();
                   },
                   name: "Search",
+                  buttonColor: Theme.of(context).primaryColor,
+                  fontColor: Theme.of(context).accentColor
                 )
               ],
             );
@@ -139,74 +292,74 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
 
   @override
   Widget build(BuildContext context) {
-    ConfigScreen configScreen = ConfigScreen(context);
-    WidgetSize widgetSize = WidgetSize(configScreen);
     return Scaffold(
-      backgroundColor: Colors.black,
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.only(top: 52, bottom: 12, left: 8, right: 8),
-          children: [
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => LoginScreen(),
-                ));
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Login",
-                    style: boldStyle(
-                        fontSize: Constant.mediumFont, color: firstColor),
-                  ),
-                  Icon(Icons.login)
-                ],
-              ),
-            ),
-            SizedBox(height: 18),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SignUpScreen(),
-                ));
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Signup",
-                    style: boldStyle(
-                        fontSize: Constant.mediumFont, color: firstColor),
-                  ),
-                  Icon(Icons.login)
-                ],
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => NewCollageProfile(),
-                  ),
-                );
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Collage Profile",
-                    style: boldStyle(
-                        fontSize: Constant.mediumFont, color: firstColor),
-                  ),
-                  Icon(Icons.login)
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      drawer: (widget.collageId==-1)?DrawerItem():null
+
+      //  Drawer(
+      //   child: ListView(
+      //     padding: EdgeInsets.only(top: 52, bottom: 12, left: 8, right: 8),
+      //     children: [
+      //       InkWell(
+      //         onTap: () {
+      //           Navigator.of(context).push(MaterialPageRoute(
+      //             builder: (context) => LoginScreen(),
+      //           ));
+      //         },
+      //         child: Row(
+      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //           children: [
+      //             Text(
+      //               "Login",
+      //               style: boldStyle(
+      //                   fontSize: Constant.mediumFont, color: firstColor),
+      //             ),
+      //             Icon(Icons.login)
+      //           ],
+      //         ),
+      //       ),
+      //       SizedBox(height: 18),
+      //       InkWell(
+      //         onTap: () {
+      //           Navigator.of(context).push(MaterialPageRoute(
+      //             builder: (context) => SignUpScreen(),
+      //           ));
+      //         },
+      //         child: Row(
+      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //           children: [
+      //             Text(
+      //               "Signup",
+      //               style: boldStyle(
+      //                   fontSize: Constant.mediumFont, color: firstColor),
+      //             ),
+      //             Icon(Icons.login)
+      //           ],
+      //         ),
+      //       ),
+      //       InkWell(
+      //         onTap: () {
+      //           Navigator.of(context).push(
+      //             MaterialPageRoute(
+      //               builder: (context) => NewCollageProfile(),
+      //             ),
+      //           );
+      //         },
+      //         child: Row(
+      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //           children: [
+      //             Text(
+      //               "Collage Profile",
+      //               style: boldStyle(
+      //                   fontSize: Constant.mediumFont, color: firstColor),
+      //             ),
+      //             Icon(Icons.login)
+      //           ],
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
+
       // appBar: appBar(
       //   leadingWidget: Builder(
       //       builder: (context) => IconButton(
@@ -228,6 +381,7 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
       //         }),
       //   ],
       // ),
+      ,
       body: BlocProvider<CommonQuestionBloc>(
         create: (context) => blocItem,
         child: BlocBuilder<CommonQuestionBloc, CommonQuestionState>(
@@ -242,19 +396,16 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      IconButton(
+                    (widget.collageId==-1)?  IconButton(
                         icon: Icon(
                           Icons.sort,
                           size: 30,
                           color: Colors.white,
                         ),
                         onPressed: () {
-                          // return showButtomSheet();
-                          //             onPressed: () {
                           Scaffold.of(context).openDrawer();
-                          //             },
                         },
-                      ),
+                      ):Container(),
                     ],
                   ),
                   Padding(
@@ -288,15 +439,6 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                   ),
                 ],
               );
-
-              // ListView.builder(
-              //     padding: EdgeInsets.only(top: 12),
-              //     itemBuilder: (context, index) {
-              //       return CommonQuestionView(
-              //         commonQuestionItem: state.commonItemsList[index],
-              //       );
-              //     },
-              //     itemCount: state.commonItemsList.length);
             } else
               return BlocErrorScreen();
           },

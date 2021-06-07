@@ -1,10 +1,8 @@
 part of 'collage_profile_bloc.dart';
 
-abstract class CollageProfileState extends Equatable {
+abstract class CollageProfileState  {
   const CollageProfileState();
 
-  @override
-  List<Object> get props => [];
 }
 
 class CollageProfileInitial extends CollageProfileState {}

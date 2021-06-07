@@ -82,7 +82,7 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
                   color: Colors.green,
                 );
               } else {
-                return CollageProfilePage();
+                // return CollageProfilePage();
               }
             } else if (state is ChangeToSecondScreenState) {
               isFirstSignUpScreen = state.state;
@@ -212,9 +212,9 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
                 ),
               );
             },
-            buttonColor: Color(0xff315786),
+            buttonColor: Theme.of(context).primaryColor,
             elevationValue: 8,
-            fontColor: Colors.black,
+            fontColor: Theme.of(context).accentColor,
             name: "Sign up"),
       ],
     );
@@ -232,8 +232,8 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
         dropDownCollage(),
         SizedBox(height: 20),
         AppButton(
-            buttonColor: Color(0xff315786),
-            fontColor: Colors.black,
+            buttonColor: Theme.of(context).primaryColor,
+            fontColor:Theme.of(context).accentColor,
             function: () {
               signUpBloc..add(ChangeToSecondScreen());
             },
@@ -265,8 +265,8 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
               },
               name: "Login",
               elevationValue: 10,
-              fontColor: colorSecondGrident,
-              buttonColor: greyColor,
+              fontColor: Theme.of(context).primaryColor,
+              buttonColor: Theme.of(context).accentColor,
             ),
           )),
           Flexible(
@@ -281,9 +281,9 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
                           (Route<dynamic> route) => false);
                 },
                 name: "SignUp",
-                fontColor: Colors.black,
+                fontColor: Theme.of(context).accentColor,
                 elevationValue: 10,
-                buttonColor: Color(0xff315786),
+                buttonColor: Theme.of(context).primaryColor,
               ),
             ),
           ),

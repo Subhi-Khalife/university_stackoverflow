@@ -88,7 +88,7 @@ class _CommentTextField extends State<CommentTextField>
                   disabledBorder: InputBorder.none,
                   fillColor: blackWithOpacity,
                   filled: true,
-                  hintText: "search hear",
+                  hintText: "Write answer...",
                   prefixIcon: Localizations.localeOf(context).toString() == 'ar'
                       ? IconButton(
                           icon: Icon(Icons.sort, color: greyColor),

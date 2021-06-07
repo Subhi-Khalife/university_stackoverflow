@@ -47,12 +47,12 @@ class FlutterSummernote extends StatefulWidget {
 }
 
 class FlutterSummernoteState extends State<FlutterSummernote> {
-  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   TextEditingController _tagsController = TextEditingController();
   WebViewController _controller;
   List<String> images = [];
   String text = "";
   String _page;
+  LoadingDialog loadingDialog;
   final Key _mapKey = UniqueKey();
   final _imagePicker = ImagePicker();
   PostBloc postBloc;
@@ -67,13 +67,14 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
     }
   }
 
-  int tabsId = 0;
+  int tabsId = -1;
   @override
   void initState() {
     super.initState();
     _page = _initPage(widget.customToolbar);
     postBloc = PostBloc();
     _tagsController.text = "Select tags";
+    loadingDialog = LoadingDialog(context);
     tabsBloc = TabsBloc();
   }
 
@@ -112,7 +113,7 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
       final picked = await _imagePicker.getImage(
           source: (fromCamera) ? ImageSource.camera : ImageSource.gallery);
       if (picked != null) {
-        Dialogs.showLoadingDialog(context, _keyLoader);
+        loadingDialog.show(context);
         postBloc.add(UploadImage(imageFile: File(picked.path)));
       } else {
         return null;
@@ -130,7 +131,6 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
                 subtitle: Text("Attach image from camera"),
                 onTap: () async {
                   Navigator.pop(context);
-
                   await _getImage(true);
                 },
               ),
@@ -252,13 +252,12 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
             child: BlocListener<PostBloc, PostState>(
                 listener: (context, state) {
                   if (state is SuccessUploadImage) {
-                    Navigator.of(_keyLoader.currentContext, rootNavigator: true)
-                        .pop();
+                    loadingDialog.dismiss(context);
                     images.add(state.image);
                     showMessage("Success Upload Image");
                   } else if (state is FailedUploadImage) {
-                    Navigator.of(_keyLoader.currentContext, rootNavigator: true)
-                        .pop();
+                    loadingDialog.dismiss(context);
+
                     showMessage("Failed Upload Image Try Again");
                   } else if (state is RemoveImageFromlist) {
                     images.removeAt(state.index);
@@ -285,18 +284,12 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
                             child: BlocListener<TabsBloc, TabsState>(
                               listener: (context, state) {
                                 if (state is SuccessGetAllTabs) {
-                                  Navigator.of(_keyLoader.currentContext,
-                                          rootNavigator: true)
-                                      .pop();
+                                loadingDialog.dismiss(context);
                                   _habdleGetAllTabs(state, context);
                                 } else if (state is FailedGetAllTabs) {
-                                  Navigator.of(_keyLoader.currentContext,
-                                          rootNavigator: true)
-                                      .pop();
+                                loadingDialog.dismiss(context);
                                 } else {
-                                  Navigator.of(_keyLoader.currentContext,
-                                          rootNavigator: true)
-                                      .pop();
+                                  // loadingDialog.dismiss(context);
                                 }
                               },
                               child: BlocBuilder<TabsBloc, TabsState>(
@@ -305,8 +298,7 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
                                     width: 200,
                                     child: DropDownTextField(
                                       handleTap: () {
-                                        Dialogs.showLoadingDialog(
-                                            context, _keyLoader);
+                                        loadingDialog.show(context);
                                         tabsBloc.add(GetAllTaps());
                                       },
                                       controller: _tagsController,
@@ -485,7 +477,7 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
     <!DOCTYPE html>
     <html lang="en">
     <head>
-    <base href="www.xnxx.com">
+    <base href="www.google.com">
     </head>
     <head>
     <meta name="viewport" content="user-scalable=no">
@@ -539,7 +531,8 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
   List<String> getImageList() {
     return images;
   }
-  int getTapsId(){
+
+  int getTapsId() {
     return tabsId;
   }
 }

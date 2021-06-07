@@ -28,3 +28,8 @@ class Failed extends CommentState {
   final String errorMessage;
   Failed({this.errorMessage});
 }
+
+class InvalidCommentState extends CommentState{
+  String message;
+  InvalidCommentState({this.message});
+}

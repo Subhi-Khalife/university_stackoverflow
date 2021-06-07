@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:university/core/widget/constant.dart';
+import 'package:university/core/widget/font_style.dart';
 
 import '../../../../core/widget/cached_newtwok_image_view.dart';
 import '../../../../core/widget/colors.dart';
@@ -63,9 +65,9 @@ class _ProfilePageState extends State<CollageProfilePage> {
                   SizedBox(
                     height: 250,
                     width: double.infinity,
-                    child: CachedNetworkImageView(
+                    child: CachedNetworkImageView(withBaseUrl: false,
                       url: state.collageProfileModel.data.profilePic ??
-                          "https://miro.medium.com/max/1838/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
+                          "https://shotkit.com/wp-content/uploads/2021/05/share-photos.jpg",
                     ),
                   ),
                   Container(
@@ -129,7 +131,7 @@ class _ProfilePageState extends State<CollageProfilePage> {
               Text(
                 data.firstName,
                 style: TextStyle(
-                  color: colorWhite,
+                  color: Theme.of(context).accentColor,
                   fontSize: 25,
                 ),
               ),
@@ -138,7 +140,7 @@ class _ProfilePageState extends State<CollageProfilePage> {
                 title: Text(
                   data.college.university.name + "\t" + data.college.name,
                   style: TextStyle(
-                    color: colorWhite,
+                    color: Theme.of(context).accentColor,
                     fontSize: 20,
                   ),
                 ),
@@ -209,10 +211,9 @@ class _ProfilePageState extends State<CollageProfilePage> {
         ListTile(
           title: Text(
             "UserInfo",
-            style: TextStyle(
-              color: colorWhite,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+            style: boldStyle(
+              color: Theme.of(context).accentColor,
+              fontSize: Constant.mediumFont,
             ),
           ),
         ),

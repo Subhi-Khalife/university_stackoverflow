@@ -21,50 +21,51 @@ class CommonQuestionView extends StatelessWidget {
       },
       child: Container(
         height: 140,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            gradient: LinearGradient(
-              colors: [
-                colorFirstGrident,
-                colorSecondGrident,
-              ],
-                            stops: [0.0, 1],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            )),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Text(commonQuestionItem.question,
+        child: Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          elevation: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(commonQuestionItem.question,
+                    style: boldStyle(
+                      fontSize: Constant.mediumFont,
+                      color: firstColor,
+                    ),
+                    maxLines: 2),
+                Spacer(),
+                Text(
+                  "57K views",
                   style: boldStyle(
-                    fontSize: Constant.mediumFont,
-                    color: Colors.grey,
-                  ),
-                  maxLines: 2),
-              Spacer(),
-              Text(
-                "57K views",
-                style: boldStyle(
-                    fontSize: Constant.smallFont, color: Colors.white),
-              ),
-              Spacer(),
-              Transform.translate(
-                offset: Offset(0, 10),
-                child: Container(
-                  child: Card(
-                    color: Colors.white60.withOpacity(0.3),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 6, bottom: 6, right: 12, left: 12),
-                      child: Text("Click to answer"),
+                      fontSize: Constant.smallFont, color: thirdColor),
+                ),
+                Spacer(),
+                Center(
+                  child: Transform.translate(
+                    offset: Offset(0, 10),
+                    child: Container(
+                      child: Card(
+                        color: Theme.of(context).primaryColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 6, bottom: 6, right: 12, left: 12),
+                          child: Text("Click to answer",
+                              style: regularStyle(
+                                  fontSize: Constant.smallFont,
+                                  color: Theme.of(context).accentColor)),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

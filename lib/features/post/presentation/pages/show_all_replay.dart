@@ -29,7 +29,7 @@ class _ShowAllReplay extends State<ShowAllReplay> {
   PostBloc postBloc;
   CommentBloc commentBloc;
   TextEditingController commentController = TextEditingController();
-  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
+  LoadingDialog loading;
   ScrollController controller = new ScrollController();
   List<Comment> comments = [];
   int commentId = -1;
@@ -41,13 +41,13 @@ class _ShowAllReplay extends State<ShowAllReplay> {
     commentBloc = CommentBloc();
     postBloc = PostBloc();
     postBloc.add(GetAllPostReplay(commentId: widget.comment.id));
+    loading = LoadingDialog(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(widget: Text("All Replay")),
-      backgroundColor: Colors.black,
+      appBar: appBar(widget: Text("All Replay"), context: context),
       body: Stack(
         children: [
           MultiBlocProvider(
@@ -61,8 +61,7 @@ class _ShowAllReplay extends State<ShowAllReplay> {
             ],
             child: BlocListener<CommentBloc, CommentState>(
                 listener: (context, state) {
-              Navigator.of(_keyLoader.currentContext, rootNavigator: true)
-                  .pop();
+              loading.dismiss(context);
               if (state is SuccessAddNewComment) {
                 commentController.text = "";
                 comments.add(state.addCommentResponse);
@@ -93,13 +92,13 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                   comments = state.allReplayesModel.data;
                   print("the comment legth is ${comments.length}");
                   return ListView(
-                    padding: const EdgeInsets.only(left: 24, top: 4, bottom: 4),
+                    padding: const EdgeInsets.all(4),
                     children: [
                       CommentWidget(
                         commentItem: CommentItem(
                           description: widget.comment.description,
                           function: () {},
-                          imageUrl: widget.comment.user.profilePic ?? "",
+                          imageUrl: widget?.comment?.user?.profilePic ?? "",
                           userName: widget.comment.user.firstName +
                               widget.comment.user.lastName,
                         ),
@@ -137,7 +136,7 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                     commentController: commentController,
                     isUpdateClickIcon: value,
                     sendMessage: () {
-                      Dialogs.showLoadingDialog(context, _keyLoader);
+                      loading.show(context);
                       if (commentId == -1)
                         commentBloc.add(
                           AddNewComment(
@@ -187,12 +186,12 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                   child: CommentWidget(
                     commentItem: CommentItem(
                         description: comments[index].description,
-                        imageUrl: comments[index].user.profilePic,
+                        imageUrl: comments[index]?.user?.profilePic??"",
                         function: () {},
-                        userName: comments[index].user.firstName +
-                            comments[index].user.lastName),
+                        userName: comments[index]?.user?.firstName??"" +
+                            comments[index]?.user?.lastName??""),
                     deleteFunction: () {
-                      Dialogs.showLoadingDialog(context, _keyLoader);
+                      loading.show(context);
                       commentBloc.add(DeleteComment(
                           commentId: comments[index].id, commentIndex: index));
                     },
@@ -283,7 +282,7 @@ class _ShowAllReplay extends State<ShowAllReplay> {
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(12)),
       child: new Image.network(
-        "${Constant.baseUrl}${attributes["src"]}",
+        "${Constant.imageUrl}${attributes["src"]}",
         width: double.infinity,
         height: 150,
         fit: BoxFit.cover,

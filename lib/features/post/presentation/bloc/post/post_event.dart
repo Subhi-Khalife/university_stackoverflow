@@ -1,10 +1,8 @@
 part of 'post_bloc.dart';
 
-abstract class PostEvent extends Equatable {
+abstract class PostEvent  {
   const PostEvent();
 
-  @override
-  List<Object> get props => [];
 }
 
 class AddNewPost extends PostEvent {

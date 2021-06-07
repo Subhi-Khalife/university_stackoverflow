@@ -8,7 +8,6 @@ import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:university/core/entities/upload_image_model.dart';
 import 'package:university/core/unified_api/initial_api.dart';
-import 'package:university/features/post/domain/usecases/upload_image.dart';
 
 class UploadImageApi extends InitialApi {
   File file;
@@ -51,14 +50,14 @@ class UploadImageApi extends InitialApi {
       http.StreamedResponse response =
           await request.send().timeout(Duration(seconds: 300));
       String data = "";
-   String x=  await response.stream.transform(utf8.decoder).single ;
-   UploadImageModel uploadImageModel=uploadImageModelFromJson(x);
-   if(uploadImageModel.status=='OK'){
-     return uploadImageModel.data;
-   }else{
-      throw getException(statusCode: response.statusCode);
-   }
-   print("the x value is $x");
+      String x = await response.stream.transform(utf8.decoder).single;
+      UploadImageModel uploadImageModel = uploadImageModelFromJson(x);
+      if (uploadImageModel.status == 'OK') {
+        return uploadImageModel.data;
+      } else {
+        throw getException(statusCode: response.statusCode);
+      }
+      print("the x value is $x");
     } catch (exception) {
       throw (exception);
     }

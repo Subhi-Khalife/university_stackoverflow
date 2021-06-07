@@ -13,6 +13,7 @@ import 'package:university/core/widget/constant.dart';
 import 'package:university/core/widget/font_style.dart';
 import 'package:university/core/widget/loading_dialog.dart';
 import 'package:university/core/widget/loading_view.dart';
+import 'package:university/core/widget/show_message.dart';
 import 'package:university/features/comment/presentation/bloc/comment/comment_bloc.dart';
 import 'package:university/features/post/presentation/bloc/post/post_bloc.dart';
 import 'package:html/dom.dart' as dom;
@@ -29,9 +30,9 @@ class ShowPostDetailScreen extends StatefulWidget {
 
 class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
   PostBloc postBloc;
+  LoadingDialog loading;
   CommentBloc commentBloc;
   TextEditingController commentController = TextEditingController();
-  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   ScrollController controller = new ScrollController();
   List<Comment> comments = [];
   int commentId = -1;
@@ -42,14 +43,15 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
     super.initState();
     postBloc = PostBloc();
     commentBloc = CommentBloc();
+    loading = LoadingDialog(context);
     postBloc.add(GetPostDetail(postId: widget.postId));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(widget: Text("Post Info")),
-      backgroundColor: Colors.black,
+      appBar: appBar(
+          widget: Text("Post Info"), context: context, centerTitle: false),
       body: Stack(
         children: [
           MultiBlocProvider(
@@ -65,9 +67,12 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
               listener: (context, state) {},
               child: BlocListener<CommentBloc, CommentState>(
                   listener: (context, state) {
-                Navigator.of(_keyLoader.currentContext, rootNavigator: true)
-                    .pop();
-                if (state is SuccessAddNewComment) {
+                if(state is LoadingState)
+                {
+
+                }
+                else if (state is SuccessAddNewComment) {
+                  loading.dismiss(context);
                   commentController.text = "";
                   comments.add(state.addCommentResponse);
                   controller.animateTo(
@@ -76,12 +81,19 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                     duration: const Duration(milliseconds: 300),
                   );
                 } else if (state is SuccessUpdateComment) {
+                  loading.dismiss(context);
                   comments[state.index] = state.addCommentResponse;
                   commentId = -1;
                   selectedIndex = 0;
                   isUpdate.value = false;
                 } else if (state is SuccessDeleteComment) {
+                  loading.dismiss(context);
                   comments.removeAt(state.index);
+                } else if (state is InvalidCommentState) {
+                  loading.dismiss(context);
+                  showMessage(state.message);
+                }else{
+                  loading.dismiss(context);
                 }
               }, child: BlocBuilder<PostBloc, PostState>(
                 builder: (context, state) {
@@ -109,12 +121,13 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                           elevation: 4,
                           shape: RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
+                                  BorderRadius.all(Radius.circular(4))),
                           child: Html(
                             data: state.postDetail.data.description,
                             customRender: getCustomRender(),
                           ),
                         ),
+                        SizedBox(height: 10),
                         ListView(
                           shrinkWrap: true,
                           physics: BouncingScrollPhysics(),
@@ -148,7 +161,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                     commentController: commentController,
                     isUpdateClickIcon: value,
                     sendMessage: () {
-                      Dialogs.showLoadingDialog(context, _keyLoader);
+                      loading.show(context);
                       if (commentId == -1)
                         commentBloc.add(
                           AddNewComment(
@@ -157,7 +170,6 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                           ),
                         );
                       else {
-                        print("the index value si $selectedIndex");
                         commentBloc.add(UpdateComment(
                           commentId: commentId,
                           commentIndex: selectedIndex,
@@ -193,6 +205,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
             return ListView(
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.only(top: 12),
               children: [
                 InkWell(
                   onTap: () {},
@@ -213,7 +226,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                           comments[index].user.lastName,
                     ),
                     deleteFunction: () {
-                      Dialogs.showLoadingDialog(context, _keyLoader);
+                      loading.show(context);
                       commentBloc.add(DeleteComment(
                           commentId: comments[index].id, commentIndex: index));
                     },
@@ -221,7 +234,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                       isUpdate.value = true;
                       commentController.text = comments[index].description;
                       commentId = comments[index].id;
-                      selectedIndex =index;
+                      selectedIndex = index;
                     },
                   ),
                 ),
@@ -255,27 +268,30 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
             SizedBox(width: 4),
             Text("usefuls",
                 style: boldStyle(
-                    fontSize: Constant.largeFont, color: Colors.white))
+                    fontSize: Constant.smallFont,
+                    color: Theme.of(context).hintColor))
           ],
         ),
         Spacer(),
         Row(
           children: [
-            Icon(Icons.comment, color: Colors.white),
+            Icon(Icons.comment, color: Theme.of(context).hintColor),
             SizedBox(width: 4),
             Text("Emphases",
                 style: boldStyle(
-                    fontSize: Constant.largeFont, color: Colors.white))
+                    fontSize: Constant.smallFont,
+                    color: Theme.of(context).hintColor))
           ],
         ),
         Spacer(),
         Row(
           children: [
-            Icon(Icons.email, color: Colors.white),
+            Icon(Icons.email, color: Theme.of(context).hintColor),
             SizedBox(width: 4),
             Text("Comments",
                 style: boldStyle(
-                    fontSize: Constant.largeFont, color: Colors.white))
+                    fontSize: Constant.smallFont,
+                    color: Theme.of(context).hintColor))
           ],
         ),
       ],
@@ -287,19 +303,20 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
       children: [
         Text(
           " ${state.postDetail.data.reacts.length} usefuls",
-          style:
-              regularStyle(fontSize: Constant.mediumFont, color: Colors.white),
+          style: regularStyle(
+              fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
         ),
+        SizedBox(width: 10),
         Text(
           " 0 emphases",
-          style:
-              regularStyle(fontSize: Constant.mediumFont, color: Colors.white),
+          style: regularStyle(
+              fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
         ),
         Spacer(),
         Text(
           " ${state.postDetail.data.comments.length} Comments",
-          style:
-              regularStyle(fontSize: Constant.mediumFont, color: Colors.white),
+          style: regularStyle(
+              fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
         )
       ],
     );
@@ -314,9 +331,8 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
   Widget getImageCustomRender(RenderContext context, Widget parsedChild,
       Map<String, String> attributes, dom.Element element) {
     return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(12)),
       child: new Image.network(
-        "${Constant.baseUrl}${attributes["src"]}",
+        "${Constant.imageUrl}${attributes["src"]}",
         width: double.infinity,
         height: 150,
         fit: BoxFit.cover,

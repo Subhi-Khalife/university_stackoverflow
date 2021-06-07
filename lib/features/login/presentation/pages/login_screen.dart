@@ -3,17 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:university/core/widget/container_app_decoration.dart';
 import 'package:university/features/splash_screen/presentation/pages/splash_screen.dart';
-import 'package:university/features/post/presentation/pages/show_all_posts.dart';
 import 'package:university/features/sign_up/presentation/pages/sign_up_screen.dart';
-
 import '../../../../core/widget/app_button.dart';
 import '../../../../core/widget/colors.dart';
 import '../../../../core/widget/config_screeen.dart';
 import '../../../../core/widget/constant.dart';
 import '../../../../core/widget/font_style.dart';
 import '../../../../core/widget/text_field_app.dart';
-import '../../../collage_profile/presentation/pages/profile_page.dart';
-import '../../../profile/presentation/pages/profile_page.dart';
 import '../../../sign_up/presentation/pages/sign_up_screen.dart';
 import '../bloc/login/login_bloc.dart';
 
@@ -51,7 +47,6 @@ class _LoginScreen extends State<LoginScreen> {
     ConfigScreen configScreen = ConfigScreen(context);
     WidgetSize widgetSize = WidgetSize(configScreen);
     return Scaffold(
-      backgroundColor: backGroupColor,
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -107,8 +102,8 @@ class _LoginScreen extends State<LoginScreen> {
               },
               name: "Sign up",
               elevationValue: 10,
-              fontColor: colorSecondGrident,
-              buttonColor: greyColor,
+              fontColor: Theme.of(context).primaryColor,
+              buttonColor: Theme.of(context).accentColor,
             ),
           )),
           Flexible(
@@ -123,9 +118,9 @@ class _LoginScreen extends State<LoginScreen> {
                     (Route<dynamic> route) => false);
               },
               name: "Login",
-              fontColor: Colors.black,
+              fontColor: Theme.of(context).accentColor,
               elevationValue: 10,
-              buttonColor: Color(0xff315786),
+              buttonColor: Theme.of(context).primaryColor,
             ),
           )),
         ],
@@ -160,8 +155,8 @@ class _LoginScreen extends State<LoginScreen> {
               ));
             } else {
               return AppButton(
-                buttonColor: Color(0xff315786),
-                fontColor: Colors.black,
+                buttonColor: Theme.of(context).primaryColor,
+                fontColor: Theme.of(context).accentColor,
                 elevationValue: 8,
                 function: () {
                   BlocProvider.of<LoginBloc>(context)

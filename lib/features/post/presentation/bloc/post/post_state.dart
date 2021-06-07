@@ -45,3 +45,8 @@ class SuccessGetAllReplayes extends PostState {
   final GetAllReplayesModel allReplayesModel;
   SuccessGetAllReplayes({this.allReplayesModel});
 }
+
+class InvalidState extends PostState{
+  final String errorMessage;
+  InvalidState({this.errorMessage});
+}

@@ -42,12 +42,11 @@ dependencies:
   flutter_html: ^1.2.0
   flutter_image_compress: ^1.0.0
   material_floating_search_bar: ^0.3.4
-  device_info: ^2.0.2
   shared_preferences: ^2.0.6
   flutter_summernote: ^0.2.3
-  firebase_messaging: ^7.0.3
-  firebase_core: ^0.5.3
-  flutter_local_notifications: ^4.0.1+2
+  extended_nested_scroll_view: ^3.0.0
+  permission_handler: ^5.1.0+2
+#  path_provider: ^2.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

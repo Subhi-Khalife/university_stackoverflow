@@ -20,18 +20,18 @@ class SocialInfoListTile extends StatelessWidget {
       title: Text(
         socialType,
         style: TextStyle(
-          color: colorWhite,
+          color: Theme.of(context).accentColor,
         ),
       ),
       subtitle: Text(
         userInfo,
         style: TextStyle(
-          color: colorWhite,
+          color: Theme.of(context).accentColor,
         ),
       ),
       leading: Icon(
         socialIcon,
-        color: colorWhite,
+        color: Theme.of(context).accentColor,
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:university/core/widget/FontFamily.dart';
 import 'package:university/core/widget/cached_newtwok_image_view.dart';
 import 'package:university/core/widget/colors.dart';
 import 'package:university/core/widget/constant.dart';
@@ -45,8 +46,8 @@ class CommentWidget extends StatelessWidget {
                   child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(120)),
                       child: Container(
-                          height: 40,
-                          width: 40,
+                          height: 35,
+                          width: 35,
                           child: CachedNetworkImageView(
                               url: commentItem.imageUrl, withBaseUrl: false))),
                 ),
@@ -61,7 +62,7 @@ class CommentWidget extends StatelessWidget {
                         Flexible(
                           child: Text(
                             commentItem.userName,
-                            style: boldStyle(
+                            style: regularStyle(
                                 fontSize: Constant.mediumFont,
                                 color: Colors.white),
                           ),
@@ -71,9 +72,9 @@ class CommentWidget extends StatelessWidget {
                           flex: 31,
                           child: Text(
                             commentItem.description,
-                            style: boldStyle(
-                                fontSize: Constant.largeFont,
-                                color: Colors.white),
+                            style: regularStyle(
+                                fontSize: Constant.smallFont,
+                                color: Theme.of(context).hintColor),
                           ),
                         ),
                       ],
@@ -92,47 +93,43 @@ class CommentWidget extends StatelessWidget {
   Widget myPopMenu(BuildContext context) {
     if (!withPopMenu) return Container();
     return Align(
-        alignment: Alignment.topRight,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            maxRadius: 16,
-            child: PopupMenuButton(
-                padding: EdgeInsets.only(bottom: 4),
-                onSelected: (value) {
-                  if (value == 1) {
-                    updateFunction();
-                  } else {
-                    deleteFunction();
-                  }
-                },
-                itemBuilder: (context) => [
-                      PopupMenuItem(
-                          value: 1,
-                          child: Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
-                                child: Icon(Icons.edit),
-                              ),
-                              Text('Edit')
-                            ],
-                          )),
-                      PopupMenuItem(
-                          value: 2,
-                          child: Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
-                                child: Icon(Icons.delete),
-                              ),
-                              Text('Delete')
-                            ],
-                          )),
-                    ]),
+      alignment: Alignment.topRight,
+      child: PopupMenuButton(
+        padding: EdgeInsets.only(bottom: 4),
+        onSelected: (value) {
+          if (value == 1) {
+            updateFunction();
+          } else {
+            deleteFunction();
+          }
+        },
+        itemBuilder: (context) => [
+          PopupMenuItem(
+              value: 1,
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
+                    child: Icon(Icons.edit),
+                  ),
+                  Text('Edit')
+                ],
+              )),
+          PopupMenuItem(
+            value: 2,
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
+                  child: Icon(Icons.delete),
+                ),
+                Text('Delete')
+              ],
+            ),
           ),
-        ));
+        ],
+      ),
+    );
   }
 }
 

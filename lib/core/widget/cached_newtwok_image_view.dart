@@ -19,7 +19,7 @@ class CachedNetworkImageView extends StatelessWidget {
   Widget build(BuildContext context) {
     String _sendUrl = "";
     if (withBaseUrl)
-      _sendUrl = "https://aramlab.com" + url;
+      _sendUrl = "http://Graduation.aramlab.com" + url;
     else {
       _sendUrl = url;
     }
@@ -39,9 +39,9 @@ class CachedNetworkImageView extends StatelessWidget {
           errorWidget: (context, imageUrl, error) => Container(
             color: Colors.white,
 //          client.svg
-            child: SvgPicture.asset(
-              'lib/svgFiles/client.svg',
-              semanticsLabel: 'client',
+            child: Container(
+              color: Colors.white,
+              child: Center(child: Icon(Icons.person)),
             ),
           ),
         ),

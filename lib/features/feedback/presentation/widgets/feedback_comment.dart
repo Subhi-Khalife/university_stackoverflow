@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:university/core/widget/app_bar.dart';
 import 'package:university/core/widget/colors.dart';
+import 'package:university/core/widget/constant.dart';
+import 'package:university/core/widget/container_app_decoration.dart';
+import 'package:university/core/widget/font_style.dart';
+import 'package:university/core/widget/text_field_app.dart';
 import 'package:university/features/feedback/presentation/bloc/bloc/feedback_bloc.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,24 +40,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: AppBar(
-        backgroundColor: colorSecondGrident,
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              //
-            }),
-        title: Text("Feedback"),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(FontAwesomeIcons.solidStar),
-              onPressed: () {
-                //
-              }),
-        ],
-      ),
+      appBar: appBar(
+          context: context,
+          centerTitle: false,
+          widget: Text(
+            "Feedback",
+            style: boldStyle(
+                color: Theme.of(context).hintColor,
+                fontSize: Constant.mediumFont),
+          )),
       body: Container(
-        color: colorFirstGrident,
         child: ListView(
           children: <Widget>[
             Container(
@@ -61,23 +58,22 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                     child: Text(
                   "1. On a scale of 1 to 10, how happy are you at work?",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.bold),
+                  style: boldStyle(
+                    color: Theme.of(context).hintColor,
+                    fontSize: Constant.largeFont,
+                  ),
                 )),
               ),
             ),
             Container(
               child: Align(
-                child: Material(
-                  color: colorSecondGrident,
-                  elevation: 14.0,
-                  borderRadius: BorderRadius.circular(24.0),
-                  shadowColor: Color(0x802196F3),
-                  child: Container(
-                      width: 350.0,
-                      height: 400.0,
+                child: Container(
+                    width: 350.0,
+                    height: 350.0,
+                    child: Card(
+                      color: Theme.of(context).accentColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
                       child: Column(
                         children: <Widget>[
                           Padding(
@@ -86,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                                 child: Text(
                               myFeedbackText,
                               style: TextStyle(
-                                  color: Colors.white, fontSize: 22.0),
+                                  color:firstColor, fontSize: 22.0),
                             )),
                           ),
                           Padding(
@@ -95,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                                 child: Icon(
                               myFeedback,
                               color: myFeedbackColor,
-                              size: 100.0,
+                              size: 80.0,
                             )),
                           ),
                           Padding(
@@ -106,8 +102,8 @@ class _HomePageState extends State<HomePage> {
                                 max: 10.0,
                                 divisions: 5,
                                 value: sliderValue,
-                                activeColor: Color(0xffe05f2c),
-                                inactiveColor: Colors.blueGrey,
+                                activeColor: Theme.of(context).primaryColor,
+                                inactiveColor: firstColor,
                                 onChanged: (newValue) {
                                   setState(() {
                                     sliderValue = newValue;
@@ -147,19 +143,36 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Container(
-                              child: TextField(
-                                decoration: new InputDecoration(
-                                  border: new OutlineInputBorder(
-                                      borderSide: new BorderSide(
-                                          color: Colors.blueGrey)),
-                                  hintText: 'Add Comment',
-                                ),
-                                style: TextStyle(height: 3.0),
-                              ),
-                            ),
-                          ),
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: TextFieldApp(
+                      controller: _nameController,
+                      hintColor: firstColor,
+                      isTextFieldPassword: false,
+                      hintText: "Enter Question title",colorText: firstColor,
+                    ),
+                  ),
+                          // Padding(
+                          //   padding: const EdgeInsets.all(12.0),
+                          //   child: Container(
+                          //     child: TextFieldApp(
+                          //       hintText: "Enter you Feedback",
+                          //       controller: _nameController,
+                          //       isLookAtPassword: false,
+                          //       maxLength: 3,
+                          //       isTextFieldPassword: false,
+                          //     ),
+                              
+                          //     // TextField(
+                          //     //   decoration: new InputDecoration(
+                          //     //     border: new OutlineInputBorder(
+                          //     //         borderSide: new BorderSide(
+                          //     //             color: Colors.blueGrey)),
+                          //     //     hintText: 'Add Comment',
+                          //     //   ),
+                          //     //   style: TextStyle(height: 3.0),
+                          //     // ),
+                          //   ),
+                          // ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
@@ -169,10 +182,11 @@ class _HomePageState extends State<HomePage> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         new BorderRadius.circular(30.0)),
-                                color: Color(0xffe05f2c),
+                                color: Theme.of(context).primaryColor,
                                 child: Text(
                                   'Submit',
-                                  style: TextStyle(color: Color(0xffffffff)),
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
                                 ),
                                 onPressed: () {
                                   BlocProvider.of<FeedbackBloc>(context)
@@ -187,8 +201,8 @@ class _HomePageState extends State<HomePage> {
                             )),
                           ),
                         ],
-                      )),
-                ),
+                      ),
+                    )),
               ),
             ),
           ],

@@ -102,6 +102,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   Stream<PostState> _mapGetPostForSelectedTags(
       GetPostForSelectedTags event) async* {
+    print("The  xvakmfklamd ");
     yield state.copyWith(status: PostsStatus.loading);
     Either<Failure, PostsModel> result =
         await getPostsByTap(GetPostsForSelectedTagsParams(tabId: event.id));
@@ -117,18 +118,31 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   Stream<PostState> _mapAddNewPost(AddNewPost event) async* {
-    Either<Failure, NewPosts> result = await addNewPost(SetNewPostParam(
-        description: event.description,
-        tapID: event.tapID,
-        title: event.title));
-    yield result.fold((failure) {
-      if (failure is MissingParamException)
-        return AddNewPostFailed();
-      else {
-        return AddNewPostFailed();
-      }
-    }, (body) {
-      return AddNewPostSuccess();
-    });
+    if (event.title.trim().length == 0) {
+      yield InvalidState(errorMessage: "Please Enter The title");
+      return;
+    }
+    if (event.description.trim().length == 0) {
+      yield InvalidState(errorMessage: "Please Enter The description");
+      return;
+    } else if (event.tapID == -1) {
+      yield InvalidState(errorMessage: "Please select tags");
+      return;
+    }
+    try {
+      Either<Failure, NewPosts> result = await addNewPost(SetNewPostParam(
+          description: event.description,
+          tapID: event.tapID,
+          title: event.title));
+      yield result.fold((failure) {
+        if (failure is MissingParamException)
+          return AddNewPostFailed();
+        else {
+          return AddNewPostFailed();
+        }
+      }, (body) {
+        return AddNewPostSuccess();
+      });
+    } catch (e) {}
   }
 }
