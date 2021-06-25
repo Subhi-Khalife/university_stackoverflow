@@ -217,7 +217,7 @@ class _ShowAllPosts extends State<ShowAllPosts> {
 
   void _onScroll() {
     if (_isBottom) {
-      postBloc.add(GetPostForSelectedTags(id: tabId));
+      postBloc..add(GetPostForSelectedTags(id: tabId));
     }
   }
 

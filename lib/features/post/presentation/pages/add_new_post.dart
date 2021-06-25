@@ -74,17 +74,13 @@ class _AddNewPostScreen extends State<AddNewPostScreen> {
                     ),
                     SizedBox(height: 10),
                     Container(
-                        height: MediaQuery.of(context).size.height * 0.8,
-                        child: flutterSummernote),
+                        height: MediaQuery.of(context).size.height * 0.8, child: flutterSummernote),
                     AppButton(
                         function: () async {
-                          String values =
-                              await _keyEditor.currentState.getText();
-                          List<String> image =
-                              _keyEditor.currentState.getImageList();
+                          String values = await _keyEditor.currentState.getText();
+                          List<String> image = _keyEditor.currentState.getImageList();
                           for (int i = 0; i < image.length; i++) {
-                            String x =
-                                "<img alt='Google' src='${image[i]}' /><br />";
+                            String x = "<img alt='Google' src='${image[i]}' /><br />";
                             values += x;
                           }
                           loading.show(context);

@@ -5,19 +5,19 @@ import 'package:university/core/unified_api/post_api.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/unified_api/handling_exception.dart';
 
-class SetNewPost with HandlingExceptionRequest {
-  Future<Either<Failure, NewPosts>> setNewPost(Map<String, dynamic> param) async {
+class SetNewReact with HandlingExceptionRequest {
+  Future<Either<Failure, bool>> setReact(Map<String, dynamic> param) async {
     ConstantInfo constantInfo = ConstantInfo.getInstance();
-    print("the token is constantInfo.userInfo.token${constantInfo.userInfo.token}");
     final postApi = PostApi<NewPosts>(
-        fromJson: newPostsFromJson,
+        fromJson: (String x) {
+          return true;
+        },
         param: param,
         token: constantInfo.userInfo.token,
-        url: "post/create",
-        requestName: "Post/Create --> Create New Post ");
+        url: "react",
+        requestName: "React Post ");
     final callRequest = postApi.callRequest;
-    Either<Failure, NewPosts> result =
-        await handlingExceptionRequest<NewPosts>(requestCall: callRequest);
+    Either<Failure, bool> result = await handlingExceptionRequest<bool>(requestCall: callRequest);
     return result;
   }
 }

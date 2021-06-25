@@ -54,3 +54,9 @@ class InvalidState extends PostState {
   final String errorMessage;
   InvalidState({this.errorMessage});
 }
+
+class SuccessChangeReact extends PostState {}
+
+class FailedChangeReact extends PostState {}
+
+class UpdateState extends PostState {}

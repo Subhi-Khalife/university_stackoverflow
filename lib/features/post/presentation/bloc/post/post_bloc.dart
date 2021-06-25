@@ -19,14 +19,16 @@ import 'package:rxdart/rxdart.dart';
 import 'package:university/features/post/domain/usecases/get_post_detail.dart';
 import 'package:university/features/post/domain/usecases/get_posts_for_selected_tag.dart';
 import 'package:university/features/post/domain/usecases/set_new_post.dart';
+import 'package:university/features/post/domain/usecases/set_react.dart';
 import 'package:university/features/post/domain/usecases/upload_image.dart';
 
 part 'post_event.dart';
 part 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
-  final int pageSize = 15;
-  PostBloc() : super(PostState());
+  final int pageSize = 14;
+  PostState item;
+  PostBloc({this.item}) : super(item??PostState());
   UseCase addNewPost = SetNewPost(postRepositories: PostRepositoriesImplementation());
   UseCase getPostsByTap =
       GetPostsForSelectedTags(postRepositories: PostRepositoriesImplementation());
@@ -36,13 +38,15 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       GetPostDetailUseCase(postRepositories: PostRepositoriesImplementation());
   UseCase<GetAllReplayesModel, GetAllPostReplayesParam> getAllPostReplayesUseCase =
       GetAllPostReplayesUseCase(postRepositories: PostRepositoriesImplementation());
+  UseCase<bool, SetReactParam> setNewReact =
+      SetNewReactUseCase(postRepositories: PostRepositoriesImplementation());
   @override
   Stream<Transition<PostEvent, PostState>> transformEvents(
     Stream<PostEvent> events,
     TransitionFunction<PostEvent, PostState> transitionFn,
   ) {
     return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 500)),
+      events.debounceTime(const Duration(milliseconds: 200)),
       transitionFn,
     );
   }
@@ -52,7 +56,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     if (event is AddNewPost) {
       yield* _mapAddNewPost(event);
     } else if (event is GetPostForSelectedTags) {
-      yield* _mapGetPostForSelectedTags(event, state);
+      yield* _mapGetPostForSelectedTags(event);
     } else if (event is UploadImage) {
       yield* _mapUploadImage(event);
     } else if (event is RemoveImageFromlistEvent) {
@@ -61,7 +65,23 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       yield* _mapGetPostDetail(event);
     } else if (event is GetAllPostReplay) {
       yield* _mapGetAllPostReplay(event);
+    } else if (event is SetReact) {
+      yield* _mapSetReact(event);
     }
+  }
+
+  Stream<PostState> _mapSetReact(SetReact event) async* {
+    Either<Failure, bool> result = await setNewReact(SetReactParam(postId: event.postId));
+    yield UpdateState();
+    yield result.fold((failure) {
+      if (failure is MissingParamException)
+        return FailedChangeReact();
+      else {
+        return FailedChangeReact();
+      }
+    }, (body) {
+      return SuccessChangeReact();
+    });
   }
 
   Stream<PostState> _mapGetAllPostReplay(GetAllPostReplay event) async* {
@@ -109,21 +129,12 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     });
   }
 
-  Stream<PostState> _mapGetPostForSelectedTags(
-      GetPostForSelectedTags event, PostState state) async* {
+  Stream<PostState> _mapGetPostForSelectedTags(GetPostForSelectedTags event) async* {
     try {
-      print("The event.reloadData ${event.reloadData}");
-      if (event.reloadData) {
-        state = PostState();
-        yield state;
-      }
-      if (state.hasReachedMax) {
-        yield state;
-        return;
-      }
+      if (event.reloadData)
+        yield state.copyWith(hasReachedMax: false, posts: [], status: PostsStatus.loading);
       if (state.posts.length == 0) yield state.copyWith(status: PostsStatus.loading);
       final array = await _fetchData(event.id, state.posts.length ~/ pageSize);
-      print("the array size is ${array.length}");
       if (array == null) {
         yield state.copyWith(
           status: PostsStatus.failed,

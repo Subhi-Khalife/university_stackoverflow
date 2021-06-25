@@ -28,15 +28,15 @@ class PostApi<T> extends InitialApi<T> {
       print("Posting.......");
 
       final http.Response response = await http
-          .post(Uri.parse(baseURL + url),
-              headers: header, body: jsonEncode(param))
+          .post(Uri.parse(baseURL + url), headers: header, body: jsonEncode(param))
           .timeout(Duration(seconds: 30));
 
       printResponse(response);
 
       if (response.statusCode == 200 ||
           response.statusCode == 220 ||
-          response.statusCode == 230)
+          response.statusCode == 230 ||
+          response.statusCode == 250)
         return fromJson(response.body);
       else {
         Map<String, dynamic> items = json.decode(response.body);

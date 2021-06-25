@@ -42,3 +42,8 @@ class GetAllPostReplay extends PostEvent {
   final int commentId;
   GetAllPostReplay({this.commentId});
 }
+
+class SetReact extends PostEvent{
+  final int postId;
+  SetReact({this.postId});
+}

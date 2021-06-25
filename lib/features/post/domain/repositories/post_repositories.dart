@@ -27,4 +27,7 @@ abstract class PostRepositories {
   
   Future<Either<Failure, GetAllReplayesModel>> getAllReplayes(
       {@required Map<String, dynamic> items});
+
+    Future<Either<Failure, bool>> setReact(
+      {@required Map<String, dynamic> items});
 }

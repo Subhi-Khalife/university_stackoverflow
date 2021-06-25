@@ -15,6 +15,7 @@ import 'package:university/core/widget/loading_dialog.dart';
 import 'package:university/core/widget/loading_view.dart';
 import 'package:university/core/widget/show_message.dart';
 import 'package:university/features/comment/presentation/bloc/comment/comment_bloc.dart';
+import 'package:university/features/post/data/models/post_detail_model.dart';
 import 'package:university/features/post/presentation/bloc/post/post_bloc.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:university/features/post/presentation/pages/show_all_replay.dart';
@@ -38,10 +39,11 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
   int commentId = -1;
   int selectedIndex = 0;
   ValueNotifier<bool> isUpdate = ValueNotifier(false);
+  PostDetailModel postDetailModel;
   @override
   void initState() {
     super.initState();
-    postBloc = PostBloc();
+    postBloc = PostBloc(item: LoadingPostState());
     commentBloc = CommentBloc();
     loading = LoadingDialog(context);
     postBloc.add(GetPostDetail(postId: widget.postId));
@@ -63,7 +65,12 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
               ),
             ],
             child: BlocListener<PostBloc, PostState>(
-              listener: (context, state) {},
+              listener: (context, state) {
+                if (state is SuccessGetPostDetail) {
+                  postDetailModel = state.postDetail;
+                  comments = state.postDetail.data.comments;
+                }
+              },
               child: BlocListener<CommentBloc, CommentState>(listener: (context, state) {
                 if (state is LoadingState) {
                 } else if (state is SuccessAddNewComment) {
@@ -100,13 +107,12 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                         postBloc.add(GetPostDetail(postId: widget.postId));
                       },
                     );
-                  } else if (state is SuccessGetPostDetail) {
-                    comments = state.postDetail.data.comments;
+                  } else
                     return ListView(
                       padding: EdgeInsets.all(8),
                       children: [
                         Text(
-                          "${state.postDetail.data.title}",
+                          "${postDetailModel.data.title}",
                           style: boldStyle(fontSize: Constant.largeFont, color: Colors.white),
                         ),
                         SizedBox(height: 10),
@@ -115,7 +121,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.circular(4))),
                           child: Html(
-                            data: state.postDetail.data.description,
+                            data: postDetailModel.data.description,
                             customRender: getCustomRender(),
                           ),
                         ),
@@ -125,19 +131,16 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                           physics: BouncingScrollPhysics(),
                           children: [
                             SizedBox(height: 8),
-                            showReactTitle(state),
+                            showReactTitle(),
                             SizedBox(height: 8),
                             Divider(color: Colors.white),
-                            showReactIcons(state),
+                            showReactIcons(),
                             SizedBox(height: 8),
-                            showComments(state),
+                            showComments(),
                           ],
                         )
                       ],
                     );
-                  } else {
-                    return Container();
-                  }
                 },
               )),
             ),
@@ -188,7 +191,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
     );
   }
 
-  Widget showComments(SuccessGetPostDetail state) {
+  Widget showComments() {
     return BlocBuilder<CommentBloc, CommentState>(
       builder: (context, state) {
         return ListView.builder(
@@ -253,16 +256,22 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
     );
   }
 
-  Widget showReactIcons(SuccessGetPostDetail state) {
+  Widget showReactIcons() {
     return Row(
       children: [
-        Row(
-          children: [
-            Icon(Icons.verified_user_outlined, color: Colors.white),
-            SizedBox(width: 4),
-            Text("usefuls",
-                style: boldStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor))
-          ],
+        InkWell(
+          onTap: () {
+            postBloc.add(SetReact(postId: postDetailModel.data.id));
+          },
+          child: Row(
+            children: [
+              Icon(Icons.verified_user_outlined, color: Colors.white),
+              SizedBox(width: 4),
+              Text("usefuls",
+                  style:
+                      boldStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor))
+            ],
+          ),
         ),
         Spacer(),
         Row(
@@ -286,11 +295,11 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
     );
   }
 
-  Widget showReactTitle(SuccessGetPostDetail state) {
+  Widget showReactTitle() {
     return Row(
       children: [
         Text(
-          " ${state.postDetail.data.reacts.length} usefuls",
+          " ${postDetailModel.data.reacts.length} usefuls",
           style: regularStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
         ),
         SizedBox(width: 10),
@@ -300,7 +309,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
         ),
         Spacer(),
         Text(
-          " ${state.postDetail.data.comments.length} Comments",
+          " ${postDetailModel.data.comments.length} Comments",
           style: regularStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
         )
       ],
