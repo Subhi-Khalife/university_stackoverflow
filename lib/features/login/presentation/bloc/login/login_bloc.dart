@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:university/core/entities/user.dart';
 import 'package:university/core/error/failures.dart';
+import 'package:university/core/widget/show_message.dart';
 import 'package:university/features/login/data/models/login_model.dart';
 
 import '../../../../../core/error/exception.dart';
@@ -40,6 +41,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         LoginByEmailParam(email: event.email, password: event.password));
 
     yield result.fold((failure) {
+      showMessage("Error Happened try again");
       if (failure is MissingParamException)
         return LoginFailed();
       else {

@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:university/core/widget/Drawer.dart';
 import 'package:university/core/widget/FontFamily.dart';
+import 'package:university/core/widget/app_bar.dart';
+import 'package:university/core/widget/bottom_loader.dart';
 import 'package:university/core/widget/container_app_decoration.dart';
+import 'package:university/features/common_question/presentation/bloc/common_question/common_question_bloc.dart';
 
 import '../../../../core/widget/app_button.dart';
 import '../../../../core/widget/bloc_error_screen.dart';
@@ -22,8 +25,8 @@ import '../bloc/common_question/common_question_bloc.dart';
 import '../widgets/common_question.dart';
 
 class PublicCommonQuestion extends StatefulWidget {
-  final int collageId;
-  PublicCommonQuestion({this.collageId=-1});
+  int collageId;
+  PublicCommonQuestion({this.collageId = -1});
   @override
   State<StatefulWidget> createState() {
     return _PublicCommonQuestion();
@@ -34,17 +37,138 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
     with TickerProviderStateMixin {
   CommonQuestionBloc blocItem;
   TextEditingController searchController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
-    if(widget.collageId==-1)
-    blocItem = CommonQuestionBloc()..add(GetAllCommonQuestionEvent());
-    else 
-    blocItem = CommonQuestionBloc()..add(GetAllCommonQuestionForSelectedCollageEvent(collageId: widget.collageId.toString()));
-    if(widget.collageId==-1)
-    Future.delayed(Duration(seconds: 0)).then((_) {
-      beginBottomSheet();
-    });
+    _scrollController.addListener(_onScroll);
+    if (widget.collageId == -1)
+      blocItem = CommonQuestionBloc()..add(GetAllCommonQuestionEvent());
+    else
+      blocItem = CommonQuestionBloc()
+        ..add(GetAllCommonQuestionForSelectedCollageEvent(
+            collageId: widget.collageId.toString()));
+    if (widget.collageId == -1)
+      Future.delayed(Duration(seconds: 0)).then((_) {
+        beginBottomSheet();
+      });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    blocItem.close();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBar(widget: Text("Common Question"), context: context),
+      drawer: (widget.collageId == -1) ? DrawerItem() : null,
+      body: BlocProvider<CommonQuestionBloc>(
+        create: (context) => blocItem,
+        child: BlocBuilder<CommonQuestionBloc, CommonQuestionState>(
+          builder: (context, state) {
+            if (state.status == CommonQuestionStatus.loading ||
+                state.status == CommonQuestionStatus.inital)
+              return LoadingView();
+            else if (state.status == CommonQuestionStatus.error) {
+              if (state.commonItemsList.length != 0) return showInfo(state);
+              return BlocErrorScreen(
+                title: "Error Happened try again",
+                function: () {},
+              );
+            } else if (state.status == CommonQuestionStatus.success) {
+              return Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 18, right: 18),
+                    child: CommentTextField(
+                      cancelUpdate: () {},
+                      commentController: searchController,
+                      isUpdateClickIcon: false,
+                      title: "Search here",
+                      sendMessage: () {
+                        return showButtomSheet();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 50),
+                    child: showInfo(state),
+                  )
+                ],
+              );
+            } else
+              return BlocErrorScreen();
+          },
+        ),
+      ),
+    );
+  }
+  // Column(
+  //   mainAxisSize: MainAxisSize.min,
+  //   crossAxisAlignment: CrossAxisAlignment.start,
+  //   mainAxisAlignment: MainAxisAlignment.start,
+  //   children: [
+  //     (widget.collageId == -1)
+  //         ? IconButton(
+  //             icon: Icon(
+  //               Icons.sort,
+  //               size: 30,
+  //               color: Colors.white,
+  //             ),
+  //             onPressed: () {
+  //               Scaffold.of(context).openDrawer();
+  //             },
+  //           )
+  //         : Container(),
+  //   ],
+  // ),
+  // Padding(
+  //   padding: EdgeInsets.only(left: 18, right: 18),
+  //   child: CommentTextField(
+  //     cancelUpdate: () {},
+  //     commentController: searchController,
+  //     isUpdateClickIcon: false,
+  //     sendMessage: () {
+  //       return showButtomSheet();
+  //     },
+  //   ),
+  // ),
+
+  Widget showInfo(CommonQuestionState state) {
+    print("state asasa${state.hasReachedMax}");
+    return Padding(
+      padding: EdgeInsets.only(top: 20),
+      child: GridView.builder(
+        controller: _scrollController,
+        shrinkWrap: true,
+        physics: BouncingScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+        ),
+        itemBuilder: (context, index) {
+          if (index >= state.commonItemsList.length) {
+            return BottomLoader();
+          }
+          return Padding(
+            padding: EdgeInsets.only(left: 3, right: 3, bottom: 8, top: 8),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.48,
+              child: CommonQuestionView(
+                commonQuestionItem: state.commonItemsList[index],
+              ),
+            ),
+          );
+        },
+        itemCount: (state.hasReachedMax)
+            ? state.commonItemsList.length
+            : state.commonItemsList.length + 1,
+      ),
+    );
   }
 
   Widget dropDownCollage() {
@@ -239,7 +363,6 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
     );
   }
 
-
   Future showButtomSheet() {
     return showModalBottomSheet<void>(
       context: context,
@@ -258,7 +381,8 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                   child: Text(
                     "Filter your search",
                     style: boldStyle(
-                        fontSize: Constant.mediumFont, color: Theme.of(context).hintColor),
+                        fontSize: Constant.mediumFont,
+                        color: Theme.of(context).hintColor),
                   ),
                 ),
                 SizedBox(height: 4),
@@ -267,15 +391,16 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                   child: dropDownCollage(),
                 ),
                 AppButton(
-                  function: () {
-                    blocItem.add(GetAllCommonQuestionForSelectedCollageEvent(
-                        collageId: state.collageId.toString()));
-                    Navigator.of(context).pop();
-                  },
-                  name: "Search",
-                  buttonColor: Theme.of(context).primaryColor,
-                  fontColor: Theme.of(context).accentColor
-                )
+                    function: () {
+                      widget.collageId = state.collageId;
+                      blocItem.add(GetAllCommonQuestionForSelectedCollageEvent(
+                          collageId: state.collageId.toString(),
+                          reloadData: true));
+                      Navigator.of(context).pop();
+                    },
+                    name: "Search",
+                    buttonColor: Theme.of(context).primaryColor,
+                    fontColor: Theme.of(context).accentColor)
               ],
             );
           }),
@@ -284,166 +409,20 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    blocItem.close();
+  void _onScroll() {
+    if (_isBottom) {
+      if (widget.collageId == -1)
+        blocItem.add(GetAllCommonQuestionEvent());
+      else
+        blocItem.add(GetAllCommonQuestionForSelectedCollageEvent(
+            collageId: widget.collageId.toString()));
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: (widget.collageId==-1)?DrawerItem():null
-
-      //  Drawer(
-      //   child: ListView(
-      //     padding: EdgeInsets.only(top: 52, bottom: 12, left: 8, right: 8),
-      //     children: [
-      //       InkWell(
-      //         onTap: () {
-      //           Navigator.of(context).push(MaterialPageRoute(
-      //             builder: (context) => LoginScreen(),
-      //           ));
-      //         },
-      //         child: Row(
-      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //           children: [
-      //             Text(
-      //               "Login",
-      //               style: boldStyle(
-      //                   fontSize: Constant.mediumFont, color: firstColor),
-      //             ),
-      //             Icon(Icons.login)
-      //           ],
-      //         ),
-      //       ),
-      //       SizedBox(height: 18),
-      //       InkWell(
-      //         onTap: () {
-      //           Navigator.of(context).push(MaterialPageRoute(
-      //             builder: (context) => SignUpScreen(),
-      //           ));
-      //         },
-      //         child: Row(
-      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //           children: [
-      //             Text(
-      //               "Signup",
-      //               style: boldStyle(
-      //                   fontSize: Constant.mediumFont, color: firstColor),
-      //             ),
-      //             Icon(Icons.login)
-      //           ],
-      //         ),
-      //       ),
-      //       InkWell(
-      //         onTap: () {
-      //           Navigator.of(context).push(
-      //             MaterialPageRoute(
-      //               builder: (context) => NewCollageProfile(),
-      //             ),
-      //           );
-      //         },
-      //         child: Row(
-      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //           children: [
-      //             Text(
-      //               "Collage Profile",
-      //               style: boldStyle(
-      //                   fontSize: Constant.mediumFont, color: firstColor),
-      //             ),
-      //             Icon(Icons.login)
-      //           ],
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // ),
-
-      // appBar: appBar(
-      //   leadingWidget: Builder(
-      //       builder: (context) => IconButton(
-      //             onPressed: () {
-      //               Scaffold.of(context).openDrawer();
-      //             },
-      //             icon: Icon(Icons.menu),
-      //           )),
-      //   widget: Text(
-      //     "Question Contenet",
-      //     style: boldStyle(fontSize: Constant.largeFont, color: firstColor),
-      //   ),
-      //   centerTitle: true,
-      //   actions: [
-      //     IconButton(
-      //         icon: Icon(Icons.sort),
-      //         onPressed: () {
-      //           return showButtomSheet();
-      //         }),
-      //   ],
-      // ),
-      ,
-      body: BlocProvider<CommonQuestionBloc>(
-        create: (context) => blocItem,
-        child: BlocBuilder<CommonQuestionBloc, CommonQuestionState>(
-          builder: (context, state) {
-            if (state is LoadingState)
-              return LoadingView();
-            else if (state is GetAllCommonQuestionSuccess) {
-              return ListView(
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                    (widget.collageId==-1)?  IconButton(
-                        icon: Icon(
-                          Icons.sort,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          Scaffold.of(context).openDrawer();
-                        },
-                      ):Container(),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 18, right: 18),
-                    child: CommentTextField(
-                      cancelUpdate: () {},
-                      commentController: searchController,
-                      isUpdateClickIcon: false,
-                      sendMessage: () {
-                        return showButtomSheet();
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Wrap(
-                      children: state.commonItemsList
-                          .map((e) => Padding(
-                                padding: EdgeInsets.only(
-                                    left: 3, right: 3, bottom: 8, top: 8),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.48,
-                                  child: CommonQuestionView(
-                                    commonQuestionItem: e,
-                                  ),
-                                ),
-                              ))
-                          .toList(),
-                    ),
-                  ),
-                ],
-              );
-            } else
-              return BlocErrorScreen();
-          },
-        ),
-      ),
-    );
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
   }
 }

@@ -1,20 +1,26 @@
 part of 'post_bloc.dart';
 
-abstract class PostEvent  {
+abstract class PostEvent {
   const PostEvent();
-
 }
 
 class AddNewPost extends PostEvent {
   final String title;
   final String description;
   final int tapID;
-  AddNewPost({this.description, this.tapID, this.title});
+  final int subjectID;
+  AddNewPost({
+    this.description,
+    this.tapID = -1,
+    this.title,
+    this.subjectID = -1,
+  });
 }
 
 class GetPostForSelectedTags extends PostEvent {
   final int id;
-  GetPostForSelectedTags({this.id});
+  final bool reloadData;
+  GetPostForSelectedTags({this.id,this.reloadData=false});
 }
 
 class UploadImage extends PostEvent {

@@ -275,6 +275,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "8.12.0"
+  get_it:
+    dependency: "direct main"
+    description:
+      name: get_it
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.6"
+  hawk_fab_menu:
+    dependency: "direct main"
+    description:
+      name: hawk_fab_menu
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.2"
   html:
     dependency: transitive
     description:

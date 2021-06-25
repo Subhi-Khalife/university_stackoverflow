@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/core/validation.dart';
 import 'package:university/core/widget/container_app_decoration.dart';
+import 'package:university/core/widget/show_message.dart';
 import 'package:university/features/splash_screen/presentation/pages/splash_screen.dart';
 import 'package:university/features/sign_up/presentation/pages/sign_up_screen.dart';
 import '../../../../core/widget/app_button.dart';
@@ -98,7 +100,7 @@ class _LoginScreen extends State<LoginScreen> {
                     context,
                     MaterialPageRoute(builder: (context) => SignUpScreen()),
                     (Route<dynamic> route) =>
-                        false); //  Navigator.pushAndRemoveUntil(context, LoginScreen(), (route) => false);
+                        false); 
               },
               name: "Sign up",
               elevationValue: 10,
@@ -159,12 +161,25 @@ class _LoginScreen extends State<LoginScreen> {
                 fontColor: Theme.of(context).accentColor,
                 elevationValue: 8,
                 function: () {
-                  BlocProvider.of<LoginBloc>(context)
-                    ..add(
-                      SendLoginRequest(
-                          email: _emailController.text,
-                          password: _passwordController.text),
-                    );
+                  if (_emailController.text.trim().length == 0) {
+                    showMessage("Please add  your email");
+                  } else if (_emailController.text.trim().length != 0) {
+                    RegExp regex = RegExp(Validation.EMAILPATTERN);
+                    if (!regex.hasMatch(_emailController.text)) {
+                      showMessage("your email is not  email type");
+                    } else {
+                      if (_passwordController.text.trim().length < 6) {
+                        showMessage("password should greater or equal 8 ");
+                      } else {
+                        BlocProvider.of<LoginBloc>(context)
+                          ..add(
+                            SendLoginRequest(
+                                email: _emailController.text,
+                                password: _passwordController.text),
+                          );
+                      }
+                    }
+                  }
                 },
                 name: "Login",
               );
@@ -207,6 +222,7 @@ class _LoginScreen extends State<LoginScreen> {
       isTextFieldPassword: false,
       style: TextStyle(color: Colors.black),
       prefixSvg: "lib/svg/mail_icon.svg",
+      textInputType: TextInputType.emailAddress,
     );
   }
 

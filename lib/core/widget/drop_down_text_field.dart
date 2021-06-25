@@ -9,7 +9,7 @@ class DropDownTextField extends StatelessWidget {
       @required this.handleTap,
       this.controller,
       this.node,
-      this.color})
+      this.color=Colors.black})
       : super(key: key);
   final String hintText;
   final String errorText;
@@ -30,7 +30,7 @@ class DropDownTextField extends StatelessWidget {
           autofocus: false,
           style: TextStyle(
             fontWeight: FontWeight.w300,
-            color: Colors.black,
+            color: color,
           ),
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(
@@ -41,7 +41,7 @@ class DropDownTextField extends StatelessWidget {
             hintText: hintText,
             hintStyle: TextStyle(
               fontWeight: FontWeight.w300,
-              color: Colors.black,
+              color: color,
             ),
             suffixIcon: Padding(
               padding: const EdgeInsets.only(top: 25),

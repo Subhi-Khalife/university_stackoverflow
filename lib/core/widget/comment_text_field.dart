@@ -8,12 +8,13 @@ class CommentTextField extends StatefulWidget {
   final bool isUpdateClickIcon;
   final Function sendMessage;
   final Function cancelUpdate;
-  CommentTextField({
-    @required this.commentController,
-    @required this.isUpdateClickIcon,
-    @required this.sendMessage,
-    @required this.cancelUpdate,
-  });
+  final String title;
+  CommentTextField(
+      {@required this.commentController,
+      @required this.isUpdateClickIcon,
+      @required this.sendMessage,
+      @required this.cancelUpdate,
+      this.title = ""});
   @override
   State<StatefulWidget> createState() {
     return _CommentTextField();
@@ -54,7 +55,7 @@ class _CommentTextField extends State<CommentTextField>
                           ),
                         ),
                         IconButton(
-                            icon: Icon(Icons.clear,color: Colors.white),
+                            icon: Icon(Icons.clear, color: Colors.white),
                             onPressed: widget.cancelUpdate)
                       ],
                     ),
@@ -88,7 +89,9 @@ class _CommentTextField extends State<CommentTextField>
                   disabledBorder: InputBorder.none,
                   fillColor: blackWithOpacity,
                   filled: true,
-                  hintText: "Write answer...",
+                  hintText: widget.title.length == 0
+                      ? "Write answer..."
+                      : widget.title,
                   prefixIcon: Localizations.localeOf(context).toString() == 'ar'
                       ? IconButton(
                           icon: Icon(Icons.sort, color: greyColor),

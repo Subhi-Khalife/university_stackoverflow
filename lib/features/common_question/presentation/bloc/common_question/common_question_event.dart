@@ -13,5 +13,6 @@ class GetAllCommonQuestionEvent extends CommonQuestionEvent{
 
 class GetAllCommonQuestionForSelectedCollageEvent extends CommonQuestionEvent{
   final String collageId;
-  GetAllCommonQuestionForSelectedCollageEvent({this.collageId});
+  final bool reloadData;
+  GetAllCommonQuestionForSelectedCollageEvent({this.collageId,this.reloadData=false});
 }

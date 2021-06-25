@@ -11,11 +11,12 @@ class SendingFeedbackEvent extends FeedbackEvent {
   final String email;
   final String message;
   final String name;
-
+  final BuildContext context;
   SendingFeedbackEvent({
     this.email,
     this.message,
     this.name,
+    @required this.context,
   });
 }
 

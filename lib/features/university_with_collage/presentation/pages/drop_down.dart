@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/core/widget/bloc_error_screen.dart';
+import 'package:university/core/widget/loading_view.dart';
 
 import '../../../../core/widget/colors.dart';
 import '../../../../core/widget/constant.dart';
@@ -51,47 +53,61 @@ class _DropDown extends State<DropDown> with TickerProviderStateMixin {
         width: MediaQuery.of(context).size.width,
         child: Card(
           semanticContainer: false,
-          
-          child: ListView.separated(
-            separatorBuilder: (context, index) {
-              return Divider();
-            },
-            itemBuilder: (context, index) {
-              return InkWell(
-                  onTap: () {
-                    setState(() {
-                      isSelected = !isSelected;
-                    });
-                    if (widget.universitySelecetd == true) {
-                      BlocProvider.of<UniversityBloc>(context)
-                        ..add(SelectedUniversityEvent(
-                            universityName:
-                                widget.dropDownListItem[index].title,
-                            universityId: widget.dropDownListItem[index].id,
-                            index: index));
-                    } else {
-                      BlocProvider.of<UniversityBloc>(context)
-                        ..add(SelectedCollageEvent(
-                          collageName: widget.dropDownListItem[index].title,
-                          collageIndex: widget.dropDownListItem[index].id,
-                        ));
-                    }
+          child: BlocBuilder<UniversityBloc, UniversityState>(
+            builder: (context, state) {
+              if (state is UniversityIsLoadingState)
+                return LoadingView();
+              else if (state is UniversityIsLoadErrorState)
+                return BlocErrorScreen(
+                  function: () {
+                    BlocProvider.of<UniversityBloc>(context)
+                      ..add(FetchUiversity());
                   },
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 6,
-                        top: (index == 0) ? 0 : 7,
-                        bottom: (index == widget.dropDownListItem.length - 1)
-                            ? 15
-                            : 7),
-                    child: Text(
-                      widget.dropDownListItem[index].title,
-                      style: boldStyle(
-                          fontSize: Constant.mediumFont, color: firstColor),
-                    ),
-                  ));
+                  title: "Error happened try again",
+                );
+              return ListView.separated(
+                separatorBuilder: (context, index) {
+                  return Divider();
+                },
+                itemBuilder: (context, index) {
+                  return InkWell(
+                      onTap: () {
+                        setState(() {
+                          isSelected = !isSelected;
+                        });
+                        if (widget.universitySelecetd == true) {
+                          BlocProvider.of<UniversityBloc>(context)
+                            ..add(SelectedUniversityEvent(
+                                universityName:
+                                    widget.dropDownListItem[index].title,
+                                universityId: widget.dropDownListItem[index].id,
+                                index: index));
+                        } else {
+                          BlocProvider.of<UniversityBloc>(context)
+                            ..add(SelectedCollageEvent(
+                              collageName: widget.dropDownListItem[index].title,
+                              collageIndex: widget.dropDownListItem[index].id,
+                            ));
+                        }
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: 6,
+                            top: (index == 0) ? 0 : 7,
+                            bottom:
+                                (index == widget.dropDownListItem.length - 1)
+                                    ? 15
+                                    : 7),
+                        child: Text(
+                          widget.dropDownListItem[index].title,
+                          style: boldStyle(
+                              fontSize: Constant.mediumFont, color: firstColor),
+                        ),
+                      ));
+                },
+                itemCount: widget.dropDownListItem.length,
+              );
             },
-            itemCount: widget.dropDownListItem.length,
           ),
         ),
       ),
@@ -113,7 +129,8 @@ class _DropDown extends State<DropDown> with TickerProviderStateMixin {
             child: Container(
               color: Colors.grey.shade200,
               child: Padding(
-                padding: EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
+                padding:
+                    EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

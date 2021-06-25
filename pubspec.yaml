@@ -46,6 +46,8 @@ dependencies:
   flutter_summernote: ^0.2.3
   extended_nested_scroll_view: ^3.0.0
   permission_handler: ^5.1.0+2
+  hawk_fab_menu: ^0.3.2
+  rxdart: ^0.24.0
 #  path_provider: ^2.0.2
 dev_dependencies:
   flutter_test:

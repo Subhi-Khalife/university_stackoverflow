@@ -2,27 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:university/core/constant_info.dart';
+import 'package:hawk_fab_menu/hawk_fab_menu.dart';
 import 'package:university/core/entities/post.dart';
 import 'package:university/core/widget/Drawer.dart';
 import 'package:university/core/widget/app_bar.dart';
 import 'package:university/core/widget/bloc_error_screen.dart';
-import 'package:university/core/widget/cached_newtwok_image_view.dart';
+import 'package:university/core/widget/bottom_loader.dart';
 import 'package:university/core/widget/colors.dart';
 import 'package:university/core/widget/constant.dart';
 import 'package:university/core/widget/container_app_decoration.dart';
 import 'package:university/core/widget/font_style.dart';
 import 'package:university/core/widget/loading_view.dart';
 import 'package:university/features/advertisement/presentation/bloc/bloc/advertisment_bloc.dart';
-import 'package:university/features/collage_profile/presentation/pages/new_collage_profile.dart';
-import 'package:university/features/collage_profile/presentation/pages/profile_page.dart';
-import 'package:university/features/feedback/presentation/pages/feedback_screen.dart';
+import 'package:university/features/general_question/presentaion/pages/add_new_post.dart';
 import 'package:university/features/post/presentation/bloc/post/post_bloc.dart';
 import 'package:university/features/post/presentation/bloc/tabs/tabs_bloc.dart';
 import 'package:university/features/post/presentation/pages/add_new_post.dart';
 import 'package:university/features/post/presentation/pages/show_post_detail_screen.dart';
-import 'package:university/features/splash_screen/presentation/pages/splash_screen.dart';
 
 class ShowAllPosts extends StatefulWidget {
   @override
@@ -35,6 +31,9 @@ class _ShowAllPosts extends State<ShowAllPosts> {
   TabsBloc tabsBloc;
   PostBloc postBloc;
   AdvertismentBloc advertismentBloc;
+  ScrollController _scrollController = ScrollController();
+  int tabId = 0;
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +42,51 @@ class _ShowAllPosts extends State<ShowAllPosts> {
     advertismentBloc = AdvertismentBloc();
     advertismentBloc..add(FetchAdvertismentEvent());
     tabsBloc.add(GetAllTaps());
+    _scrollController.addListener(_onScroll);
+  }
+
+  Widget floatingButton() {
+    return Builder(
+      builder: (BuildContext context) => HawkFabMenu(
+        icon: AnimatedIcons.add_event,
+        fabColor: Theme.of(context).primaryColor,
+        iconColor: Colors.white,
+        items: [
+          HawkFabMenuItem(
+            label: 'Add new post',
+            ontap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(
+                      builder: (context) => AddNewPostScreen()))
+                  .then((value) {
+                postBloc
+                  ..add(GetPostForSelectedTags(id: tabId, reloadData: true));
+              });
+            },
+            icon: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+          ),
+          HawkFabMenuItem(
+            label: 'Global Posts',
+            ontap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(
+                      builder: (context) => AddNewGlobalPost()))
+                  .then((value) {
+                postBloc
+                  ..add(GetPostForSelectedTags(id: tabId, reloadData: true));
+              });
+            },
+            icon: Icon(Icons.comment, color: Colors.white),
+          ),
+        ],
+        body: Center(
+          child: Text(''),
+        ),
+      ),
+    );
   }
 
   @override
@@ -59,25 +103,13 @@ class _ShowAllPosts extends State<ShowAllPosts> {
         centerTitle: false,
       ),
       drawer: DrawerItem(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => AddNewPostScreen()))
-              .then((value) {
-            tabsBloc.add(GetAllTaps());
-          });
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
+      floatingActionButton: floatingButton(),
       body: BlocProvider<TabsBloc>(
         create: (context) => tabsBloc,
         child: BlocListener<TabsBloc, TabsState>(
           listener: (context, state) {
             if (state is SuccessGetAllTabs) {
+              tabId = state.taps[0].id;
               postBloc.add(GetPostForSelectedTags(id: state.taps[0].id));
             }
           },
@@ -98,52 +130,19 @@ class _ShowAllPosts extends State<ShowAllPosts> {
                     builder: (context, postState) {
                       return Stack(
                         children: [
-                          ListView(
-                            padding: EdgeInsets.only(top: 50),
-                            children: [
-                              // BlocProvider(
-                              //   create: (context) => advertismentBloc,
-                              //   child: BlocBuilder<AdvertismentBloc,
-                              //       AdvertismentState>(
-                              //     builder: (context, state) {
-                              //       if (state is SuccessGettingAdsState) {
-                              //         final successAds =
-                              //             state.advertisementModel.data;
-                              //         return Container(
-                              //           height: 75,
-                              //           color: Colors.white,
-                              //           child: Swiper(
-                              //             autoplay: true,
-                              //             itemCount: successAds.length,
-                              //             itemBuilder: (context, index) {
-                              //               return Image.network(
-                              //                 successAds[index].imageUrl,
-                              //                 fit: BoxFit.fitWidth,
-                              //               );
-                              //             },
-                              //           ),
-                              //         );
-                              //       } else {
-                              //         return Container(
-                              //           color: Colors.red,
-                              //         );
-                              //       }
-                              //     },
-                              //   ),
-                              // ),
-                              (postState.status == PostsStatus.loading)
-                                  ? LoadingView()
-                                  : (postState.status == PostsStatus.failed)
-                                      ? BlocErrorScreen(
-                                          function: () {
-                                            postBloc.add(GetPostForSelectedTags(
-                                                id: state.taps[0].id));
-                                          },
-                                          title: "Error Happened",
-                                        )
-                                      : showListOfItem(postState.posts)
-                            ],
-                          ),
+                          (postState.status == PostsStatus.loading)
+                              ? LoadingView()
+                              : (postState.status == PostsStatus.failed &&
+                                      postState.posts.length != 0)
+                                  ? BlocErrorScreen(
+                                      function: () {
+                                        postBloc.add(GetPostForSelectedTags(
+                                            id: state.taps[0].id));
+                                      },
+                                      title: "Error Happened",
+                                    )
+                                  : showAnswerListItem(
+                                      postState.posts, postState),
                           Container(
                             height: 40,
                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -176,12 +175,15 @@ class _ShowAllPosts extends State<ShowAllPosts> {
   }
 
   List<String> materialName = ['math', "linear algibra", "algorithm"];
-  Widget showListOfItem(List<Posts> post) {
+  Widget showAnswerListItem(List<Posts> post, PostState state) {
     return ListView.builder(
+        padding: EdgeInsets.only(top: 30),
+        controller: _scrollController,
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
-        itemCount: post.length,
+        itemCount: state.hasReachedMax ? post.length : post.length + 1,
         itemBuilder: (contxt, index) {
+          if (index >= post.length) return BottomLoader();
           return showAnswerCard(post[index]);
         });
   }
@@ -371,7 +373,9 @@ class _ShowAllPosts extends State<ShowAllPosts> {
   Widget showListItem(String text, int tabID) {
     return InkWell(
       onTap: () {
-        postBloc.add(GetPostForSelectedTags(id: tabID));
+        tabId = tabID;
+        postBloc..add(GetPostForSelectedTags(id: tabID, reloadData: true));
+        print("test data2");
       },
       child: Container(
         decoration: containerDecoration(),
@@ -388,5 +392,18 @@ class _ShowAllPosts extends State<ShowAllPosts> {
         ),
       ),
     );
+  }
+
+  void _onScroll() {
+    if (_isBottom) {
+      postBloc.add(GetPostForSelectedTags(id: tabId));
+    }
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
   }
 }

@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:university/core/entities/new_posts.dart';
 import 'package:university/core/entities/post.dart';
+import 'package:university/core/entities/user.dart';
 import 'package:university/core/error/exception.dart';
 import 'package:university/core/error/failures.dart';
 import 'package:university/core/use_case/use_case.dart';
@@ -14,6 +15,7 @@ import 'package:university/features/post/data/models/post_detail_model.dart';
 import 'package:university/features/post/data/models/posts_model.dart';
 import 'package:university/features/post/data/repositories/post_repositories_impl.dart';
 import 'package:university/features/post/domain/usecases/get_all_post_replayes.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:university/features/post/domain/usecases/get_post_detail.dart';
 import 'package:university/features/post/domain/usecases/get_posts_for_selected_tag.dart';
 import 'package:university/features/post/domain/usecases/set_new_post.dart';
@@ -23,6 +25,7 @@ part 'post_event.dart';
 part 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
+  final int pageSize = 14;
   PostBloc() : super(PostState());
   UseCase addNewPost =
       SetNewPost(postRepositories: PostRepositoriesImplementation());
@@ -36,8 +39,17 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       getAllPostReplayesUseCase = GetAllPostReplayesUseCase(
           postRepositories: PostRepositoriesImplementation());
   @override
+  Stream<Transition<PostEvent, PostState>> transformEvents(
+    Stream<PostEvent> events,
+    TransitionFunction<PostEvent, PostState> transitionFn,
+  ) {
+    return super.transformEvents(
+      events.debounceTime(const Duration(milliseconds: 200)),
+      transitionFn,
+    );
+  }
 
-  ///GetAllPostReplayesUseCase
+  @override
   Stream<PostState> mapEventToState(PostEvent event) async* {
     if (event is AddNewPost) {
       yield* _mapAddNewPost(event);
@@ -102,18 +114,49 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   Stream<PostState> _mapGetPostForSelectedTags(
       GetPostForSelectedTags event) async* {
-    print("The  xvakmfklamd ");
-    yield state.copyWith(status: PostsStatus.loading);
-    Either<Failure, PostsModel> result =
-        await getPostsByTap(GetPostsForSelectedTagsParams(tabId: event.id));
-    yield result.fold((failure) {
+    try {
+      if (event.reloadData)
+        yield state.copyWith(
+            hasReachedMax: false, posts: [], status: PostsStatus.loading);
+      if (state.posts.length == 0)
+        yield state.copyWith(status: PostsStatus.loading);
+      final array = await _fetchData(event.id, state.posts.length ~/ pageSize);
+      if (array == null) {
+        yield state.copyWith(
+          status: PostsStatus.failed,
+        );
+        return;
+      } else {
+        List<Posts> commonItemsList = state.posts;
+        if (commonItemsList.length == 0) {
+          yield state.copyWith(
+              posts: array,
+              hasReachedMax: hasReachedMax(array.length),
+              status: PostsStatus.success);
+          return;
+        }
+        for (int i = 0; i < array.length; i++) commonItemsList.add(array[i]);
+        yield state.copyWith(
+            posts: commonItemsList,
+            hasReachedMax: hasReachedMax(array.length),
+            status: PostsStatus.success);
+      }
+    } catch (e) {
+      yield state.copyWith(status: PostsStatus.failed);
+    }
+  }
+
+  Future<List<Posts>> _fetchData(int id, int page) async {
+    Either<Failure, PostsModel> result = await getPostsByTap(
+        GetPostsForSelectedTagsParams(tabId: id, pageNumber: page));
+    return result.fold((failure) {
       if (failure is MissingParamException)
-        return state.copyWith(status: PostsStatus.failed);
+        return null;
       else {
-        return state.copyWith(status: PostsStatus.failed);
+        return null;
       }
     }, (body) {
-      return state.copyWith(status: PostsStatus.success, posts: body.data.data);
+      return body.data.data;
     });
   }
 
@@ -125,7 +168,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     if (event.description.trim().length == 0) {
       yield InvalidState(errorMessage: "Please Enter The description");
       return;
-    } else if (event.tapID == -1) {
+    } else if (event.tapID == -1 && event.subjectID == -1) {
       yield InvalidState(errorMessage: "Please select tags");
       return;
     }
@@ -133,7 +176,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       Either<Failure, NewPosts> result = await addNewPost(SetNewPostParam(
           description: event.description,
           tapID: event.tapID,
-          title: event.title));
+          title: event.title,
+          subjectId: event.subjectID));
       yield result.fold((failure) {
         if (failure is MissingParamException)
           return AddNewPostFailed();
@@ -144,5 +188,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         return AddNewPostSuccess();
       });
     } catch (e) {}
+  }
+
+  bool hasReachedMax(int number) {
+    return number < pageSize;
   }
 }

@@ -33,7 +33,7 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    loginSuccess = constantInfo.sharedPreferences.getBool("loginSuccess");
+    loginSuccess = constantInfo?.sharedPreferences?.getBool("loginSuccess")??false;
     return Drawer(
       elevation: 10.0,
       child: Container(
@@ -175,65 +175,6 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
       children: [
-        // InkWell(
-        //   onTap: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //         builder: (context) {
-        //           return FeedbackScreen();
-        //         },
-        //       ),
-        //     );
-        //   },
-        //   child: Row(
-        //     children: [
-        //       SizedBox(width: 15),
-        //       Icon(
-        //         Icons.feedback,
-        //         color: Theme.of(context).hintColor,
-        //       ),
-        //       SizedBox(width: 15),
-        //       Text(
-        //         "Feedback",
-        //         style: boldStyle(
-        //           fontSize: Constant.mediumFont,
-        //           color: Theme.of(context).hintColor,
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        // SizedBox(height: 20.0),
-        // InkWell(
-        //   onTap: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //         builder: (context) {
-        //           return NewCollageProfile();
-        //         },
-        //       ),
-        //     );
-        //   },
-        //   child: Row(
-        //     children: [
-        //       SizedBox(width: 15),
-        //       Icon(
-        //         Icons.person,
-        //         color: Theme.of(context).hintColor,
-        //       ),
-        //       SizedBox(width: 15),
-        //       Text(
-        //         "Profile",
-        //         style: boldStyle(
-        //           fontSize: Constant.mediumFont,
-        //           color: Theme.of(context).hintColor,
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
         InkWell(
           onTap: () {
             Navigator.push(

@@ -50,7 +50,6 @@ class _AddNewPostScreen extends State<AddNewPostScreen> {
           child: BlocListener<PostBloc, PostState>(
             listener: (context, state) {
               loading.dismiss(context);
-              print("The state is $state");
               if (state is InvalidState) {
                 showMessage(state.errorMessage);
               } else if (state is AddNewPostSuccess) {

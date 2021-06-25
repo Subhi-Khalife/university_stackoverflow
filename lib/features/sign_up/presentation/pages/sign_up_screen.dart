@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/core/validation.dart';
+import 'package:university/core/widget/loading_view.dart';
+import 'package:university/core/widget/show_message.dart';
+import 'package:university/features/splash_screen/presentation/pages/splash_screen.dart';
 
 import '../../../../core/widget/app_button.dart';
 import '../../../../core/widget/colors.dart';
@@ -71,106 +75,52 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
     ConfigScreen configScreen = ConfigScreen(context);
     WidgetSize(configScreen);
     return Scaffold(
-      backgroundColor: Colors.black,
       body: BlocProvider<SignUpBloc>(
         create: (context) => signUpBloc,
-        child: BlocBuilder<SignUpBloc, SignUpState>(
-          builder: (context, state) {
+        child: BlocListener<SignUpBloc, SignUpState>(
+          listener: (context, state) {
             if (state is SuccessSignUp) {
-              if (state.user.userTypeId == 5) {
-                return Container(
-                  color: Colors.green,
-                );
-              } else {
-                // return CollageProfilePage();
-              }
-            } else if (state is ChangeToSecondScreenState) {
-              isFirstSignUpScreen = state.state;
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => SplashScreen()));
             }
-            return Center(
-              child: SingleChildScrollView(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          gradient: LinearGradient(
-                            colors: [
-                              colorFirstGrident,
-                              colorSecondGrident,
-                            ],
-                            stops: [0.0, 1],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          )),
-                      child: Center(
-                        child: Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: (isFirstSignUpScreen)
-                                ? firstScreenData()
-                                : scondScreenData()),
+          },
+          child: BlocBuilder<SignUpBloc, SignUpState>(
+            builder: (context, state) {
+              if (state is ChangeToSecondScreenState) {
+                isFirstSignUpScreen = state.state;
+              }
+              return Center(
+                child: SingleChildScrollView(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            gradient: LinearGradient(
+                              colors: [
+                                colorFirstGrident,
+                                colorSecondGrident,
+                              ],
+                              stops: [0.0, 1],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            )),
+                        child: Center(
+                          child: Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: (isFirstSignUpScreen)
+                                  ? firstScreenData()
+                                  : scondScreenData()),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            );
-            return Container();
-            // return ListView(
-            //   padding: EdgeInsets.only(top: 30, left: 12, right: 12),
-            //   children: [
-            //     Text(
-            //       "New Account",
-            //       style: boldStyle(
-            //           color: colorThemApp, fontSize: Constant.xlargeFont),
-            //     ),
-            //     SizedBox(height: 10),
-            //     Text(
-            //       "Welcome to our community in order to sign up, please fill out all filed below",
-            //       style: regularStyle(
-            //           color: secondColor, fontSize: Constant.mediumFont),
-            //     ),
-            //     SizedBox(height: 10),
-            //     firstNameController(),
-            //     SizedBox(height: 10),
-            //     secondNameController(),
-            //     SizedBox(height: 10),
-            //     emailController(),
-            //     SizedBox(height: 10),
-            //     mobilePhoneController(),
-            //     SizedBox(height: 10),
-            //     passwordController(),
-            //     SizedBox(height: 10),
-            //     confirmPasswordController(),
-            //     SizedBox(height: 10),
-            //     collageNumberController(),
-            //     SizedBox(height: 10),
-            //     dropDownCollage(),
-            //     SizedBox(height: 10),
-            //     SizedBox(height: 10),
-            //     AppButton(
-            //       function: () {
-            //         BlocProvider.of<SignUpBloc>(context)
-            //           ..add(
-            //             SendSignUpRequestEvent(
-            //               collageNumber: _collageNumberContoller.text,
-            //               email: _emailNameController.text,
-            //               lastName: _secondNameController.text,
-            //               firstName: _firstNameController.text,
-            //               mobile: _phoneNumberController.text,
-            //               password: _passwordNameController.text,
-            //               collegeId: collageId,
-            //               universityId: universityId,
-            //             ),
-            //           );
-            //       },
-            //       name: "Sign up",
-            //     ),
-            //   ],
-            // );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -197,25 +147,58 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
         SizedBox(height: 10),
         collageNumberController(),
         SizedBox(height: 10),
-        AppButton(
-            function: () {
-              signUpBloc.add(
-                SendSignUpRequestEvent(
-                  collageNumber: _collageNumberContoller.text,
-                  email: _emailNameController.text,
-                  lastName: _secondNameController.text,
-                  firstName: _firstNameController.text,
-                  mobile: _phoneNumberController.text,
-                  password: _passwordNameController.text,
-                  collegeId: collageId,
-                  universityId: universityId,
-                ),
-              );
-            },
-            buttonColor: Theme.of(context).primaryColor,
-            elevationValue: 8,
-            fontColor: Theme.of(context).accentColor,
-            name: "Sign up"),
+        BlocBuilder<SignUpBloc, SignUpState>(
+          builder: (context, state) {
+            if (state is LoadingState) return LoadingView();
+            return AppButton(
+                function: () {
+                  if (_firstNameController.text.trim().length == 0)
+                    showMessage("Please enter your first name");
+                  else if (_secondNameController.text.trim().length == 0)
+                    showMessage("Please enter your second name");
+                  else if (_emailNameController.text.trim().length == 0)
+                    showMessage("Please enter your email");
+                  else {
+                    RegExp regex = RegExp(Validation.EMAILPATTERN);
+                    if (!regex.hasMatch(_emailNameController.text)) {
+                      showMessage("your email is not  email type");
+                    } else {
+                      if (_phoneNumberController.text.trim().length == 0)
+                        showMessage("Please enter your phone number");
+                      else if (_passwordNameController.text.trim().length < 6)
+                        showMessage(
+                            "Please enter your Password at least 8 char");
+                      else if (_confirmPasswordController.text.trim().length <
+                          6)
+                        showMessage(
+                            "Please enter your confirm password at least 8 char");
+                      else if (_passwordNameController.text !=
+                          _confirmPasswordController.text)
+                        showMessage("confirm password and password not same");
+                      else if (_collageNumberContoller.text.trim().length == 0)
+                        showMessage("Please add confirm number");
+                      else
+                        signUpBloc.add(
+                          SendSignUpRequestEvent(
+                            collageNumber: _collageNumberContoller.text,
+                            email: _emailNameController.text,
+                            lastName: _secondNameController.text,
+                            firstName: _firstNameController.text,
+                            mobile: _phoneNumberController.text,
+                            password: _passwordNameController.text,
+                            collegeId: collageId,
+                            universityId: universityId,
+                          ),
+                        );
+                    }
+                  }
+                },
+                buttonColor: Theme.of(context).primaryColor,
+                elevationValue: 8,
+                fontColor: Theme.of(context).accentColor,
+                name: "Sign up");
+          },
+        ),
       ],
     );
   }
@@ -233,9 +216,14 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
         SizedBox(height: 20),
         AppButton(
             buttonColor: Theme.of(context).primaryColor,
-            fontColor:Theme.of(context).accentColor,
+            fontColor: Theme.of(context).accentColor,
             function: () {
-              signUpBloc..add(ChangeToSecondScreen());
+              if (universityId == -1)
+                showMessage("Please select you university first");
+              else if (collageId == -1)
+                showMessage("Please select you collage first");
+              else
+                signUpBloc..add(ChangeToSecondScreen());
             },
             elevationValue: 8,
             name: "Next"),
@@ -278,7 +266,7 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => SignUpScreen()),
-                          (Route<dynamic> route) => false);
+                      (Route<dynamic> route) => false);
                 },
                 name: "SignUp",
                 fontColor: Theme.of(context).accentColor,
@@ -302,46 +290,27 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
         },
         child: BlocBuilder<UniversityBloc, UniversityState>(
           builder: (context, state) {
-            if (state is UniversityState) {
-              return Column(
-                children: [
-                  DropDown(
-                    dropDownListItem: state.univerSityItems,
-                    title: state.universityName,
+            return Column(
+              children: [
+                DropDown(
+                  dropDownListItem: state.univerSityItems,
+                  title: state.universityName,
+                  isOpened: isOpened,
+                  universitySelecetd: true,
+                ),
+                SizedBox(height: 10),
+                AnimatedSize(
+                  duration: Duration(milliseconds: 500),
+                  vsync: this,
+                  child: DropDown(
+                    dropDownListItem: state.collegeityItems,
+                    title: state.collageName,
                     isOpened: isOpened,
-                    universitySelecetd: true,
+                    universitySelecetd: false,
                   ),
-                  SizedBox(height: 10),
-                  AnimatedSize(
-                    duration: Duration(milliseconds: 500),
-                    vsync: this,
-                    child: DropDown(
-                      dropDownListItem: state.collegeityItems,
-                      title: state.collageName,
-                      isOpened: isOpened,
-                      universitySelecetd: false,
-                    ),
-                  ),
-                ],
-              );
-            } else if (state is UniversityIsLoadingState) {
-              return Center(
-                  child: CircularProgressIndicator(
-                backgroundColor: colorThemApp,
-              ));
-            } else if (state is UniversityIsLoadErrorState) {
-              return Container(
-                color: Colors.red,
-                width: 50,
-                height: 50,
-              );
-            } else {
-              return Container(
-                color: Colors.orange,
-                width: 50,
-                height: 50,
-              );
-            }
+                ),
+              ],
+            );
           },
         ),
       ),
@@ -382,6 +351,7 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
       isTextFieldPassword: false,
       style: TextStyle(color: Colors.black),
       prefixSvg: "lib/svg/mail_icon.svg",
+      textInputType: TextInputType.number,
     );
   }
 
@@ -394,6 +364,7 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
       isTextFieldPassword: false,
       style: TextStyle(color: Colors.black),
       prefixSvg: "lib/svg/mail_icon.svg",
+      textInputType: TextInputType.number,
     );
   }
 
@@ -406,6 +377,7 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
       isTextFieldPassword: false,
       style: TextStyle(color: Colors.black),
       prefixSvg: "lib/svg/mail_icon.svg",
+      textInputType: TextInputType.emailAddress,
     );
   }
 

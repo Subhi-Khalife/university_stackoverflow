@@ -9,16 +9,16 @@ import '../models/common_question_model.dart';
 class CommonQuestionRepositoriesImplementation
     extends CommonQuestionRepositories {
   @override
-  Future<Either<Failure, CommonQuestionModel>> getAllCommonQuestion() async {
-    final result = await RemoteGetAllCommonQuestion().getAllcommonQuestion();
+  Future<Either<Failure, CommonQuestionModel>> getAllCommonQuestion(Map<String,dynamic>param) async {
+    final result = await RemoteGetAllCommonQuestion().getAllcommonQuestion(param);
     return result.fold((failure) => Left(failure), (body) => Right(body));
   }
 
   @override
   Future<Either<Failure, CommonQuestionModel>> getCommonQuestionForCollage(
-      String collageID) async {
+      String collageID,Map<String,dynamic>param) async {
     final result = await RemoteGetAllCommonQuestionForCollage()
-        .getAllCommonQuestionForCollage(collageId: collageID);
+        .getAllCommonQuestionForCollage(collageId: collageID,param: param);
     return result.fold((failure) => Left(failure), (body) => Right(body));
   }
 }
