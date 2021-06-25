@@ -9,7 +9,6 @@ import 'package:university/features/login/data/models/login_model.dart';
 import 'package:university/features/post/presentation/pages/show_all_posts.dart';
 
 class NavigationHandler {
-
   SharedPreferences _sharedPreferences;
 
   navigationPage(BuildContext context) {
@@ -21,12 +20,15 @@ class NavigationHandler {
       constantInfo.setUserInfoValue(loginModelFromJson(user).user);
     }
     if (_sharedPreferences.getBool("loginSuccess") == true) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => CommonAndGlobalQuestion()));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => CommonAndGlobalQuestion()),
+          (Route<dynamic> route) => false);
     } else {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => PublicCommonQuestion()));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => PublicCommonQuestion()),
+          (Route<dynamic> route) => false);
     }
   }
-  
 }

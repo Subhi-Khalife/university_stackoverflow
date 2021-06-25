@@ -9,20 +9,22 @@ class CommentTextField extends StatefulWidget {
   final Function sendMessage;
   final Function cancelUpdate;
   final String title;
+  final IconData iconData;
+  final bool readOnly;
   CommentTextField(
       {@required this.commentController,
       @required this.isUpdateClickIcon,
       @required this.sendMessage,
       @required this.cancelUpdate,
-      this.title = ""});
+      this.title = "",
+      this.iconData,this.readOnly=false});
   @override
   State<StatefulWidget> createState() {
     return _CommentTextField();
   }
 }
 
-class _CommentTextField extends State<CommentTextField>
-    with TickerProviderStateMixin {
+class _CommentTextField extends State<CommentTextField> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     String oldMessage = widget.commentController.text;
@@ -63,12 +65,12 @@ class _CommentTextField extends State<CommentTextField>
                 ),
               ),
               TextField(
+                readOnly: widget.readOnly,
                 style: TextStyle(color: Colors.white),
                 textInputAction: TextInputAction.done,
-                textDirection:
-                    Localizations.localeOf(context).toString() == 'ar'
-                        ? TextDirection.rtl
-                        : TextDirection.ltr,
+                textDirection: Localizations.localeOf(context).toString() == 'ar'
+                    ? TextDirection.rtl
+                    : TextDirection.ltr,
                 textAlign: Localizations.localeOf(context).toString() == 'ar'
                     ? TextAlign.right
                     : TextAlign.left,
@@ -81,7 +83,7 @@ class _CommentTextField extends State<CommentTextField>
                 decoration: InputDecoration(
                   suffixIcon: Localizations.localeOf(context).toString() != 'ar'
                       ? IconButton(
-                          icon: Icon(Icons.send, color: greyColor),
+                          icon: Icon(widget.iconData ?? Icons.send, color: greyColor),
                           onPressed: widget.sendMessage)
                       : null,
                   border: InputBorder.none,
@@ -89,27 +91,22 @@ class _CommentTextField extends State<CommentTextField>
                   disabledBorder: InputBorder.none,
                   fillColor: blackWithOpacity,
                   filled: true,
-                  hintText: widget.title.length == 0
-                      ? "Write answer..."
-                      : widget.title,
+                  hintText: widget.title.length == 0 ? "Write answer..." : widget.title,
                   prefixIcon: Localizations.localeOf(context).toString() == 'ar'
                       ? IconButton(
-                          icon: Icon(Icons.sort, color: greyColor),
-                          onPressed: widget.sendMessage)
+                          icon: Icon(Icons.sort, color: greyColor), onPressed: widget.sendMessage)
                       : null,
                   hintStyle: TextStyle(color: greyColor),
                   contentPadding: EdgeInsets.only(left: 8, right: 8),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: blackWithOpacity),
                     borderRadius: new BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(4)),
+                        topLeft: Radius.circular(4), topRight: Radius.circular(4)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: blackWithOpacity),
                     borderRadius: new BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12)),
+                        topLeft: Radius.circular(12), topRight: Radius.circular(12)),
                   ),
                 ),
                 onSubmitted: (c) => widget.sendMessage,

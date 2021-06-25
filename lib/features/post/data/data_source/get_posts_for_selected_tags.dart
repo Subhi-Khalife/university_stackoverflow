@@ -9,16 +9,14 @@ import '../../../../core/error/failures.dart';
 import '../../../../core/unified_api/handling_exception.dart';
 
 class GetAllPostsForSelectedTaps with HandlingExceptionRequest {
-  Future<Either<Failure, PostsModel>> getAllPosts(
-      Map<String, dynamic> items) async {
+  Future<Either<Failure, PostsModel>> getAllPosts(Map<String, dynamic> items) async {
     ConstantInfo constantInfo = ConstantInfo.getInstance();
-
-    int tabId = items["tab_id"];
     final postApi = GetApi<PostsModel>(
         token: constantInfo.userInfo.token,
         fromJson: postsModelFromJson,
-        url: "post/get?tab_id=$tabId",
-        requestName: "Get Posts for selected Tags");
+        url: "post/get",
+        requestName: "Get Posts for selected Tags",
+        param: items);
     final callRequest = postApi.callRequest;
     Either<Failure, PostsModel> result =
         await handlingExceptionRequest<PostsModel>(requestCall: callRequest);

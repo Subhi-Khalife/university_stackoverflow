@@ -20,7 +20,7 @@ part 'general_question_event.dart';
 part 'general_question_state.dart';
 
 class GeneralQuestionBloc extends Bloc<GeneralQuestionEvent, GeneralQuestionState> {
-  final int pageSize = 8;
+  final int pageSize = 9;
 
   GeneralQuestionBloc() : super(GeneralQuestionState());
   UseCase<FilterModel, GetFiltersUseCaseParam> getFilters =
@@ -36,7 +36,7 @@ class GeneralQuestionBloc extends Bloc<GeneralQuestionEvent, GeneralQuestionStat
     TransitionFunction<GeneralQuestionEvent, GeneralQuestionState> transitionFn,
   ) {
     return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 200)),
+      events.debounceTime(const Duration(milliseconds: 500)),
       transitionFn,
     );
   }
@@ -50,17 +50,23 @@ class GeneralQuestionBloc extends Bloc<GeneralQuestionEvent, GeneralQuestionStat
     } else if (event is GetYearSemester) {
       yield* _mapGetYearSemester(event);
     } else if (event is GetAllGlobalPosts) {
-      yield* _mapGetPostForSelectedTags(event);
+      yield* _mapGetPostForSelectedTags(event, state);
     }
   }
 
-  Stream<GeneralQuestionState> _mapGetPostForSelectedTags(GetAllGlobalPosts event) async* {
+  Stream<GeneralQuestionState> _mapGetPostForSelectedTags(
+      GetAllGlobalPosts event, GeneralQuestionState state) async* {
     try {
-      if (event.reloadData)
-        yield state.copyWith(
-            hasReachedMax: false, posts: [], status: GeneralQuestionStatus.loading);
+      if (event.reloadData) {
+        state = GeneralQuestionState();
+        yield state;
+      }
+      if (state.hasReachedMax) {
+        yield state;
+        return;
+      }
       if (state.posts.length == 0) yield state.copyWith(status: GeneralQuestionStatus.loading);
-      final array = await _fetchData( state.posts.length ~/ pageSize);
+      final array = await _fetchData(state.posts.length ~/ pageSize);
       if (array == null) {
         yield state.copyWith(
           status: GeneralQuestionStatus.failed,
@@ -86,7 +92,7 @@ class GeneralQuestionBloc extends Bloc<GeneralQuestionEvent, GeneralQuestionStat
     }
   }
 
-  Future<List<GeneralQuestionsList>> _fetchData( int page) async {
+  Future<List<GeneralQuestionsList>> _fetchData(int page) async {
     Either<Failure, GeneralQuestionsModel> result =
         await getAllGeneralQestionsParams(GetAllGeneralQestionsParams(pageNumber: page));
     return result.fold((failure) {
@@ -108,8 +114,6 @@ class GeneralQuestionBloc extends Bloc<GeneralQuestionEvent, GeneralQuestionStat
     ));
     yield result.fold(
       (failure) {
-        print("sd;alsmdl;asmd;lasm;dlas;dlma");
-
         if (failure is MissingParamException)
           return FailedGetAllFilter();
         else {
@@ -140,6 +144,6 @@ class GeneralQuestionBloc extends Bloc<GeneralQuestionEvent, GeneralQuestionStat
   }
 
   bool hasReachedMax(int number) {
-    return number < pageSize;
+    return true;
   }
 }

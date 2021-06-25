@@ -33,8 +33,7 @@ class PublicCommonQuestion extends StatefulWidget {
   }
 }
 
-class _PublicCommonQuestion extends State<PublicCommonQuestion>
-    with TickerProviderStateMixin {
+class _PublicCommonQuestion extends State<PublicCommonQuestion> with TickerProviderStateMixin {
   CommonQuestionBloc blocItem;
   TextEditingController searchController = TextEditingController();
   ScrollController _scrollController = ScrollController();
@@ -46,8 +45,7 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
       blocItem = CommonQuestionBloc()..add(GetAllCommonQuestionEvent());
     else
       blocItem = CommonQuestionBloc()
-        ..add(GetAllCommonQuestionForSelectedCollageEvent(
-            collageId: widget.collageId.toString()));
+        ..add(GetAllCommonQuestionForSelectedCollageEvent(collageId: widget.collageId.toString()));
     if (widget.collageId == -1)
       Future.delayed(Duration(seconds: 0)).then((_) {
         beginBottomSheet();
@@ -87,7 +85,9 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                       cancelUpdate: () {},
                       commentController: searchController,
                       isUpdateClickIcon: false,
-                      title: "Search here",
+                      title: "Filter your search",
+                      iconData: Icons.sort,
+                      readOnly: true,
                       sendMessage: () {
                         return showButtomSheet();
                       },
@@ -164,9 +164,8 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
             ),
           );
         },
-        itemCount: (state.hasReachedMax)
-            ? state.commonItemsList.length
-            : state.commonItemsList.length + 1,
+        itemCount:
+            (state.hasReachedMax) ? state.commonItemsList.length : state.commonItemsList.length + 1,
       ),
     );
   }
@@ -231,8 +230,8 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
       context: context,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12), topRight: Radius.circular(12))),
+          borderRadius:
+              BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12))),
       enableDrag: true,
       builder: (BuildContext context) {
         return Padding(
@@ -257,8 +256,7 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                         child: Text(
                           "Continue as visitor",
                           style: regularStyle(
-                              fontSize: Constant.largeFont,
-                              color: Theme.of(context).accentColor),
+                              fontSize: Constant.largeFont, color: Theme.of(context).accentColor),
                         ),
                       ),
                     ),
@@ -280,8 +278,8 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                     Flexible(
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) => LoginScreen()));
                         },
                         child: Padding(
                           padding: EdgeInsets.only(left: 12, right: 12),
@@ -305,8 +303,8 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                     Flexible(
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => SignUpScreen()));
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) => SignUpScreen()));
                         },
                         child: Padding(
                           padding: EdgeInsets.only(left: 12, right: 12),
@@ -338,8 +336,7 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                         valueListenable: checkBox,
                         builder: (context, value, _) {
                           return Checkbox(
-                              fillColor: MaterialStateProperty.all(
-                                  Theme.of(context).primaryColor),
+                              fillColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
                               value: value,
                               onChanged: (c) {
                                 checkBox.value = !checkBox.value;
@@ -367,13 +364,14 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
     return showModalBottomSheet<void>(
       context: context,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(33)),
+      shape: RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12))),
       enableDrag: true,
       builder: (BuildContext context) {
         return BlocProvider<UniversityBloc>(
           create: (context) => UniversityBloc()..add(FetchUiversity()),
-          child: BlocBuilder<UniversityBloc, UniversityState>(
-              builder: (context, state) {
+          child: BlocBuilder<UniversityBloc, UniversityState>(builder: (context, state) {
             return ListView(
               children: [
                 Padding(
@@ -381,8 +379,7 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                   child: Text(
                     "Filter your search",
                     style: boldStyle(
-                        fontSize: Constant.mediumFont,
-                        color: Theme.of(context).hintColor),
+                        fontSize: Constant.mediumFont, color: Theme.of(context).hintColor),
                   ),
                 ),
                 SizedBox(height: 4),
@@ -394,8 +391,7 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
                     function: () {
                       widget.collageId = state.collageId;
                       blocItem.add(GetAllCommonQuestionForSelectedCollageEvent(
-                          collageId: state.collageId.toString(),
-                          reloadData: true));
+                          collageId: state.collageId.toString(), reloadData: true));
                       Navigator.of(context).pop();
                     },
                     name: "Search",
@@ -414,8 +410,8 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion>
       if (widget.collageId == -1)
         blocItem.add(GetAllCommonQuestionEvent());
       else
-        blocItem.add(GetAllCommonQuestionForSelectedCollageEvent(
-            collageId: widget.collageId.toString()));
+        blocItem.add(
+            GetAllCommonQuestionForSelectedCollageEvent(collageId: widget.collageId.toString()));
     }
   }
 

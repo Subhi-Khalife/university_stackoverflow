@@ -6,7 +6,6 @@ import 'package:university/core/widget/colors.dart';
 import 'package:university/core/widget/constant.dart';
 import 'package:university/core/widget/font_style.dart';
 
-List<String> _popItemName = ["Delete", "Update"];
 
 // ignore: must_be_immutable
 class CommentWidget extends StatelessWidget {

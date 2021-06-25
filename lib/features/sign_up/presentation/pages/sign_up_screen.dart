@@ -38,6 +38,8 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
   int universityId = 0;
   int collageId = 0;
   bool isFirstSignUpScreen = true;
+  ValueNotifier<bool> isLookingPassword = ValueNotifier(false);
+  ValueNotifier<bool> isLookingVerifiyPassword = ValueNotifier(false);
 
   @override
   void initState() {
@@ -80,8 +82,7 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
         child: BlocListener<SignUpBloc, SignUpState>(
           listener: (context, state) {
             if (state is SuccessSignUp) {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => SplashScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SplashScreen()));
             }
           },
           child: BlocBuilder<SignUpBloc, SignUpState>(
@@ -110,9 +111,7 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
                         child: Center(
                           child: Padding(
                               padding: const EdgeInsets.all(18.0),
-                              child: (isFirstSignUpScreen)
-                                  ? firstScreenData()
-                                  : scondScreenData()),
+                              child: (isFirstSignUpScreen) ? firstScreenData() : scondScreenData()),
                         ),
                       ),
                     ),
@@ -166,14 +165,10 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
                       if (_phoneNumberController.text.trim().length == 0)
                         showMessage("Please enter your phone number");
                       else if (_passwordNameController.text.trim().length < 6)
-                        showMessage(
-                            "Please enter your Password at least 8 char");
-                      else if (_confirmPasswordController.text.trim().length <
-                          6)
-                        showMessage(
-                            "Please enter your confirm password at least 8 char");
-                      else if (_passwordNameController.text !=
-                          _confirmPasswordController.text)
+                        showMessage("Please enter your Password at least 8 char");
+                      else if (_confirmPasswordController.text.trim().length < 6)
+                        showMessage("Please enter your confirm password at least 8 char");
+                      else if (_passwordNameController.text != _confirmPasswordController.text)
                         showMessage("confirm password and password not same");
                       else if (_collageNumberContoller.text.trim().length == 0)
                         showMessage("Please add confirm number");
@@ -318,28 +313,43 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
   }
 
   Widget passwordController() {
-    return TextFieldApp(
-      controller: _passwordNameController,
-      hintText: "your password",
-      withIcon: true,
-      icon: Icons.email,
-      isLookAtPassword: false,
-      isTextFieldPassword: false,
-      style: TextStyle(color: Colors.black),
-      prefixSvg: "lib/svg/mail_icon.svg",
-    );
+    return ValueListenableBuilder<bool>(
+        valueListenable: isLookingPassword,
+        builder: (context, value, _) {
+          return TextFieldApp(
+            controller: _passwordNameController,
+            hintText: "your password",
+            withIcon: true,
+            icon: Icons.email,
+            isLookAtPassword: value,
+            onPressedLookAtPassword: () {
+              isLookingPassword.value = !isLookingPassword.value;
+            },
+            isTextFieldPassword: true,
+            style: TextStyle(color: Colors.black),
+            prefixSvg: "lib/svg/mail_icon.svg",
+          );
+        });
   }
 
   Widget confirmPasswordController() {
-    return TextFieldApp(
-      controller: _confirmPasswordController,
-      hintText: "confirm your password",
-      withIcon: true,
-      icon: Icons.email,
-      isTextFieldPassword: false,
-      style: TextStyle(color: Colors.black),
-      prefixSvg: "lib/svg/mail_icon.svg",
-    );
+    return ValueListenableBuilder<bool>(
+        valueListenable: isLookingVerifiyPassword,
+        builder: (context, value, _) {
+          return TextFieldApp(
+            controller: _confirmPasswordController,
+            hintText: "confirm your password",
+            withIcon: true,
+            icon: Icons.email,
+            isLookAtPassword: value,
+            onPressedLookAtPassword: () {
+              isLookingVerifiyPassword.value = !isLookingVerifiyPassword.value;
+            },
+            isTextFieldPassword: true,
+            style: TextStyle(color: Colors.black),
+            prefixSvg: "lib/svg/mail_icon.svg",
+          );
+        });
   }
 
   Widget collageNumberController() {
@@ -384,7 +394,7 @@ class _SignUpScreen extends State<SignUpScreen> with TickerProviderStateMixin {
   Widget secondNameController() {
     return TextFieldApp(
       controller: _secondNameController,
-      hintText: "Enter second name",
+      hintText: "Enter sur name",
       withIcon: true,
       icon: Icons.email,
       isTextFieldPassword: false,

@@ -31,6 +31,7 @@ class _CommonAndGlobalQuestion extends State<CommonAndGlobalQuestion> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.question_answer),
@@ -42,7 +43,7 @@ class _CommonAndGlobalQuestion extends State<CommonAndGlobalQuestion> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Theme.of(context).hintColor,
         onTap: _onItemTapped,
       ),
     );

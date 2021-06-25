@@ -76,8 +76,7 @@ class TextFieldApp extends StatelessWidget {
     return isTextFieldPassword
         ? TextField(
             style: TextStyle(
-                color: Theme.of(context).hintColor,
-                fontSize: Constant.veryVerySmallFont),
+                color: colorText ?? Theme.of(context).hintColor, fontSize: Constant.mediumFont),
             controller: controller,
             focusNode: focusNode,
             onChanged: onChanged,
@@ -86,17 +85,13 @@ class TextFieldApp extends StatelessWidget {
             cursorColor: thirdColor,
             obscureText: !isLookAtPassword,
             decoration: InputDecoration(
-                border:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
-                enabledBorder:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
-                errorBorder:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
-                disabledBorder:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
+                border: (withBottomBlackLine == false) ? InputBorder.none : null,
+                enabledBorder: (withBottomBlackLine == false) ? InputBorder.none : null,
+                errorBorder: (withBottomBlackLine == false) ? InputBorder.none : null,
+                disabledBorder: (withBottomBlackLine == false) ? InputBorder.none : null,
                 hintStyle: TextStyle(
-                  color: thirdColor,
-                  fontSize: 10,
+                  color: hintColor ?? Theme.of(context).hintColor,
+                  fontSize: Constant.smallFont,
                 ),
                 contentPadding: EdgeInsets.only(
                     top: paddingTop ?? 10,
@@ -107,46 +102,35 @@ class TextFieldApp extends StatelessWidget {
                 hintText: hintText,
                 alignLabelWithHint: true,
                 labelStyle: TextStyle(
-                    color: thirdColor.withOpacity(0.4),
-                    height: -8,
-                    fontSize: Constant.smallFont),
+                    color: thirdColor.withOpacity(0.4), height: -8, fontSize: Constant.smallFont),
                 suffixIcon: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: IconButton(
-                    icon: Icon(
-                        isLookAtPassword
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        color: colorsIcon,
-                        size: 18),
+                    icon: Icon(isLookAtPassword ? Icons.visibility_off : Icons.visibility,
+                        color: colorsIcon, size: 18),
                     onPressed: onPressedLookAtPassword,
                   ),
                 ),
                 focusedBorder: (withBottomBlackLine == false)
                     ? InputBorder.none
                     : UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor,
-                            width: 1.5))),
+                        borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1.5))),
           )
         : TextField(
             key: key,
             style: TextStyle(
-                color: colorText??Theme.of(context).hintColor,
-                fontSize: Constant.mediumFont),
+                color: colorText ?? Theme.of(context).hintColor, fontSize: Constant.mediumFont),
             onChanged: onChanged,
             keyboardType: textInputType,
             inputFormatters: (maxLength != 0)
                 ? [
                     LengthLimitingTextInputFormatter(maxLength),
-                    (textInputType == TextInputType.phone ||
-                            textInputType == TextInputType.number)
+                    (textInputType == TextInputType.phone || textInputType == TextInputType.number)
                         ? WhitelistingTextInputFormatter(RegExp("[0-9]"))
                         : BlacklistingTextInputFormatter(RegExp("[/\\\\]")),
                   ]
                 : [
-                    (textInputType == TextInputType.phone ||
-                            textInputType == TextInputType.number)
+                    (textInputType == TextInputType.phone || textInputType == TextInputType.number)
                         ? WhitelistingTextInputFormatter(RegExp("[0-9]"))
                         : BlacklistingTextInputFormatter(RegExp("[/\\\\]")),
                   ],
@@ -161,14 +145,10 @@ class TextFieldApp extends StatelessWidget {
                 filled: filled,
                 fillColor: colorFill,
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
-                border:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
-                enabledBorder:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
-                errorBorder:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
-                disabledBorder:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
+                border: (withBottomBlackLine == false) ? InputBorder.none : null,
+                enabledBorder: (withBottomBlackLine == false) ? InputBorder.none : null,
+                errorBorder: (withBottomBlackLine == false) ? InputBorder.none : null,
+                disabledBorder: (withBottomBlackLine == false) ? InputBorder.none : null,
                 contentPadding: EdgeInsets.only(
                     top: paddingTop ?? 10,
                     right: paddingRight ?? 0.0,
@@ -176,7 +156,7 @@ class TextFieldApp extends StatelessWidget {
                     left: paddingLeft ?? 4.0),
                 // hintText: hintText,
                 hintStyle: TextStyle(
-                  color:hintColor?? Theme.of(context).hintColor,
+                  color: hintColor ?? Theme.of(context).hintColor,
                   fontSize: Constant.smallFont,
                 ),
                 suffixIcon: suffixIcon,
@@ -195,15 +175,12 @@ class TextFieldApp extends StatelessWidget {
                 hintText: hintText,
                 alignLabelWithHint: true,
                 labelStyle: TextStyle(
-                    color: thirdColor.withOpacity(0.4),
-                    height: -8,
-                    fontSize: Constant.smallFont),
+                    color: thirdColor.withOpacity(0.4), height: -8, fontSize: Constant.smallFont),
                 focusedBorder: (withBottomBlackLine == false)
                     ? InputBorder.none
                     : UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor,
-                            width: 1.50))),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).primaryColor, width: 1.50))),
           );
   }
 }

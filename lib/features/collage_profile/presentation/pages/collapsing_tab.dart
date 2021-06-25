@@ -291,7 +291,7 @@ class _CollapsingTabProvider extends State<CollapsingTabProvider>
                     ),
                     Flexible(
                       child: Text(
-                        '${college?.university??""}',
+                        '${college?.university?.name??""}',
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontSize: 12.0,

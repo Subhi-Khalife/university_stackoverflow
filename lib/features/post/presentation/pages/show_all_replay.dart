@@ -59,10 +59,10 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                 create: (BuildContext context) => commentBloc,
               ),
             ],
-            child: BlocListener<CommentBloc, CommentState>(
-                listener: (context, state) {
-              loading.dismiss(context);
+            child: BlocListener<CommentBloc, CommentState>(listener: (context, state) {
+              //
               if (state is SuccessAddNewComment) {
+                loading.dismiss(context);
                 commentController.text = "";
                 comments.add(state.addCommentResponse);
                 controller.animateTo(
@@ -71,11 +71,13 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                   duration: const Duration(milliseconds: 300),
                 );
               } else if (state is SuccessUpdateComment) {
+                loading.dismiss(context);
                 comments[state.index] = state.addCommentResponse;
                 commentId = -1;
                 index = 0;
                 isUpdate.value = false;
               } else if (state is SuccessDeleteComment) {
+                loading.dismiss(context);
                 comments.removeAt(state.index);
               }
             }, child: BlocBuilder<PostBloc, PostState>(
@@ -99,8 +101,7 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                           description: widget.comment.description,
                           function: () {},
                           imageUrl: widget?.comment?.user?.profilePic ?? "",
-                          userName: widget.comment.user.firstName +
-                              widget.comment.user.lastName,
+                          userName: widget.comment.user.firstName + widget.comment.user.lastName,
                         ),
                         withPopMenu: false,
                       ),
@@ -136,21 +137,25 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                     commentController: commentController,
                     isUpdateClickIcon: value,
                     sendMessage: () {
-                      loading.show(context);
-                      if (commentId == -1)
-                        commentBloc.add(
-                          AddNewComment(
+                      if (commentController.text.trim().length == 0) {
+                      } else {
+                        FocusScope.of(context).unfocus();
+                        loading.show(context);
+                        if (commentId == -1)
+                          commentBloc.add(
+                            AddNewComment(
+                              description: commentController.text,
+                              commentId: widget.comment.id,
+                            ),
+                          );
+                        else {
+                          print("the index value si $index");
+                          commentBloc.add(UpdateComment(
+                            commentId: commentId,
+                            commentIndex: index,
                             description: commentController.text,
-                            commentId: widget.comment.id,
-                          ),
-                        );
-                      else {
-                        print("the index value si $index");
-                        commentBloc.add(UpdateComment(
-                          commentId: commentId,
-                          commentIndex: index,
-                          description: commentController.text,
-                        ));
+                          ));
+                        }
                       }
                     },
                     cancelUpdate: () {
@@ -186,14 +191,15 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                   child: CommentWidget(
                     commentItem: CommentItem(
                         description: comments[index].description,
-                        imageUrl: comments[index]?.user?.profilePic??"",
+                        imageUrl: comments[index]?.user?.profilePic ?? "",
                         function: () {},
-                        userName: comments[index]?.user?.firstName??"" +
-                            comments[index]?.user?.lastName??""),
+                        userName: comments[index]?.user?.firstName ??
+                            "" + comments[index]?.user?.lastName ??
+                            ""),
                     deleteFunction: () {
                       loading.show(context);
-                      commentBloc.add(DeleteComment(
-                          commentId: comments[index].id, commentIndex: index));
+                      commentBloc
+                          .add(DeleteComment(commentId: comments[index].id, commentIndex: index));
                     },
                     updateFunction: () {
                       isUpdate.value = true;
@@ -219,9 +225,7 @@ class _ShowAllReplay extends State<ShowAllReplay> {
           children: [
             Icon(Icons.verified_user_outlined, color: Colors.white),
             SizedBox(width: 4),
-            Text("usefuls",
-                style: boldStyle(
-                    fontSize: Constant.largeFont, color: Colors.white))
+            Text("usefuls", style: boldStyle(fontSize: Constant.largeFont, color: Colors.white))
           ],
         ),
         Spacer(),
@@ -229,9 +233,7 @@ class _ShowAllReplay extends State<ShowAllReplay> {
           children: [
             Icon(Icons.comment, color: Colors.white),
             SizedBox(width: 4),
-            Text("Emphases",
-                style: boldStyle(
-                    fontSize: Constant.largeFont, color: Colors.white))
+            Text("Emphases", style: boldStyle(fontSize: Constant.largeFont, color: Colors.white))
           ],
         ),
         Spacer(),
@@ -239,9 +241,7 @@ class _ShowAllReplay extends State<ShowAllReplay> {
           children: [
             Icon(Icons.email, color: Colors.white),
             SizedBox(width: 4),
-            Text("Comments",
-                style: boldStyle(
-                    fontSize: Constant.largeFont, color: Colors.white))
+            Text("Comments", style: boldStyle(fontSize: Constant.largeFont, color: Colors.white))
           ],
         ),
       ],

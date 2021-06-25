@@ -25,26 +25,24 @@ part 'post_event.dart';
 part 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
-  final int pageSize = 14;
+  final int pageSize = 15;
   PostBloc() : super(PostState());
-  UseCase addNewPost =
-      SetNewPost(postRepositories: PostRepositoriesImplementation());
-  UseCase getPostsByTap = GetPostsForSelectedTags(
-      postRepositories: PostRepositoriesImplementation());
+  UseCase addNewPost = SetNewPost(postRepositories: PostRepositoriesImplementation());
+  UseCase getPostsByTap =
+      GetPostsForSelectedTags(postRepositories: PostRepositoriesImplementation());
   UseCase<String, File> uploadImage =
       UploadImageUseCase(postRepositories: PostRepositoriesImplementation());
   UseCase<PostDetailModel, GetPostDetailParam> getPostDetails =
       GetPostDetailUseCase(postRepositories: PostRepositoriesImplementation());
-  UseCase<GetAllReplayesModel, GetAllPostReplayesParam>
-      getAllPostReplayesUseCase = GetAllPostReplayesUseCase(
-          postRepositories: PostRepositoriesImplementation());
+  UseCase<GetAllReplayesModel, GetAllPostReplayesParam> getAllPostReplayesUseCase =
+      GetAllPostReplayesUseCase(postRepositories: PostRepositoriesImplementation());
   @override
   Stream<Transition<PostEvent, PostState>> transformEvents(
     Stream<PostEvent> events,
     TransitionFunction<PostEvent, PostState> transitionFn,
   ) {
     return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 200)),
+      events.debounceTime(const Duration(milliseconds: 500)),
       transitionFn,
     );
   }
@@ -54,7 +52,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     if (event is AddNewPost) {
       yield* _mapAddNewPost(event);
     } else if (event is GetPostForSelectedTags) {
-      yield* _mapGetPostForSelectedTags(event);
+      yield* _mapGetPostForSelectedTags(event, state);
     } else if (event is UploadImage) {
       yield* _mapUploadImage(event);
     } else if (event is RemoveImageFromlistEvent) {
@@ -69,8 +67,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   Stream<PostState> _mapGetAllPostReplay(GetAllPostReplay event) async* {
     yield LoadingPostState();
     Either<Failure, GetAllReplayesModel> result =
-        await getAllPostReplayesUseCase(
-            GetAllPostReplayesParam(commentId: event.commentId));
+        await getAllPostReplayesUseCase(GetAllPostReplayesParam(commentId: event.commentId));
     yield result.fold((failure) {
       if (failure is MissingParamException)
         return FailedUploadImage();
@@ -113,14 +110,20 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   Stream<PostState> _mapGetPostForSelectedTags(
-      GetPostForSelectedTags event) async* {
+      GetPostForSelectedTags event, PostState state) async* {
     try {
-      if (event.reloadData)
-        yield state.copyWith(
-            hasReachedMax: false, posts: [], status: PostsStatus.loading);
-      if (state.posts.length == 0)
-        yield state.copyWith(status: PostsStatus.loading);
+      print("The event.reloadData ${event.reloadData}");
+      if (event.reloadData) {
+        state = PostState();
+        yield state;
+      }
+      if (state.hasReachedMax) {
+        yield state;
+        return;
+      }
+      if (state.posts.length == 0) yield state.copyWith(status: PostsStatus.loading);
       final array = await _fetchData(event.id, state.posts.length ~/ pageSize);
+      print("the array size is ${array.length}");
       if (array == null) {
         yield state.copyWith(
           status: PostsStatus.failed,
@@ -147,8 +150,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   Future<List<Posts>> _fetchData(int id, int page) async {
-    Either<Failure, PostsModel> result = await getPostsByTap(
-        GetPostsForSelectedTagsParams(tabId: id, pageNumber: page));
+    Either<Failure, PostsModel> result =
+        await getPostsByTap(GetPostsForSelectedTagsParams(tabId: id, pageNumber: page));
     return result.fold((failure) {
       if (failure is MissingParamException)
         return null;

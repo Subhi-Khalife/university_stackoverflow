@@ -13,6 +13,7 @@ class GetPostDetailApi with HandlingExceptionRequest {
       Map<String, dynamic> map) async {
     ConstantInfo constantInfo = ConstantInfo.getInstance();
     print("The map Value isdsadas $map");
+    print("the token ins ${constantInfo.userInfo.token}");
     final postApi = GetApi<PostDetailModel>(
         token: constantInfo.userInfo.token,
         fromJson: postDetailModelFromJson,

@@ -27,7 +27,7 @@ class _LoginScreen extends State<LoginScreen> {
   TextEditingController _emailController;
   TextEditingController _passwordController;
   LoginBloc loginBloc;
-
+  ValueNotifier<bool>isLookingForPassword=ValueNotifier(false);
   @override
   void initState() {
     super.initState();
@@ -201,16 +201,25 @@ class _LoginScreen extends State<LoginScreen> {
   }
 
   Widget passwordTextField() {
-    return TextFieldApp(
+    return ValueListenableBuilder(valueListenable: isLookingForPassword, builder: (context,value,_){
+return      TextFieldApp(
         controller: _passwordController,
         hintText: "Enter your password",
         withIcon: true,
         icon: Icons.email,
-        isTextFieldPassword: false,
+        isTextFieldPassword: true,
         style: TextStyle(color: Colors.black),
         prefixSvg: "lib/svg/mail_icon.svg",
+        isLookAtPassword:value ,
+        onPressedLookAtPassword: (){
+          isLookingForPassword.value=!isLookingForPassword.value;
+        },
         colorText: Colors.white,
         colorFill: Colors.white);
+    });
+    
+    
+
   }
 
   Widget emailTextField() {

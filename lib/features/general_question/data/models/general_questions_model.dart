@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:university/core/entities/comment.dart';
+import 'package:university/core/entities/user.dart';
 import 'package:university/features/collage_profile/data/models/collage_profile.dart';
 
 GeneralQuestionsModel generalQuestionsModelFromJson(String str) => GeneralQuestionsModel.fromJson(json.decode(str));
@@ -47,6 +48,7 @@ class GeneralQuestionsList {
         this.subject,
         this.comments,
         this.reacts,
+        this.user
     });
 
     int id;
@@ -61,6 +63,7 @@ class GeneralQuestionsList {
     int generationUserYearId;
     String ratesSumRate;
     Subject subject;
+    User user;
     List<Comment> comments;
     List<Comment> reacts;
 
@@ -79,6 +82,8 @@ class GeneralQuestionsList {
         subject: json["subject"] == null ? null : Subject.fromJson(json["subject"]),
         comments: json["comments"] == null ? null : List<Comment>.from(json["comments"].map((x) => Comment.fromJson(x))),
         reacts: json["reacts"] == null ? null : List<Comment>.from(json["reacts"].map((x) => Comment.fromJson(x))),
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
+  
     );
 
     Map<String, dynamic> toJson() => {
@@ -96,5 +101,6 @@ class GeneralQuestionsList {
         "subject": subject == null ? null : subject.toJson(),
         "comments": comments == null ? null : List<dynamic>.from(comments.map((x) => x.toJson())),
         "reacts": reacts == null ? null : List<dynamic>.from(reacts.map((x) => x.toJson())),
+        "user": user == null ? null : user.toJson(),
     };
 }

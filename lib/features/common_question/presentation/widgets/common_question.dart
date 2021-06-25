@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,8 +24,7 @@ class CommonQuestionView extends StatelessWidget {
       child: Container(
         height: 140,
         child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           elevation: 2,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -39,23 +40,20 @@ class CommonQuestionView extends StatelessWidget {
                     maxLines: 2),
                 Spacer(),
                 Text(
-                  "57K views",
-                  style: boldStyle(
-                      fontSize: Constant.smallFont, color: thirdColor),
+                  Random().nextInt(200).toString() + "K",
+                  style: boldStyle(fontSize: Constant.smallFont, color: thirdColor),
                 ),
                 Spacer(),
                 Center(
                   child: Transform.translate(
-                    offset: Offset(0, 10),
+                    offset: Offset(0, 13),
                     child: Container(
                       child: Card(
                         color: Theme.of(context).primaryColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                         child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 6, bottom: 6, right: 12, left: 12),
-                          child: Text("Click to answer",
+                          padding: const EdgeInsets.only(top: 6, bottom: 6, right: 12, left: 12),
+                          child: Text("View answer",
                               style: regularStyle(
                                   fontSize: Constant.smallFont,
                                   color: Theme.of(context).accentColor)),

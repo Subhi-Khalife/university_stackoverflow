@@ -91,6 +91,7 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
     seachItems.clear();
     List<Taps> taps = state.taps;
     for (int i = 0; i < taps.length; i++) {
+      if(taps[i].isPublic)
       seachItems.add(SearchModel(id: taps[i].id, name: taps[i].name));
     }
     showDialog(

@@ -50,8 +50,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(
-          widget: Text("Post Info"), context: context, centerTitle: false),
+      appBar: appBar(widget: Text("Post Info"), context: context, centerTitle: false),
       body: Stack(
         children: [
           MultiBlocProvider(
@@ -65,13 +64,9 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
             ],
             child: BlocListener<PostBloc, PostState>(
               listener: (context, state) {},
-              child: BlocListener<CommentBloc, CommentState>(
-                  listener: (context, state) {
-                if(state is LoadingState)
-                {
-
-                }
-                else if (state is SuccessAddNewComment) {
+              child: BlocListener<CommentBloc, CommentState>(listener: (context, state) {
+                if (state is LoadingState) {
+                } else if (state is SuccessAddNewComment) {
                   loading.dismiss(context);
                   commentController.text = "";
                   comments.add(state.addCommentResponse);
@@ -92,7 +87,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                 } else if (state is InvalidCommentState) {
                   loading.dismiss(context);
                   showMessage(state.message);
-                }else{
+                } else {
                   loading.dismiss(context);
                 }
               }, child: BlocBuilder<PostBloc, PostState>(
@@ -112,16 +107,13 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                       children: [
                         Text(
                           "${state.postDetail.data.title}",
-                          style: boldStyle(
-                              fontSize: Constant.largeFont,
-                              color: Colors.white),
+                          style: boldStyle(fontSize: Constant.largeFont, color: Colors.white),
                         ),
                         SizedBox(height: 10),
                         Card(
                           elevation: 4,
                           shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(4))),
+                              borderRadius: BorderRadius.all(Radius.circular(4))),
                           child: Html(
                             data: state.postDetail.data.description,
                             customRender: getCustomRender(),
@@ -161,20 +153,24 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                     commentController: commentController,
                     isUpdateClickIcon: value,
                     sendMessage: () {
-                      loading.show(context);
-                      if (commentId == -1)
-                        commentBloc.add(
-                          AddNewComment(
+                      if (commentController.text.trim().length == 0) {
+                      } else {
+                        FocusScope.of(context).unfocus();
+                        loading.show(context);
+                        if (commentId == -1)
+                          commentBloc.add(
+                            AddNewComment(
+                              description: commentController.text,
+                              postId: widget.postId,
+                            ),
+                          );
+                        else {
+                          commentBloc.add(UpdateComment(
+                            commentId: commentId,
+                            commentIndex: selectedIndex,
                             description: commentController.text,
-                            postId: widget.postId,
-                          ),
-                        );
-                      else {
-                        commentBloc.add(UpdateComment(
-                          commentId: commentId,
-                          commentIndex: selectedIndex,
-                          description: commentController.text,
-                        ));
+                          ));
+                        }
                       }
                     },
                     cancelUpdate: () {
@@ -215,20 +211,18 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                       function: () {
                         Navigator.of(context)
                             .push(MaterialPageRoute(
-                                builder: (context) =>
-                                    ShowAllReplay(comment: comments[index])))
+                                builder: (context) => ShowAllReplay(comment: comments[index])))
                             .then((value) {
                           postBloc.add(GetPostDetail(postId: widget.postId));
                         });
                       },
                       imageUrl: comments[index]?.user?.profilePic ?? "",
-                      userName: comments[index].user.firstName +
-                          comments[index].user.lastName,
+                      userName: comments[index].user.firstName + comments[index].user.lastName,
                     ),
                     deleteFunction: () {
                       loading.show(context);
-                      commentBloc.add(DeleteComment(
-                          commentId: comments[index].id, commentIndex: index));
+                      commentBloc
+                          .add(DeleteComment(commentId: comments[index].id, commentIndex: index));
                     },
                     updateFunction: () {
                       isUpdate.value = true;
@@ -267,9 +261,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
             Icon(Icons.verified_user_outlined, color: Colors.white),
             SizedBox(width: 4),
             Text("usefuls",
-                style: boldStyle(
-                    fontSize: Constant.smallFont,
-                    color: Theme.of(context).hintColor))
+                style: boldStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor))
           ],
         ),
         Spacer(),
@@ -278,9 +270,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
             Icon(Icons.comment, color: Theme.of(context).hintColor),
             SizedBox(width: 4),
             Text("Emphases",
-                style: boldStyle(
-                    fontSize: Constant.smallFont,
-                    color: Theme.of(context).hintColor))
+                style: boldStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor))
           ],
         ),
         Spacer(),
@@ -289,9 +279,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
             Icon(Icons.email, color: Theme.of(context).hintColor),
             SizedBox(width: 4),
             Text("Comments",
-                style: boldStyle(
-                    fontSize: Constant.smallFont,
-                    color: Theme.of(context).hintColor))
+                style: boldStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor))
           ],
         ),
       ],
@@ -303,20 +291,17 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
       children: [
         Text(
           " ${state.postDetail.data.reacts.length} usefuls",
-          style: regularStyle(
-              fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
+          style: regularStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
         ),
         SizedBox(width: 10),
         Text(
           " 0 emphases",
-          style: regularStyle(
-              fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
+          style: regularStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
         ),
         Spacer(),
         Text(
           " ${state.postDetail.data.comments.length} Comments",
-          style: regularStyle(
-              fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
+          style: regularStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
         )
       ],
     );

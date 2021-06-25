@@ -14,6 +14,7 @@ class GetPostsForSelectedTags
   Future<Either<Failure, PostsModel>> call(
       GetPostsForSelectedTagsParams params) async {
     final _newPostParam = params.getMap();
+    print("The _newPostParam $_newPostParam");
     final value =
         await postRepositories.getPostsForSelectedTags(items: _newPostParam);
     return value.fold(
