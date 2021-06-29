@@ -6,6 +6,7 @@ import 'package:university/core/widget/loading_view.dart';
 import 'package:university/features/advertisement/data/models/advertisment.dart';
 import '../../../../core/widget/colors.dart';
 import '../bloc/bloc/advertisment_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AdvertismentScreen extends StatefulWidget {
   @override
@@ -50,7 +51,7 @@ class _AdvertismentScreenState extends State<AdvertismentScreen> {
             } else if (state is SuccessGettingAdsState) {
               return Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 16,right:16),
+                  padding: const EdgeInsets.only(left: 16, right: 16),
                   child: Container(
                       height: 350,
                       width: double.infinity,
@@ -73,19 +74,33 @@ class _AdvertismentScreenState extends State<AdvertismentScreen> {
     );
   }
 
+  launchURL({@required String url}) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   Widget showSwipper(AdvertisementModel model) {
     return new Swiper(
       itemBuilder: (BuildContext context, int index) {
-        return Container(
-          child: new Image.network(
-            model.data[index].imageUrl,
-            fit: BoxFit.cover,
+        return InkWell(
+          onTap: () {
+            print("the linke is ${model.data[index].link}");
+            launchURL(url: model.data[index].link);
+          },
+          child: Container(
+            child: new Image.network(
+              model.data[index].imageUrl,
+              fit: BoxFit.cover,
+            ),
           ),
         );
       },
       itemCount: model.data.length,
       autoplay: true,
-      viewportFraction:1,
+      viewportFraction: 1,
       scale: 1,
     );
   }

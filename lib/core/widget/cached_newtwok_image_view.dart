@@ -12,8 +12,9 @@ class CachedNetworkImageView extends StatelessWidget {
   final Function function;
   final bool witRaduis;
   final withBaseUrl;
+  final BoxFit boxFit;
   CachedNetworkImageView(
-      {this.url = "", this.function, this.witRaduis = false, this.withBaseUrl = true});
+      {this.url = "", this.function, this.witRaduis = false, this.withBaseUrl = true,this.boxFit=BoxFit.cover});
   @override
   Widget build(BuildContext context) {
     String _sendUrl = "";
@@ -28,7 +29,7 @@ class CachedNetworkImageView extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular((witRaduis) ? 12 : 0)),
         child: CachedNetworkImage(
           imageUrl: _sendUrl,
-          fit: BoxFit.cover,
+          fit: boxFit,
           placeholder: (context, imageUrl) => Center(
               child: CircularProgressIndicator(
             backgroundColor: colorThemApp,

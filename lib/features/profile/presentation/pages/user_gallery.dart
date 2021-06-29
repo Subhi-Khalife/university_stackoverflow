@@ -6,7 +6,7 @@ import 'package:university/core/widget/font_style.dart';
 import 'package:university/features/collage_profile/presentation/pages/gallery_details_page.dart';
 
 class GalleryNoramlUserPage extends StatelessWidget {
-  final  List<Galleryuser> galleries;
+  final List<Galleryuser> galleries;
 
   const GalleryNoramlUserPage({
     Key key,
@@ -25,9 +25,8 @@ class GalleryNoramlUserPage extends StatelessWidget {
             ),
             Text(
               "Gallery",
-              style: boldStyle(
-                  fontSize: Constant.xlargeFont + 6,
-                  color: Theme.of(context).hintColor),
+              style:
+                  boldStyle(fontSize: Constant.xlargeFont + 6, color: Theme.of(context).hintColor),
               textAlign: TextAlign.center,
             ),
             SizedBox(
@@ -66,7 +65,7 @@ class GalleryNoramlUserPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(4),
                                 image: DecorationImage(
                                   image: NetworkImage(
-                                    galleries[index]?.gallery?.logo??"",
+                                    galleries[index]?.gallery?.logo ?? "",
                                   ),
                                   fit: BoxFit.cover,
                                 ),

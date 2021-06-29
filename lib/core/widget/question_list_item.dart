@@ -40,8 +40,8 @@ class QuestionListItem extends StatelessWidget {
                         fontSize: Constant.largeFont, color: Theme.of(context).primaryColor),
                   ),
                   Html(
-                    data: questionListItemParam.description.length > 20
-                        ? questionListItemParam.description.substring(0, 20)
+                    data: questionListItemParam.description.length > 30
+                        ? questionListItemParam.description.substring(0, 30)+" \n read more.. "
                         : questionListItemParam.description,
                   ),
                   SizedBox(height: 4),

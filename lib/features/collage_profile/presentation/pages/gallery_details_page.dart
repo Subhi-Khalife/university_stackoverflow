@@ -84,7 +84,7 @@ class GalleryDetailsPage extends StatelessWidget {
                       SizedBox(height: 8),
                       SizedBox(height: 8),
                       Text(
-                        "Created at :",
+                        "Published at :",
                         style: boldStyle(
                             fontSize: Constant.largeFont,
                             color: Theme.of(context).hintColor),

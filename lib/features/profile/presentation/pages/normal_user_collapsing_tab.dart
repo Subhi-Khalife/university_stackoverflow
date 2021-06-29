@@ -1,5 +1,4 @@
-import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
-    as ex;
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart' as ex;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:university/core/entities/user.dart';
@@ -24,8 +23,7 @@ class CollapsingNormalUser extends StatefulWidget {
   _CollapsingNormalUser createState() => new _CollapsingNormalUser();
 }
 
-class _CollapsingNormalUser extends State<CollapsingNormalUser>
-    with TickerProviderStateMixin {
+class _CollapsingNormalUser extends State<CollapsingNormalUser> with TickerProviderStateMixin {
   TabController primaryTC;
   double size = 40.0;
   double scale = 0.0;
@@ -90,40 +88,35 @@ class _CollapsingNormalUser extends State<CollapsingNormalUser>
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            padding:
-                                EdgeInsets.only(left: 15, right: 15, top: 10),
+                            padding: EdgeInsets.only(left: 15, right: 15, top: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
                                   "Collage:",
-                                  style: TextStyle(
-                                      color: Theme.of(context).accentColor),
+                                  style: TextStyle(color: Theme.of(context).accentColor),
                                 ),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Text(
                                   widget.user.college.name,
-                                  style: TextStyle(
-                                      color: Theme.of(context).hintColor),
+                                  style: TextStyle(color: Theme.of(context).hintColor),
                                 ),
                                 SizedBox(
                                   height: 15,
                                 ),
                                 Text(
                                   "Collage website",
-                                  style: TextStyle(
-                                      color: Theme.of(context).accentColor),
+                                  style: TextStyle(color: Theme.of(context).accentColor),
                                 ),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Text(
                                   widget?.user?.college?.site,
-                                  style: TextStyle(
-                                      color: Theme.of(context).hintColor),
+                                  style: TextStyle(color: Theme.of(context).hintColor),
                                 ),
                                 Divider(
                                   thickness: 2,
@@ -134,29 +127,22 @@ class _CollapsingNormalUser extends State<CollapsingNormalUser>
                                 ),
                                 IntrinsicHeight(
                                   child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       Column(
                                         children: [
                                           Text("Posts number",
                                               style: TextStyle(
                                                   fontSize: 15,
-                                                  color: Theme.of(context)
-                                                      .accentColor)),
+                                                  color: Theme.of(context).accentColor)),
                                           SizedBox(
                                             height: 8,
                                           ),
-                                          Text(
-                                              widget?.user?.posts?.length
-                                                      ?.toString() ??
-                                                  "0",
+                                          Text(widget?.user?.posts?.length?.toString() ?? "0",
                                               style: TextStyle(
                                                   fontSize: 15,
-                                                  color: Theme.of(context)
-                                                      .hintColor,
+                                                  color: Theme.of(context).hintColor,
                                                   fontWeight: FontWeight.bold)),
                                         ],
                                       ),
@@ -182,8 +168,7 @@ class _CollapsingNormalUser extends State<CollapsingNormalUser>
                     labelColor: Theme.of(context).primaryColor,
                     unselectedLabelColor: Colors.black26,
                     tabs: widget.tabs,
-                    overlayColor: MaterialStateProperty.all(
-                        Theme.of(context).primaryColor),
+                    overlayColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
                     automaticIndicatorColorAdjustment: true,
                     indicatorColor: Theme.of(context).primaryColor,
                   ),
@@ -212,15 +197,9 @@ class _CollapsingNormalUser extends State<CollapsingNormalUser>
       backgroundColor: Theme.of(context).primaryColor,
       actions: [
         Row(
-          //
           children: [
             IconButton(
               icon: Icon(Icons.share, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.edit),
-              color: Colors.white,
               onPressed: () {},
             ),
             SizedBox(
@@ -231,8 +210,7 @@ class _CollapsingNormalUser extends State<CollapsingNormalUser>
       ],
       flexibleSpace: FlexibleSpaceBar(
           collapseMode: CollapseMode.pin,
-          titlePadding:
-              EdgeInsets.only(top: 1, bottom: 10, left: 50, right: 50),
+          titlePadding: EdgeInsets.only(top: 1, bottom: 10, left: 50, right: 50),
           stretchModes: [StretchMode.blurBackground],
           title: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -251,7 +229,7 @@ class _CollapsingNormalUser extends State<CollapsingNormalUser>
                       child: Padding(
                         padding: EdgeInsets.only(right: 30),
                         child: Text(
-                          widget.user.firstName+" " + widget.user.lastName,
+                          widget.user.firstName + " " + widget.user.lastName,
                           softWrap: true,
                           style: TextStyle(fontSize: 15),
                           overflow: titleOverFlow,
@@ -262,9 +240,7 @@ class _CollapsingNormalUser extends State<CollapsingNormalUser>
                       child: Text(
                         widget.user.university.name,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.white.withOpacity(0.6)),
+                        style: TextStyle(fontSize: 12.0, color: Colors.white.withOpacity(0.6)),
                       ),
                     ),
                   ],
@@ -337,8 +313,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => _tabBar.preferredSize.height;
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       color: Color(0XFFEFEFEF), // ADD THE COLOR YOU WANT AS BACKGROUND.
       child: _tabBar,

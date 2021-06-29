@@ -19,8 +19,7 @@ class NormalUserProfile extends StatefulWidget {
   }
 }
 
-class _ProfileProviderScreen extends State<NormalUserProfile>
-    with AutomaticKeepAliveClientMixin {
+class _ProfileProviderScreen extends State<NormalUserProfile> with AutomaticKeepAliveClientMixin {
   ScrollController scrollController = ScrollController();
   CollageProfileBloc collageProfileBloc;
   ConstantInfo constantInfo = ConstantInfo.getInstance();
