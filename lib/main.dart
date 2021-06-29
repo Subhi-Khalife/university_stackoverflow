@@ -6,6 +6,7 @@ import 'package:university/features/tabs/presentation/pages/tabs_screen.dart';
 import 'features/profile/presentation/bloc/bloc/profile_bloc.dart';
 import 'features/rate/presentation/screen/rate_screen.dart';
 import 'features/university_with_collage/presentation/bloc/bloc/university_bloc.dart';
+import 'features/user_searches/search/presentation/pages/all_search_screen.dart';
 
 void main() {
   runApp(
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: SplashScreen(),
+      home: AllSearchScreen(),
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:university/core/widget/container_app_decoration.dart';
 import 'package:university/core/widget/splash_screen.dart';
 import 'package:university/features/sign_up/presentation/pages/sign_up_screen.dart';
-
 import '../../../../core/widget/app_button.dart';
 import '../../../../core/widget/colors.dart';
 import '../../../../core/widget/config_screeen.dart';
