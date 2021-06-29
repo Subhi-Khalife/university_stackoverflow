@@ -45,17 +45,17 @@ class QuestionListItem extends StatelessWidget {
                         : questionListItemParam.description,
                   ),
                   SizedBox(height: 4),
-                    Card(
-          elevation: 0,
-          color: Colors.grey.shade100,
-          child: Padding(
-            padding: const EdgeInsets.all(3.0),
-            child: Text(
-              questionListItemParam.tapTitle,
-              style: lightStyle(fontSize: Constant.mediumFont, color: Colors.black54),
-            ),
-          ),
-        ),
+                  Card(
+                    elevation: 0,
+                    color: Colors.grey.shade100,
+                    child: Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Text(
+                        questionListItemParam.tapTitle,
+                        style: lightStyle(fontSize: Constant.mediumFont, color: Colors.black54),
+                      ),
+                    ),
+                  ),
                   Divider(),
                   showReaction(questionListItemParam),
                   SizedBox(height: 8),
@@ -157,7 +157,8 @@ class QuestionListItem extends StatelessWidget {
             width: 30,
             height: 30,
             child: CachedNetworkImageView(
-              url:item.imageUrl ,
+              url: item.imageUrl,
+              withBaseUrl: false,
             ),
           ),
         ),
@@ -197,6 +198,5 @@ class QuestionListItemParam {
       @required this.title,
       @required this.description,
       @required this.imageUrl,
-      @required this.tapTitle
-      });
+      @required this.tapTitle});
 }

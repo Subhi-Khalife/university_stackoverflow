@@ -26,9 +26,9 @@ part 'post_event.dart';
 part 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
-  final int pageSize = 14;
+  final int pageSize = 20;
   PostState item;
-  PostBloc({this.item}) : super(item??PostState());
+  PostBloc({this.item}) : super(item ?? PostState());
   UseCase addNewPost = SetNewPost(postRepositories: PostRepositoriesImplementation());
   UseCase getPostsByTap =
       GetPostsForSelectedTags(postRepositories: PostRepositoriesImplementation());
@@ -131,10 +131,16 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   Stream<PostState> _mapGetPostForSelectedTags(GetPostForSelectedTags event) async* {
     try {
-      if (event.reloadData)
+      if (state.hasReachedMax && !event.reloadData) {
+        yield state;
+        return;
+      }
+      if (event.reloadData) {
         yield state.copyWith(hasReachedMax: false, posts: [], status: PostsStatus.loading);
+      }
       if (state.posts.length == 0) yield state.copyWith(status: PostsStatus.loading);
       final array = await _fetchData(event.id, state.posts.length ~/ pageSize);
+      print("The size is ${array.length}");
       if (array == null) {
         yield state.copyWith(
           status: PostsStatus.failed,
@@ -205,6 +211,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   bool hasReachedMax(int number) {
-    return number < pageSize;
+    if (number < pageSize) return true;
+    return false;
   }
 }

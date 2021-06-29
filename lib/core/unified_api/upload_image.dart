@@ -47,8 +47,7 @@ class UploadImageApi extends InitialApi {
       // request.fields['type'] = imageType;
       request.headers.addAll(header);
       request.files.add(multipartFile);
-      http.StreamedResponse response =
-          await request.send().timeout(Duration(seconds: 300));
+      http.StreamedResponse response = await request.send().timeout(Duration(seconds: 300));
       String data = "";
       String x = await response.stream.transform(utf8.decoder).single;
       UploadImageModel uploadImageModel = uploadImageModelFromJson(x);
@@ -57,7 +56,6 @@ class UploadImageApi extends InitialApi {
       } else {
         throw getException(statusCode: response.statusCode);
       }
-      print("the x value is $x");
     } catch (exception) {
       throw (exception);
     }

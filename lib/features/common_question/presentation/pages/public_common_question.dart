@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:university/core/widget/Drawer.dart';
-import 'package:university/core/widget/FontFamily.dart';
 import 'package:university/core/widget/app_bar.dart';
 import 'package:university/core/widget/bottom_loader.dart';
 import 'package:university/core/widget/container_app_decoration.dart';
@@ -12,11 +11,9 @@ import '../../../../core/widget/app_button.dart';
 import '../../../../core/widget/bloc_error_screen.dart';
 import '../../../../core/widget/colors.dart';
 import '../../../../core/widget/comment_text_field.dart';
-import '../../../../core/widget/config_screeen.dart';
 import '../../../../core/widget/constant.dart';
 import '../../../../core/widget/font_style.dart';
 import '../../../../core/widget/loading_view.dart';
-import '../../../collage_profile/presentation/pages/new_collage_profile.dart';
 import '../../../login/presentation/pages/login_screen.dart';
 import '../../../sign_up/presentation/pages/sign_up_screen.dart';
 import '../../../university_with_collage/presentation/bloc/bloc/university_bloc.dart';
@@ -27,7 +24,11 @@ import '../widgets/common_question.dart';
 class PublicCommonQuestion extends StatefulWidget {
   int collageId;
   bool needShowButtomSheet;
-  PublicCommonQuestion({this.collageId = -1, this.needShowButtomSheet = true});
+  bool needToShowBackToOriginState;
+  PublicCommonQuestion(
+      {this.collageId = -1,
+      this.needShowButtomSheet = true,
+      this.needToShowBackToOriginState = true});
   @override
   State<StatefulWidget> createState() {
     return _PublicCommonQuestion();
@@ -75,27 +76,50 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion> with TickerProvi
               if (state.commonItemsList.length != 0) return showInfo(state);
               return BlocErrorScreen(
                 title: "Error Happened try again",
-                function: () {},
+                function: () {
+                  blocItem.add(GetAllCommonQuestionEvent(reloadData: true));
+                },
               );
             } else if (state.status == CommonQuestionStatus.success) {
               return Stack(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 18, right: 18),
-                    child: CommentTextField(
-                      cancelUpdate: () {},
-                      commentController: searchController,
-                      isUpdateClickIcon: false,
-                      title: "Filter your search",
-                      iconData: Icons.sort,
-                      readOnly: true,
-                      sendMessage: () {
-                        return showButtomSheet();
-                      },
+                  if (widget.collageId == -1)
+                    Padding(
+                      padding: EdgeInsets.only(left: 18, right: 18),
+                      child: CommentTextField(
+                        cancelUpdate: () {},
+                        commentController: searchController,
+                        isUpdateClickIcon: false,
+                        title: "Filter your search",
+                        iconData: Icons.sort,
+                        readOnly: true,
+                        sendMessage: () {
+                          return showButtomSheet();
+                        },
+                      ),
                     ),
-                  ),
+                  if (widget.collageId != -1 && widget.needToShowBackToOriginState)
+                    InkWell(
+                      onTap: () {
+                        widget.collageId = -1;
+                        blocItem.add(GetAllCommonQuestionEvent(reloadData: true));
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(Icons.arrow_back, color: Colors.white),
+                          SizedBox(width: 8),
+                          Text(
+                            "Click to back to defult",
+                            style: boldStyle(fontSize: Constant.mediumFont, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 50),
+                    padding: (widget.collageId == -1)
+                        ? EdgeInsets.only(top: 50)
+                        : EdgeInsets.only(top: 10),
                     child: showInfo(state),
                   )
                 ],

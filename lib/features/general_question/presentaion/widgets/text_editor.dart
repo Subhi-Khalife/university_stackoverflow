@@ -1,4 +1,5 @@
 library flutter_summernote;
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
@@ -65,8 +66,7 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
   TabsBloc tabsBloc;
   void handleRequest(HttpRequest request) {
     try {
-      if (request.method == 'GET' &&
-          request.uri.queryParameters['query'] == "getRawTeXHTML") {
+      if (request.method == 'GET' && request.uri.queryParameters['query'] == "getRawTeXHTML") {
       } else {}
     } catch (e) {
       print('Exception in handleRequest: $e');
@@ -152,19 +152,15 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
               },
               onWebViewCreated: (webViewController) {
                 _controller = webViewController;
-                final String contentBase64 =
-                    base64Encode(const Utf8Encoder().convert(_page));
+                final String contentBase64 = base64Encode(const Utf8Encoder().convert(_page));
                 _controller.loadUrl('data:text/html;base64,$contentBase64');
               },
               javascriptMode: JavascriptMode.unrestricted,
               gestureNavigationEnabled: true,
               gestureRecognizers: [
-                Factory(
-                    () => VerticalDragGestureRecognizer()..onUpdate = (_) {}),
+                Factory(() => VerticalDragGestureRecognizer()..onUpdate = (_) {}),
               ].toSet(),
-              javascriptChannels: <JavascriptChannel>[
-                getTextJavascriptChannel(context)
-              ].toSet(),
+              javascriptChannels: <JavascriptChannel>[getTextJavascriptChannel(context)].toSet(),
               onPageFinished: (String url) {
                 if (widget.hint != null) {
                   setHint(widget.hint);
@@ -187,10 +183,9 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
               Expanded(
                 child: GestureDetector(
                   onTap: () => _attach(context),
-                  child: Row(children: <Widget>[
-                    Icon(Icons.attach_file),
-                    Text("Attachments")
-                  ], mainAxisAlignment: MainAxisAlignment.center),
+                  child: Row(
+                      children: <Widget>[Icon(Icons.attach_file), Text("Attachments")],
+                      mainAxisAlignment: MainAxisAlignment.center),
                 ),
               ),
               Expanded(
@@ -199,17 +194,15 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
                     String data = await getText();
                     Clipboard.setData(new ClipboardData(text: data));
                   },
-                  child: Row(children: <Widget>[
-                    Icon(Icons.content_copy),
-                    Text("Copy")
-                  ], mainAxisAlignment: MainAxisAlignment.center),
+                  child: Row(
+                      children: <Widget>[Icon(Icons.content_copy), Text("Copy")],
+                      mainAxisAlignment: MainAxisAlignment.center),
                 ),
               ),
               Expanded(
                 child: GestureDetector(
                   onTap: () async {
-                    ClipboardData data =
-                        await Clipboard.getData(Clipboard.kTextPlain);
+                    ClipboardData data = await Clipboard.getData(Clipboard.kTextPlain);
 
                     String txtIsi = data.text
                         .replaceAll("'", '\\"')
@@ -220,14 +213,12 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
                         .replaceAll("\n\n", "<br/>")
                         .replaceAll("\r", " ")
                         .replaceAll('\r\n', " ");
-                    String txt =
-                        "\$('.note-editable').append( '" + txtIsi + "');";
+                    String txt = "\$('.note-editable').append( '" + txtIsi + "');";
                     _controller.evaluateJavascript(txt);
                   },
-                  child: Row(children: <Widget>[
-                    Icon(Icons.content_paste),
-                    Text("Paste")
-                  ], mainAxisAlignment: MainAxisAlignment.center),
+                  child: Row(
+                      children: <Widget>[Icon(Icons.content_paste), Text("Paste")],
+                      mainAxisAlignment: MainAxisAlignment.center),
                 ),
               )
             ]),
@@ -260,9 +251,7 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
                         children: [
                           Text(
                             "Your Images",
-                            style: TextStyle(
-                                color: colorThemApp,
-                                fontSize: Constant.largeFont),
+                            style: TextStyle(color: colorThemApp, fontSize: Constant.largeFont),
                           ),
                           Container(
                             width: 200,
@@ -290,9 +279,7 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
                             return Center(
                               child: Text(
                                 "No image selected yet",
-                                style: boldStyle(
-                                    fontSize: Constant.largeFont,
-                                    color: firstColor),
+                                style: boldStyle(fontSize: Constant.largeFont, color: firstColor),
                               ),
                             );
                           }
@@ -324,15 +311,11 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
                                         ),
                                       ),
                                       CircleAvatar(
-                                        backgroundColor:
-                                            Colors.white60.withOpacity(0.7),
+                                        backgroundColor: Colors.white60.withOpacity(0.7),
                                         child: IconButton(
-                                            icon: Icon(Icons.clear,
-                                                color: Colors.black),
+                                            icon: Icon(Icons.clear, color: Colors.black),
                                             onPressed: () {
-                                              postBloc.add(
-                                                  RemoveImageFromlistEvent(
-                                                      index: index));
+                                              postBloc.add(RemoveImageFromlistEvent(index: index));
                                             }),
                                       )
                                     ],
@@ -444,8 +427,8 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
       context: context,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12), topRight: Radius.circular(12))),
+          borderRadius:
+              BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12))),
       enableDrag: true,
       builder: (BuildContext context) {
         return BlocProvider<GeneralQuestionBloc>.value(
@@ -482,6 +465,16 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             DropDownTextField(
+                              hintText: 'select your year',
+                              errorText: "",
+                              handleTap: () {
+                                showSemantic = false;
+                                generalQuestionBloc.add(GetFilters());
+                              },
+                              color: Theme.of(context).hintColor,
+                              controller: yearController,
+                            ),
+                            DropDownTextField(
                               hintText: 'select your sematic',
                               errorText: "",
                               handleTap: () {
@@ -492,26 +485,16 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
                               controller: semanticController,
                             ),
                             DropDownTextField(
-                              hintText: 'select your years',
+                              hintText: 'select your Subject',
                               errorText: "",
                               handleTap: () {
-                                showSemantic = false;
-                                generalQuestionBloc.add(GetFilters());
-                              },
-                              color: Theme.of(context).hintColor,
-                              controller: yearController,
-                            ),
-                            DropDownTextField(
-                              hintText: 'select your Subjects',
-                              errorText: "",
-                              handleTap: () {
-                                if (semanticId == -1)
-                                  showMessage("please add semantic");
-                                else if (yearsId == -1)
+                                if (yearsId == -1)
                                   showMessage("please add years");
+                                else if (semanticId == -1)
+                                  showMessage("please add semester");
                                 else {
-                                  generalQuestionBloc.add(GetYearSemester(
-                                      semesterId: semanticId, yearId: yearsId));
+                                  generalQuestionBloc.add(
+                                      GetYearSemester(semesterId: semanticId, yearId: yearsId));
                                 }
                               },
                               color: Theme.of(context).hintColor,
@@ -544,10 +527,7 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
         name: 'GetTextSummernote',
         onMessageReceived: (JavascriptMessage message) {
           String isi = message.message;
-          if (isi.isEmpty ||
-              isi == "<p></p>" ||
-              isi == "<p><br></p>" ||
-              isi == "<p><br/></p>") {
+          if (isi.isEmpty || isi == "<p></p>" || isi == "<p><br></p>" || isi == "<p><br/></p>") {
             isi = "";
           }
           setState(() {
@@ -573,15 +553,12 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
         .replaceAll("\r", " ")
         .replaceAll('\r\n', " ");
     String txt =
-        "document.getElementsByClassName('note-editable')[0].innerHTML = '" +
-            txtIsi +
-            "';";
+        "document.getElementsByClassName('note-editable')[0].innerHTML = '" + txtIsi + "';";
     _controller.evaluateJavascript(txt);
   }
 
   setFullContainer() {
-    _controller.evaluateJavascript(
-        '\$("#summernote").summernote("fullscreen.toggle");');
+    _controller.evaluateJavascript('\$("#summernote").summernote("fullscreen.toggle");');
   }
 
   setFocus() {
@@ -611,10 +588,7 @@ class FlutterSummernoteState extends State<FlutterSummernote> {
             padding: const EdgeInsets.only(left: 4),
             child: Text(
               title,
-              style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400),
+              style: TextStyle(color: Colors.black54, fontSize: 16, fontWeight: FontWeight.w400),
             ),
           )
         ],

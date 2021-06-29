@@ -8,6 +8,8 @@ abstract class CommonQuestionEvent extends Equatable {
 }
 
 class GetAllCommonQuestionEvent extends CommonQuestionEvent{
+  final bool reloadData;
+  GetAllCommonQuestionEvent({this.reloadData=false});
 }
 
 

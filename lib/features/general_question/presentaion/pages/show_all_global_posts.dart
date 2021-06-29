@@ -87,7 +87,7 @@ class _ShowAllGlobalPosts extends State<ShowAllGlobalPosts> {
     return Scaffold(
         appBar: appBar(
           widget: Text(
-            "Questions",
+            "Public questions",
             style: boldStyle(fontSize: Constant.mediumFont, color: Theme.of(context).hintColor),
           ),
           context: context,
@@ -130,7 +130,7 @@ class _ShowAllGlobalPosts extends State<ShowAllGlobalPosts> {
                 description: post[index].description,
                 imageUrl: post[index]?.user?.profilePic??"",
                 commentLength: post[index].comments.length,
-                tapTitle: "Public Question ",
+                tapTitle:  post[index].subject.name,
                 navigatorFunction: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ShowPostDetailScreen(postId: post[index].id)));

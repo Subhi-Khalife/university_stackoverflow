@@ -12,10 +12,8 @@ class GetAllCommonQuestionForCollage
   @override
   Future<Either<Failure, CommonQuestionModel>> call(
       GetAllCommonQuestionForCollageParam params) async {
-    final finalResult =
-        await commonQuestionRepositories.getCommonQuestionForCollage(
-            params.collageId,
-            params.pageNumber == 0 ? null : params.getParam());
+    final finalResult = await commonQuestionRepositories.getCommonQuestionForCollage(
+        params.collageId, params.pageNumber == 0 ? null : params.getParam());
 
     return finalResult.fold((failure) => Left(failure), (body) => Right(body));
   }
@@ -25,5 +23,5 @@ class GetAllCommonQuestionForCollageParam {
   String collageId;
   int pageNumber;
   GetAllCommonQuestionForCollageParam({this.collageId, this.pageNumber});
-  Map<String, dynamic> getParam() => {"page": pageNumber};
+  Map<String, dynamic> getParam() => {"page": pageNumber + 1};
 }

@@ -131,6 +131,8 @@ class GalleryDetailsPage extends StatelessWidget {
                                                     url: e?.user?.profilePic ??
                                                         "",
                                                     witRaduis: true,
+                                                    withBaseUrl: false,
+                                                    
                                                     function: () {
                                                       Navigator.of(context).push(
                                                           MaterialPageRoute(
@@ -144,7 +146,7 @@ class GalleryDetailsPage extends StatelessWidget {
                                                 ),
                                                 SizedBox(height: 10),
                                                 Text(
-                                                  e.user.firstName +
+                                                  e.user.firstName +" "+
                                                       e.user.lastName,
                                                   style: regularStyle(
                                                     fontSize:

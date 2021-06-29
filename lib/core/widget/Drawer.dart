@@ -5,6 +5,7 @@ import 'package:university/core/entities/common_question.dart';
 import 'package:university/core/widget/colors.dart';
 import 'package:university/core/widget/constant.dart';
 import 'package:university/core/widget/font_style.dart';
+import 'package:university/core/widget/loading_view.dart';
 import 'package:university/core/widget/show_message.dart';
 import 'package:university/features/collage_profile/presentation/pages/new_collage_profile.dart';
 import 'package:university/features/collage_profile/presentation/pages/profile_page.dart';
@@ -102,10 +103,7 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
               ),
             );
           } else if (state is UniversityIsLoadingState) {
-            return Center(
-                child: CircularProgressIndicator(
-              backgroundColor: colorThemApp,
-            ));
+            return LoadingView();
           } else if (state is UniversityIsLoadErrorState) {
             return Container(
               color: Colors.red,
@@ -135,18 +133,19 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
           create: (context) => UniversityBloc()..add(FetchUiversity()),
           child: BlocBuilder<UniversityBloc, UniversityState>(builder: (context, state) {
             return ListView(
+              padding: EdgeInsets.only(top:22),
               children: [
                 Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: Text(
-                    "Explore multi university",
+                    "Explore multi universities",
                     style: boldStyle(
                         fontSize: Constant.mediumFont, color: Theme.of(context).hintColor),
                   ),
                 ),
-                SizedBox(height: 4),
+                SizedBox(height:9),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: dropDownCollage(),
                 ),
                 AppButton(
@@ -243,7 +242,7 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
               ),
               SizedBox(width: 15),
               Text(
-                "Show all university",
+                "Show all universities",
                 style: boldStyle(
                   fontSize: Constant.mediumFont,
                   color: Theme.of(context).hintColor,
@@ -275,7 +274,7 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
               ),
               SizedBox(width: 15),
               Text(
-                "Show all university",
+                "Show all universities",
                 style: boldStyle(
                   fontSize: Constant.mediumFont,
                   color: Theme.of(context).hintColor,
@@ -288,8 +287,10 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
         InkWell(
           onTap: () {
             Navigator.pop(context);
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => PublicCommonQuestion(needShowButtomSheet: false,)));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => PublicCommonQuestion(
+                      needShowButtomSheet: false,
+                    )));
           },
           child: Row(
             children: [
@@ -392,7 +393,7 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
               ),
               SizedBox(width: 15),
               Text(
-                "CollageProfile",
+                "Collage Profile",
                 style: boldStyle(
                   fontSize: Constant.mediumFont,
                   color: Theme.of(context).hintColor,

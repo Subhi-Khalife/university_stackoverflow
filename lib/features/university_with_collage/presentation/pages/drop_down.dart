@@ -66,6 +66,7 @@ class _DropDown extends State<DropDown> with TickerProviderStateMixin {
                   title: "Error happened try again",
                 );
               return ListView.separated(
+                padding: EdgeInsets.only(top:12),
                 separatorBuilder: (context, index) {
                   return Divider();
                 },

@@ -66,7 +66,7 @@ class _ProfileProviderScreen extends State<ProfileProviderScreen>
                 Tab(text: "departments"),
                 Tab(text: "generations"),
                 Tab(text: "years"),
-                Tab(text: "common_questions"),
+                Tab(text: "common questions"),
                 Tab(text: "galleries"),
               ],
               tabsBody: [
@@ -76,7 +76,9 @@ class _ProfileProviderScreen extends State<ProfileProviderScreen>
                 GenerationScreen(
                     generationList: state?.collageProfileModel?.data?.college?.generations ?? []),
                 YearsScreen(yearList: state?.collageProfileModel?.data?.college?.years ?? []),
-                PublicCommonQuestion(collageId: state?.collageProfileModel?.data?.college?.id ?? 0),
+                PublicCommonQuestion(
+                    collageId: state?.collageProfileModel?.data?.college?.id ?? 0,
+                    needToShowBackToOriginState: false),
                 GalleryPage(galleries: state?.collageProfileModel?.data?.college?.galleries ?? [])
               ],
             ));

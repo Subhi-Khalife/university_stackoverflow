@@ -39,7 +39,7 @@ class CommonQuestionBloc
   Stream<CommonQuestionState> mapEventToState(
       CommonQuestionEvent event) async* {
     if (event is GetAllCommonQuestionEvent) {
-      yield* _mapGetAllCommonQuestionEvent();
+      yield* _mapGetAllCommonQuestionEvent(event);
     } else if (event is GetAllCommonQuestionForSelectedCollageEvent) {
       yield* _mapGetAllCommonQuestionForSelectedCollageEvent(event, state);
     }
@@ -88,8 +88,11 @@ class CommonQuestionBloc
     }
   }
 
-  Stream<CommonQuestionState> _mapGetAllCommonQuestionEvent() async* {
+  Stream<CommonQuestionState> _mapGetAllCommonQuestionEvent(GetAllCommonQuestionEvent event) async* {
     try {
+      if(event.reloadData){
+        yield state.copyWith(status: CommonQuestionStatus.loading,commonItemsList: [],hasReachedMax: false);
+      }
       if (state.commonItemsList.length == 0)
         yield state.copyWith(status: CommonQuestionStatus.loading);
       if (state.hasReachedMax == true) {

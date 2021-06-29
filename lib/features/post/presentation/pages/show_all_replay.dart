@@ -194,7 +194,7 @@ class _ShowAllReplay extends State<ShowAllReplay> {
                         imageUrl: comments[index]?.user?.profilePic ?? "",
                         function: () {},
                         userName: comments[index]?.user?.firstName ??
-                            "" + comments[index]?.user?.lastName ??
+                            "" + " " + comments[index]?.user?.lastName ??
                             ""),
                     deleteFunction: () {
                       loading.show(context);

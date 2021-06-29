@@ -77,7 +77,7 @@ class _CollapsingTabProvider extends State<CollapsingTabProvider>
             } else if (primaryTC.index == 2) {
               index = 'years';
             } else if (primaryTC.index == 3) {
-              index = 'common_questions';
+              index = 'common questions';
             } else {
               index = 'galleries';
             }
@@ -103,7 +103,7 @@ class _CollapsingTabProvider extends State<CollapsingTabProvider>
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
-                                  "email university",
+                                  "university email",
                                   style: TextStyle(
                                       color: Theme.of(context).accentColor),
                                 ),
@@ -147,7 +147,7 @@ class _CollapsingTabProvider extends State<CollapsingTabProvider>
                                     children: [
                                       Column(
                                         children: [
-                                          Text("site",
+                                          Text("website",
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   color: Theme.of(context)
@@ -228,7 +228,7 @@ class _CollapsingTabProvider extends State<CollapsingTabProvider>
             ex.NestedScrollViewInnerScrollPositionKeyWidget(
                 const Key('years'), widget.tabsBody[2]),
             ex.NestedScrollViewInnerScrollPositionKeyWidget(
-                const Key('common_questions'), widget.tabsBody[3]),
+                const Key('common questions'), widget.tabsBody[3]),
             ex.NestedScrollViewInnerScrollPositionKeyWidget(
                 const Key('galleries'), widget.tabsBody[4]),
           ])),
@@ -249,11 +249,7 @@ class _CollapsingTabProvider extends State<CollapsingTabProvider>
               icon: Icon(Icons.share, color: Colors.white),
               onPressed: () {},
             ),
-            IconButton(
-              icon: Icon(Icons.edit),
-              color: Colors.white,
-              onPressed: () {},
-            ),
+           
             SizedBox(
               width: 10,
             ),

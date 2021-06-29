@@ -97,7 +97,7 @@ class _CollapsingNormalUser extends State<CollapsingNormalUser>
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Your Collage:",
+                                  "Collage:",
                                   style: TextStyle(
                                       color: Theme.of(context).accentColor),
                                 ),
@@ -113,7 +113,7 @@ class _CollapsingNormalUser extends State<CollapsingNormalUser>
                                   height: 15,
                                 ),
                                 Text(
-                                  "Collage site",
+                                  "Collage website",
                                   style: TextStyle(
                                       color: Theme.of(context).accentColor),
                                 ),
@@ -251,7 +251,7 @@ class _CollapsingNormalUser extends State<CollapsingNormalUser>
                       child: Padding(
                         padding: EdgeInsets.only(right: 30),
                         child: Text(
-                          widget.user.firstName + widget.user.lastName,
+                          widget.user.firstName+" " + widget.user.lastName,
                           softWrap: true,
                           style: TextStyle(fontSize: 15),
                           overflow: titleOverFlow,
@@ -289,6 +289,8 @@ class _CollapsingNormalUser extends State<CollapsingNormalUser>
           borderRadius: BorderRadius.circular(120),
           child: CachedNetworkImageView(
             url: widget?.user?.profilePic ?? "",
+            withBaseUrl: false,
+            witRaduis: true,
           ),
         ),
       ),

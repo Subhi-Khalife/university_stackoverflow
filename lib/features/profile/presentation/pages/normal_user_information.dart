@@ -26,7 +26,7 @@ class NormalUserInformation extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    showInfo("Your email:", userInfo.email, context),
+                    showInfo("email:", userInfo.email, context),
                     showInfo("Facebook:",userInfo.facebookUrl,context),
                     showInfo("Linkedin:",userInfo.linkedInUrl,context),
                     showInfo("Collage number",userInfo.collageNumber.toString(),context),

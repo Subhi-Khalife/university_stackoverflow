@@ -226,7 +226,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                         });
                       },
                       imageUrl: comments[index]?.user?.profilePic ?? "",
-                      userName: comments[index].user.firstName + comments[index].user.lastName,
+                      userName: comments[index].user.firstName+" "+ comments[index].user.lastName,
                     ),
                     deleteFunction: () {
                       loading.show(context);

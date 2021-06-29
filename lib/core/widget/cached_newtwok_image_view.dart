@@ -18,7 +18,7 @@ class CachedNetworkImageView extends StatelessWidget {
   Widget build(BuildContext context) {
     String _sendUrl = "";
     if (withBaseUrl)
-      _sendUrl = ConstantApiInfo.baseUrl + url;
+      _sendUrl = ConstantApiInfo.imageBaseUrl + url;
     else {
       _sendUrl = url;
     }
