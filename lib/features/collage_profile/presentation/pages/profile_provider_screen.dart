@@ -53,7 +53,7 @@ class _ProfileProviderScreen extends State<ProfileProviderScreen>
             showMessage("Error happened try again");
             return BlocErrorScreen(
               function: () {
-                collageProfileBloc.add(FetchCollageProfile());
+                collageProfileBloc.add(FetchCollageProfile(collageId: widget.collageId));
               },
               title: "try again",
             );
@@ -71,20 +71,13 @@ class _ProfileProviderScreen extends State<ProfileProviderScreen>
               ],
               tabsBody: [
                 DepartmentScreen(
-                  listOfDepartmentItem:
-                      state?.collageProfileModel?.data?.college?.departments??[],
-                ),
+                    listOfDepartmentItem:
+                        state?.collageProfileModel?.data?.college?.departments ?? []),
                 GenerationScreen(
-                  generationList:
-                      state?.collageProfileModel?.data?.college?.generations??[],
-                ),
-                YearsScreen(
-                    yearList: state?.collageProfileModel?.data?.college?.years??[]),
-                PublicCommonQuestion(
-                    collageId: state?.collageProfileModel?.data?.id??0),
-                GalleryPage(
-                  galleries: state?.collageProfileModel?.data?.college?.galleries??[],
-                )
+                    generationList: state?.collageProfileModel?.data?.college?.generations ?? []),
+                YearsScreen(yearList: state?.collageProfileModel?.data?.college?.years ?? []),
+                PublicCommonQuestion(collageId: state?.collageProfileModel?.data?.college?.id ?? 0),
+                GalleryPage(galleries: state?.collageProfileModel?.data?.college?.galleries ?? [])
               ],
             ));
           else {

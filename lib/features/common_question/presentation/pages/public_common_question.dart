@@ -26,7 +26,8 @@ import '../widgets/common_question.dart';
 
 class PublicCommonQuestion extends StatefulWidget {
   int collageId;
-  PublicCommonQuestion({this.collageId = -1});
+  bool needShowButtomSheet;
+  PublicCommonQuestion({this.collageId = -1, this.needShowButtomSheet = true});
   @override
   State<StatefulWidget> createState() {
     return _PublicCommonQuestion();
@@ -46,7 +47,7 @@ class _PublicCommonQuestion extends State<PublicCommonQuestion> with TickerProvi
     else
       blocItem = CommonQuestionBloc()
         ..add(GetAllCommonQuestionForSelectedCollageEvent(collageId: widget.collageId.toString()));
-    if (widget.collageId == -1)
+    if (widget.collageId == -1 && widget.needShowButtomSheet)
       Future.delayed(Duration(seconds: 0)).then((_) {
         beginBottomSheet();
       });

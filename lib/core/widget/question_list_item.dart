@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:university/core/widget/cached_newtwok_image_view.dart';
 import 'package:university/core/widget/colors.dart';
 import 'package:university/core/widget/constant.dart';
 import 'package:university/core/widget/font_style.dart';
@@ -9,7 +10,7 @@ import 'package:university/features/general_question/data/models/general_questio
 class QuestionListItem extends StatelessWidget {
   final QuestionListItemParam questionListItemParam;
   QuestionListItem({@required this.questionListItemParam});
-  final List<String> _materialName = ['math', "linear algibra", "algorithm"];
+  // final List<String> _materialName = ['math', "linear algibra", "algorithm"];
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,17 @@ class QuestionListItem extends StatelessWidget {
                         : questionListItemParam.description,
                   ),
                   SizedBox(height: 4),
-                  showTags(),
+                    Card(
+          elevation: 0,
+          color: Colors.grey.shade100,
+          child: Padding(
+            padding: const EdgeInsets.all(3.0),
+            child: Text(
+              questionListItemParam.tapTitle,
+              style: lightStyle(fontSize: Constant.mediumFont, color: Colors.black54),
+            ),
+          ),
+        ),
                   Divider(),
                   showReaction(questionListItemParam),
                   SizedBox(height: 8),
@@ -113,29 +124,29 @@ class QuestionListItem extends StatelessWidget {
     );
   }
 
-  Widget showTags() {
-    return Wrap(
-      spacing: 8.0,
-      runSpacing: 4.0,
-      direction: Axis.horizontal,
-      alignment: WrapAlignment.start,
-      runAlignment: WrapAlignment.start,
-      verticalDirection: VerticalDirection.down,
-      children: _materialName.map((e) {
-        return Card(
-          elevation: 0,
-          color: Colors.grey.shade100,
-          child: Padding(
-            padding: const EdgeInsets.all(3.0),
-            child: Text(
-              e,
-              style: lightStyle(fontSize: Constant.mediumFont, color: Colors.black54),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
+  // Widget showTags() {
+  //   return Wrap(
+  //     spacing: 8.0,
+  //     runSpacing: 4.0,
+  //     direction: Axis.horizontal,
+  //     alignment: WrapAlignment.start,
+  //     runAlignment: WrapAlignment.start,
+  //     verticalDirection: VerticalDirection.down,
+  //     children: _materialName.map((e) {
+  //       return Card(
+  //         elevation: 0,
+  //         color: Colors.grey.shade100,
+  //         child: Padding(
+  //           padding: const EdgeInsets.all(3.0),
+  //           child: Text(
+  //             e,
+  //             style: lightStyle(fontSize: Constant.mediumFont, color: Colors.black54),
+  //           ),
+  //         ),
+  //       );
+  //     }).toList(),
+  //   );
+  // }
 
   Widget showTopInfo(QuestionListItemParam item) {
     return Row(
@@ -145,7 +156,9 @@ class QuestionListItem extends StatelessWidget {
           child: Container(
             width: 30,
             height: 30,
-            color: Colors.red,
+            child: CachedNetworkImageView(
+              url:item.imageUrl ,
+            ),
           ),
         ),
         SizedBox(width: 4),
@@ -173,6 +186,8 @@ class QuestionListItemParam {
   int commentLength;
   String title;
   String description;
+  String imageUrl;
+  String tapTitle;
   QuestionListItemParam(
       {@required this.navigatorFunction,
       @required this.commentLength,
@@ -181,5 +196,7 @@ class QuestionListItemParam {
       @required this.userName,
       @required this.title,
       @required this.description,
+      @required this.imageUrl,
+      @required this.tapTitle
       });
 }

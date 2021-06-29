@@ -16,6 +16,7 @@ import 'package:university/core/widget/font_style.dart';
 import 'package:university/core/widget/loading_view.dart';
 import 'package:university/core/widget/question_list_item.dart';
 import 'package:university/features/advertisement/presentation/bloc/bloc/advertisment_bloc.dart';
+import 'package:university/features/advertisement/presentation/pages/advertisment_screen.dart';
 import 'package:university/features/general_question/presentaion/pages/add_new_post.dart';
 import 'package:university/features/post/presentation/bloc/post/post_bloc.dart';
 import 'package:university/features/post/presentation/bloc/tabs/tabs_bloc.dart';
@@ -35,7 +36,7 @@ class _ShowAllPosts extends State<ShowAllPosts> {
   AdvertismentBloc advertismentBloc;
   ScrollController _scrollController = ScrollController();
   int tabId = 0;
-
+  int tapIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -45,6 +46,13 @@ class _ShowAllPosts extends State<ShowAllPosts> {
     advertismentBloc..add(FetchAdvertismentEvent());
     tabsBloc.add(GetAllTaps());
     _scrollController.addListener(_onScroll);
+    Future.delayed(Duration(seconds: 10)).then((_) {
+      showDialogScreen();
+    });
+  }
+
+  showDialogScreen() {
+    showDialog(context: context, builder: (context) => AdvertismentScreen());
   }
 
   Widget floatingButton() {
@@ -136,7 +144,8 @@ class _ShowAllPosts extends State<ShowAllPosts> {
                                       },
                                       title: "Error Happened",
                                     )
-                                  : showAnswerListItem(postState.posts, postState),
+                                  : showAnswerListItem(
+                                      postState.posts, postState, state.taps[tapIndex].name),
                           Container(
                             height: 40,
                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -145,7 +154,8 @@ class _ShowAllPosts extends State<ShowAllPosts> {
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: EdgeInsets.only(left: 4, right: 4),
-                                  child: showListItem(state.taps[index].name, state.taps[index].id),
+                                  child: showListItem(
+                                      state.taps[index].name, state.taps[index].id, index),
                                 );
                               },
                               scrollDirection: Axis.horizontal,
@@ -166,8 +176,7 @@ class _ShowAllPosts extends State<ShowAllPosts> {
     );
   }
 
-  List<String> materialName = ['math', "linear algibra", "algorithm"];
-  Widget showAnswerListItem(List<Posts> post, PostState state) {
+  Widget showAnswerListItem(List<Posts> post, PostState state, String title) {
     return ListView.builder(
         padding: EdgeInsets.only(top: 30),
         controller: _scrollController,
@@ -180,22 +189,26 @@ class _ShowAllPosts extends State<ShowAllPosts> {
             questionListItemParam: QuestionListItemParam(
                 commentLength: post[index].comments.length,
                 description: post[index].description,
+                tapTitle: title,
+                imageUrl: post[index]?.user?.profilePic ?? "",
                 navigatorFunction: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ShowPostDetailScreen(postId: post[index].id)));
                 },
                 reactsLength: post[index].reacts.length,
                 title: post[index].title,
-                time: DateFormat('yyyy-MM-dd – KK:mm').format(post[index].createdAt),
-                userName: "subhi khalifeh"),
+                time: DateFormat('yyyy-MM-dd – KK:mm')
+                    .format(post[index]?.createdAt ?? DateTime.now()),
+                userName: post[index].user.firstName + "  " + post[index].user.lastName),
           );
         });
   }
 
-  Widget showListItem(String text, int tabID) {
+  Widget showListItem(String text, int tabID, int index) {
     return InkWell(
       onTap: () {
         tabId = tabID;
+        tapIndex = index;
         postBloc..add(GetPostForSelectedTags(id: tabID, reloadData: true));
         print("test data2");
       },

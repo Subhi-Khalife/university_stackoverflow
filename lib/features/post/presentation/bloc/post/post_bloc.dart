@@ -71,8 +71,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   Stream<PostState> _mapSetReact(SetReact event) async* {
-    Either<Failure, bool> result = await setNewReact(SetReactParam(postId: event.postId));
     yield UpdateState();
+    Either<Failure, bool> result = await setNewReact(SetReactParam(postId: event.postId));
     yield result.fold((failure) {
       if (failure is MissingParamException)
         return FailedChangeReact();

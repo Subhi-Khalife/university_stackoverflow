@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:university/core/unified_api/constant_info.dart';
+import 'package:university/core/widget/constant.dart';
 
 import 'colors.dart';
 
@@ -11,15 +13,12 @@ class CachedNetworkImageView extends StatelessWidget {
   final bool witRaduis;
   final withBaseUrl;
   CachedNetworkImageView(
-      {this.url = "",
-      this.function,
-      this.witRaduis = false,
-      this.withBaseUrl = true});
+      {this.url = "", this.function, this.witRaduis = false, this.withBaseUrl = true});
   @override
   Widget build(BuildContext context) {
     String _sendUrl = "";
     if (withBaseUrl)
-      _sendUrl = "http://Graduation.aramlab.com" + url;
+      _sendUrl = ConstantApiInfo.baseUrl + url;
     else {
       _sendUrl = url;
     }
@@ -38,7 +37,6 @@ class CachedNetworkImageView extends StatelessWidget {
           )),
           errorWidget: (context, imageUrl, error) => Container(
             color: Colors.white,
-//          client.svg
             child: Container(
               color: Colors.white,
               child: Center(child: Icon(Icons.person)),

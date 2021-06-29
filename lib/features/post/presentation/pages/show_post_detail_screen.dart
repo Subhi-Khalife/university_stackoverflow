@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/html_parser.dart';
 import 'package:university/core/entities/comment.dart';
+import 'package:university/core/entities/react.dart';
 import 'package:university/core/widget/app_bar.dart';
 import 'package:university/core/widget/bloc_error_screen.dart';
 import 'package:university/core/widget/comment_text_field.dart';
@@ -69,6 +70,11 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                 if (state is SuccessGetPostDetail) {
                   postDetailModel = state.postDetail;
                   comments = state.postDetail.data.comments;
+                } else if (state is UpdateState) {
+                  if (postDetailModel.data.react == null)
+                    postDetailModel.data.react = React();
+                  else
+                    postDetailModel.data.react = null;
                 }
               },
               child: BlocListener<CommentBloc, CommentState>(listener: (context, state) {
@@ -265,7 +271,8 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
           },
           child: Row(
             children: [
-              Icon(Icons.verified_user_outlined, color: Colors.white),
+              Icon(Icons.verified_user_outlined,
+                  color: postDetailModel.data.react != null ? Colors.white : Colors.blue),
               SizedBox(width: 4),
               Text("usefuls",
                   style:
@@ -274,11 +281,11 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
           ),
         ),
         Spacer(),
-        Row(
+         Row(
           children: [
-            Icon(Icons.comment, color: Theme.of(context).hintColor),
+            Icon(Icons.share, color: Theme.of(context).hintColor),
             SizedBox(width: 4),
-            Text("Emphases",
+            Text("Share",
                 style: boldStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor))
           ],
         ),
@@ -299,14 +306,11 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
     return Row(
       children: [
         Text(
-          " ${postDetailModel.data.reacts.length} usefuls",
+          " ${postDetailModel.data.reacts.length} Usefuls Votes",
           style: regularStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
         ),
         SizedBox(width: 10),
-        Text(
-          " 0 emphases",
-          style: regularStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
-        ),
+        
         Spacer(),
         Text(
           " ${postDetailModel.data.comments.length} Comments",

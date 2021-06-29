@@ -128,15 +128,18 @@ class _ShowAllGlobalPosts extends State<ShowAllGlobalPosts> {
           return QuestionListItem(
             questionListItemParam: QuestionListItemParam(
                 description: post[index].description,
+                imageUrl: post[index]?.user?.profilePic??"",
                 commentLength: post[index].comments.length,
+                tapTitle: "Public Question ",
                 navigatorFunction: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ShowPostDetailScreen(postId: post[index].id)));
                 },
                 reactsLength: post[index].reacts.length,
                 title: post[index].title,
-                time: DateFormat('yyyy-MM-dd – KK:mm').format(post[index].createdAt),
-                userName: "subhi khalifeh"),
+                time: DateFormat('yyyy-MM-dd – KK:mm')
+                    .format(post[index]?.createdAt ?? DateTime.now()),
+                userName: post[index].user.firstName + "  " + post[index].user.lastName),
           );
         });
   }

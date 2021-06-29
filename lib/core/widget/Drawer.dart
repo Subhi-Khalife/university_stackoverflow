@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/core/entities/common_question.dart';
 import 'package:university/core/widget/colors.dart';
 import 'package:university/core/widget/constant.dart';
 import 'package:university/core/widget/font_style.dart';
@@ -9,6 +10,7 @@ import 'package:university/features/collage_profile/presentation/pages/new_colla
 import 'package:university/features/collage_profile/presentation/pages/profile_page.dart';
 import 'package:university/features/collage_profile/presentation/pages/profile_provider_screen.dart';
 import 'package:university/features/common_question/presentation/bloc/common_question/common_question_bloc.dart';
+import 'package:university/features/common_question/presentation/pages/public_common_question.dart';
 import 'package:university/features/feedback/presentation/pages/feedback_screen.dart';
 import 'package:university/features/login/presentation/pages/login_screen.dart';
 import 'package:university/features/profile/presentation/pages/new_profile_page.dart';
@@ -33,7 +35,7 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    loginSuccess = constantInfo?.sharedPreferences?.getBool("loginSuccess")??false;
+    loginSuccess = constantInfo?.sharedPreferences?.getBool("loginSuccess") ?? false;
     return Drawer(
       elevation: 10.0,
       child: Container(
@@ -54,8 +56,7 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
                     child: Text(
                       "UniverSity App",
                       style: boldStyle(
-                          fontSize: Constant.xlargeFont,
-                          color: Theme.of(context).hintColor),
+                          fontSize: Constant.xlargeFont, color: Theme.of(context).hintColor),
                     ),
                   ),
                   SizedBox(height: 30.0),
@@ -132,8 +133,7 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
       builder: (BuildContext context) {
         return BlocProvider<UniversityBloc>(
           create: (context) => UniversityBloc()..add(FetchUiversity()),
-          child: BlocBuilder<UniversityBloc, UniversityState>(
-              builder: (context, state) {
+          child: BlocBuilder<UniversityBloc, UniversityState>(builder: (context, state) {
             return ListView(
               children: [
                 Padding(
@@ -141,8 +141,7 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
                   child: Text(
                     "Explore multi university",
                     style: boldStyle(
-                        fontSize: Constant.mediumFont,
-                        color: Theme.of(context).hintColor),
+                        fontSize: Constant.mediumFont, color: Theme.of(context).hintColor),
                   ),
                 ),
                 SizedBox(height: 4),
@@ -152,12 +151,12 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
                 ),
                 AppButton(
                     function: () {
-                      if(state.collageId==-1)
-                      showMessage("Please choose colage");
+                      if (state.collageId == -1)
+                        showMessage("Please choose colage");
                       else
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ProfileProviderScreen(
-                              collageId: state.collageId)));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                ProfileProviderScreen(collageId: state.collageId)));
                     },
                     name: "Go To Selected Collage",
                     buttonColor: Theme.of(context).primaryColor,
@@ -262,6 +261,55 @@ class _DrawerItemState extends State<DrawerItem> with TickerProviderStateMixin {
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
       children: [
+        SizedBox(height: 20.0),
+        InkWell(
+          onTap: () {
+            dialogToNavigatorUniv();
+          },
+          child: Row(
+            children: [
+              SizedBox(width: 15),
+              Icon(
+                Icons.house,
+                color: Theme.of(context).hintColor,
+              ),
+              SizedBox(width: 15),
+              Text(
+                "Show all university",
+                style: boldStyle(
+                  fontSize: Constant.mediumFont,
+                  color: Theme.of(context).hintColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 20.0),
+        InkWell(
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => PublicCommonQuestion(needShowButtomSheet: false,)));
+          },
+          child: Row(
+            children: [
+              SizedBox(width: 15),
+              Icon(
+                Icons.escalator_warning_sharp,
+                color: Theme.of(context).hintColor,
+              ),
+              SizedBox(width: 15),
+              Text(
+                "Common Questions",
+                style: boldStyle(
+                  fontSize: Constant.mediumFont,
+                  color: Theme.of(context).hintColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 20.0),
         InkWell(
           onTap: () {
             Navigator.push(

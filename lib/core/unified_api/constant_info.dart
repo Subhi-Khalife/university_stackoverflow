@@ -1,3 +1,3 @@
-class ConstantApiInfo{
-  static String baseUrl="https://Graduation.aramlab.com/api/";
+class ConstantApiInfo {
+  static String baseUrl = "http://final.aramlab.com/api/";
 }
