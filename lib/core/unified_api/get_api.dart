@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:university/core/widget/show_message.dart';
 import 'initial_api.dart';
 
 typedef T _FromJson<T>(String body);
@@ -22,7 +24,7 @@ class GetApi<T> extends InitialApi<T> {
   @override
   Future<T> callRequest() async {
     try {
-      print("Getting.......");
+      print("Getting.......${(baseURL + url + _passParam)}");
       final http.Response response = await http
           .get(Uri.parse(baseURL + url + _passParam), headers: header)
           .timeout(Duration(seconds: 30));
@@ -30,6 +32,14 @@ class GetApi<T> extends InitialApi<T> {
       if (response.statusCode == 200 || response.statusCode == 220)
         return fromJson(response.body);
       else {
+        Map<String, dynamic> items = json.decode(response.body);
+        String message = "";
+        if (items["errors"] != null) {
+          message = items["errors"][0] ?? "no internet connection";
+        } else if (items["message"] != null) {
+          message = items["message"] ?? "no internet connection";
+        }
+        showMessage(message);
         Exception exception = getException(statusCode: response.statusCode);
         throw (exception);
       }

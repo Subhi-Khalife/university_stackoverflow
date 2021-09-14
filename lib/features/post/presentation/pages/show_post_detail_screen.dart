@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/html_parser.dart';
 import 'package:university/core/entities/comment.dart';
+import 'package:university/core/entities/react.dart';
 import 'package:university/core/widget/app_bar.dart';
 import 'package:university/core/widget/bloc_error_screen.dart';
 import 'package:university/core/widget/comment_text_field.dart';
@@ -13,7 +14,9 @@ import 'package:university/core/widget/constant.dart';
 import 'package:university/core/widget/font_style.dart';
 import 'package:university/core/widget/loading_dialog.dart';
 import 'package:university/core/widget/loading_view.dart';
+import 'package:university/core/widget/show_message.dart';
 import 'package:university/features/comment/presentation/bloc/comment/comment_bloc.dart';
+import 'package:university/features/post/data/models/post_detail_model.dart';
 import 'package:university/features/post/presentation/bloc/post/post_bloc.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:university/features/post/presentation/pages/show_all_replay.dart';
@@ -29,27 +32,28 @@ class ShowPostDetailScreen extends StatefulWidget {
 
 class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
   PostBloc postBloc;
+  LoadingDialog loading;
   CommentBloc commentBloc;
   TextEditingController commentController = TextEditingController();
-  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   ScrollController controller = new ScrollController();
   List<Comment> comments = [];
   int commentId = -1;
   int selectedIndex = 0;
   ValueNotifier<bool> isUpdate = ValueNotifier(false);
+  PostDetailModel postDetailModel;
   @override
   void initState() {
     super.initState();
-    postBloc = PostBloc();
+    postBloc = PostBloc(item: LoadingPostState());
     commentBloc = CommentBloc();
+    loading = LoadingDialog(context);
     postBloc.add(GetPostDetail(postId: widget.postId));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(widget: Text("Post Info")),
-      backgroundColor: Colors.black,
+      appBar: appBar(widget: Text("Post Info"), context: context, centerTitle: false),
       body: Stack(
         children: [
           MultiBlocProvider(
@@ -62,12 +66,21 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
               ),
             ],
             child: BlocListener<PostBloc, PostState>(
-              listener: (context, state) {},
-              child: BlocListener<CommentBloc, CommentState>(
-                  listener: (context, state) {
-                Navigator.of(_keyLoader.currentContext, rootNavigator: true)
-                    .pop();
-                if (state is SuccessAddNewComment) {
+              listener: (context, state) {
+                if (state is SuccessGetPostDetail) {
+                  postDetailModel = state.postDetail;
+                  comments = state.postDetail.data.comments;
+                } else if (state is UpdateState) {
+                  if (postDetailModel.data.react == null)
+                    postDetailModel.data.react = React();
+                  else
+                    postDetailModel.data.react = null;
+                }
+              },
+              child: BlocListener<CommentBloc, CommentState>(listener: (context, state) {
+                if (state is LoadingState) {
+                } else if (state is SuccessAddNewComment) {
+                  loading.dismiss(context);
                   commentController.text = "";
                   comments.add(state.addCommentResponse);
                   controller.animateTo(
@@ -76,12 +89,19 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                     duration: const Duration(milliseconds: 300),
                   );
                 } else if (state is SuccessUpdateComment) {
+                  loading.dismiss(context);
                   comments[state.index] = state.addCommentResponse;
                   commentId = -1;
                   selectedIndex = 0;
                   isUpdate.value = false;
                 } else if (state is SuccessDeleteComment) {
+                  loading.dismiss(context);
                   comments.removeAt(state.index);
+                } else if (state is InvalidCommentState) {
+                  loading.dismiss(context);
+                  showMessage(state.message);
+                } else {
+                  loading.dismiss(context);
                 }
               }, child: BlocBuilder<PostBloc, PostState>(
                 builder: (context, state) {
@@ -93,46 +113,40 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                         postBloc.add(GetPostDetail(postId: widget.postId));
                       },
                     );
-                  } else if (state is SuccessGetPostDetail) {
-                    comments = state.postDetail.data.comments;
+                  } else
                     return ListView(
                       padding: EdgeInsets.all(8),
                       children: [
                         Text(
-                          "${state.postDetail.data.title}",
-                          style: boldStyle(
-                              fontSize: Constant.largeFont,
-                              color: Colors.white),
+                          "${postDetailModel.data.title}",
+                          style: boldStyle(fontSize: Constant.largeFont, color: Colors.white),
                         ),
                         SizedBox(height: 10),
                         Card(
                           elevation: 4,
                           shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
+                              borderRadius: BorderRadius.all(Radius.circular(4))),
                           child: Html(
-                            data: state.postDetail.data.description,
+                            data: postDetailModel.data.description,
                             customRender: getCustomRender(),
                           ),
                         ),
+                        SizedBox(height: 10),
                         ListView(
                           shrinkWrap: true,
                           physics: BouncingScrollPhysics(),
                           children: [
                             SizedBox(height: 8),
-                            showReactTitle(state),
+                            showReactTitle(),
                             SizedBox(height: 8),
                             Divider(color: Colors.white),
-                            showReactIcons(state),
+                            showReactIcons(),
                             SizedBox(height: 8),
-                            showComments(state),
+                            showComments(),
                           ],
                         )
                       ],
                     );
-                  } else {
-                    return Container();
-                  }
                 },
               )),
             ),
@@ -148,21 +162,24 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                     commentController: commentController,
                     isUpdateClickIcon: value,
                     sendMessage: () {
-                      Dialogs.showLoadingDialog(context, _keyLoader);
-                      if (commentId == -1)
-                        commentBloc.add(
-                          AddNewComment(
+                      if (commentController.text.trim().length == 0) {
+                      } else {
+                        FocusScope.of(context).unfocus();
+                        loading.show(context);
+                        if (commentId == -1)
+                          commentBloc.add(
+                            AddNewComment(
+                              description: commentController.text,
+                              postId: widget.postId,
+                            ),
+                          );
+                        else {
+                          commentBloc.add(UpdateComment(
+                            commentId: commentId,
+                            commentIndex: selectedIndex,
                             description: commentController.text,
-                            postId: widget.postId,
-                          ),
-                        );
-                      else {
-                        print("the index value si $selectedIndex");
-                        commentBloc.add(UpdateComment(
-                          commentId: commentId,
-                          commentIndex: selectedIndex,
-                          description: commentController.text,
-                        ));
+                          ));
+                        }
                       }
                     },
                     cancelUpdate: () {
@@ -180,7 +197,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
     );
   }
 
-  Widget showComments(SuccessGetPostDetail state) {
+  Widget showComments() {
     return BlocBuilder<CommentBloc, CommentState>(
       builder: (context, state) {
         return ListView.builder(
@@ -193,6 +210,7 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
             return ListView(
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.only(top: 12),
               children: [
                 InkWell(
                   onTap: () {},
@@ -202,26 +220,24 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
                       function: () {
                         Navigator.of(context)
                             .push(MaterialPageRoute(
-                                builder: (context) =>
-                                    ShowAllReplay(comment: comments[index])))
+                                builder: (context) => ShowAllReplay(comment: comments[index])))
                             .then((value) {
                           postBloc.add(GetPostDetail(postId: widget.postId));
                         });
                       },
                       imageUrl: comments[index]?.user?.profilePic ?? "",
-                      userName: comments[index].user.firstName +
-                          comments[index].user.lastName,
+                      userName: comments[index].user.firstName+" "+ comments[index].user.lastName,
                     ),
                     deleteFunction: () {
-                      Dialogs.showLoadingDialog(context, _keyLoader);
-                      commentBloc.add(DeleteComment(
-                          commentId: comments[index].id, commentIndex: index));
+                      loading.show(context);
+                      commentBloc
+                          .add(DeleteComment(commentId: comments[index].id, commentIndex: index));
                     },
                     updateFunction: () {
                       isUpdate.value = true;
                       commentController.text = comments[index].description;
                       commentId = comments[index].id;
-                      selectedIndex =index;
+                      selectedIndex = index;
                     },
                   ),
                 ),
@@ -246,60 +262,59 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
     );
   }
 
-  Widget showReactIcons(SuccessGetPostDetail state) {
+  Widget showReactIcons() {
     return Row(
       children: [
-        Row(
+        InkWell(
+          onTap: () {
+            postBloc.add(SetReact(postId: postDetailModel.data.id));
+          },
+          child: Row(
+            children: [
+              Icon(Icons.verified_user_outlined,
+                  color: postDetailModel.data.react != null ? Colors.white : Colors.blue),
+              SizedBox(width: 4),
+              Text("usefuls",
+                  style:
+                      boldStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor))
+            ],
+          ),
+        ),
+        Spacer(),
+         Row(
           children: [
-            Icon(Icons.verified_user_outlined, color: Colors.white),
+            Icon(Icons.share, color: Theme.of(context).hintColor),
             SizedBox(width: 4),
-            Text("usefuls",
-                style: boldStyle(
-                    fontSize: Constant.largeFont, color: Colors.white))
+            Text("Share",
+                style: boldStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor))
           ],
         ),
         Spacer(),
         Row(
           children: [
-            Icon(Icons.comment, color: Colors.white),
-            SizedBox(width: 4),
-            Text("Emphases",
-                style: boldStyle(
-                    fontSize: Constant.largeFont, color: Colors.white))
-          ],
-        ),
-        Spacer(),
-        Row(
-          children: [
-            Icon(Icons.email, color: Colors.white),
+            Icon(Icons.email, color: Theme.of(context).hintColor),
             SizedBox(width: 4),
             Text("Comments",
-                style: boldStyle(
-                    fontSize: Constant.largeFont, color: Colors.white))
+                style: boldStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor))
           ],
         ),
       ],
     );
   }
 
-  Widget showReactTitle(SuccessGetPostDetail state) {
+  Widget showReactTitle() {
     return Row(
       children: [
         Text(
-          " ${state.postDetail.data.reacts.length} usefuls",
-          style:
-              regularStyle(fontSize: Constant.mediumFont, color: Colors.white),
+          " ${postDetailModel.data.reacts.length} Usefuls Votes",
+          style: regularStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
         ),
-        Text(
-          " 0 emphases",
-          style:
-              regularStyle(fontSize: Constant.mediumFont, color: Colors.white),
-        ),
+        SizedBox(width: 10),
+        
         Spacer(),
         Text(
-          " ${state.postDetail.data.comments.length} Comments",
-          style:
-              regularStyle(fontSize: Constant.mediumFont, color: Colors.white),
+          " ${postDetailModel.data.comments.length} Comments",
+          style: regularStyle(fontSize: Constant.smallFont, color: Theme.of(context).hintColor),
         )
       ],
     );
@@ -314,9 +329,8 @@ class _ShowPostDetailScreen extends State<ShowPostDetailScreen> {
   Widget getImageCustomRender(RenderContext context, Widget parsedChild,
       Map<String, String> attributes, dom.Element element) {
     return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(12)),
       child: new Image.network(
-        "${Constant.baseUrl}${attributes["src"]}",
+        "${Constant.imageUrl}${attributes["src"]}",
         width: double.infinity,
         height: 150,
         fit: BoxFit.cover,

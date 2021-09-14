@@ -1,5 +1,7 @@
 
 import 'package:university/core/entities/comment.dart';
+import 'package:university/core/entities/react.dart';
+import 'package:university/core/entities/user.dart';
 
 class Posts {
     Posts({
@@ -15,6 +17,8 @@ class Posts {
         this.ratesSumRate,
         this.comments,
         this.reacts,
+        this.user,
+        this.react
     });
 
     int id;
@@ -29,7 +33,8 @@ class Posts {
     String ratesSumRate;
     List<Comment> comments;
     List<Comment> reacts;
-
+    User user;
+    React react;
     factory Posts.fromJson(Map<String, dynamic> json) => Posts(
         id: json["id"] == null ? null : json["id"],
         title: json["title"] == null ? null : json["title"],
@@ -43,6 +48,9 @@ class Posts {
         ratesSumRate: json["rates_sum_rate"] == null ? null : json["rates_sum_rate"],
         comments: json["comments"] == null ? null : List<Comment>.from(json["comments"].map((x) => Comment.fromJson(x))),
         reacts: json["reacts"] == null ? null : List<Comment>.from(json["reacts"].map((x) => Comment.fromJson(x))),
+        user:json["user"] == null ? null : User.fromJson(json["user"]),
+        react:json["react"] == null ? null : React.fromJson(json["react"]),
+
     );
 
     Map<String, dynamic> toJson() => {
@@ -58,5 +66,7 @@ class Posts {
         "rates_sum_rate": ratesSumRate == null ? null : ratesSumRate,
         "comments": comments == null ? null : List<dynamic>.from(comments.map((x) => x.toJson())),
         "reacts": reacts == null ? null : List<dynamic>.from(reacts.map((x) => x.toJson())),
+        "user": user==null?null:user.toJson(),
+        "react": react==null?null:react.toJson()
     };
 }

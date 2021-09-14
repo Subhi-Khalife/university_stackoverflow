@@ -6,8 +6,7 @@ import '../../../../core/error/failures.dart';
 import '../../../../core/unified_api/handling_exception.dart';
 
 class SetNewPost with HandlingExceptionRequest {
-  Future<Either<Failure, NewPosts>> setNewPost(
-      Map<String, dynamic> param) async {
+  Future<Either<Failure, NewPosts>> setNewPost(Map<String, dynamic> param) async {
     ConstantInfo constantInfo = ConstantInfo.getInstance();
     print("the token is constantInfo.userInfo.token${constantInfo.userInfo.token}");
     final postApi = PostApi<NewPosts>(

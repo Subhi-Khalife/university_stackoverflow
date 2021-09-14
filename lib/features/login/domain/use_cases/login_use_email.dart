@@ -23,5 +23,10 @@ class LoginByEmailParam {
 
   LoginByEmailParam({this.email, this.password});
 
-  getParam() => {"email": email, "password": password};
+  getParam() => {
+        "email": email,
+        "password": password,
+        "user_token": "asdm;lsad",
+        "device_id": "1"
+      };
 }

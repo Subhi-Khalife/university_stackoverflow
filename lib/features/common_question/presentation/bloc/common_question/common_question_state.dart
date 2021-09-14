@@ -1,18 +1,30 @@
 part of 'common_question_bloc.dart';
 
-abstract class CommonQuestionState  {
-  const CommonQuestionState();
-  
+enum CommonQuestionStatus {
+  inital,
+  success,
+  error,
+  loading,
 }
 
-class CommonQuestionInitial extends CommonQuestionState {}
-
-
-class GetAllCommonQuestionFailed extends CommonQuestionState{}
-
-class GetAllCommonQuestionSuccess extends CommonQuestionState{
+class CommonQuestionState {
   final List<CommonQuestion> commonItemsList;
-  GetAllCommonQuestionSuccess({@required this.commonItemsList});
-}
+  final CommonQuestionStatus status;
+  final bool hasReachedMax;
+  CommonQuestionState({
+    this.commonItemsList = const <CommonQuestion>[],
+    this.status = CommonQuestionStatus.inital,
+    this.hasReachedMax = false,
+  });
 
-class LoadingState extends CommonQuestionState{}
+  CommonQuestionState copyWith({
+    List<CommonQuestion> commonItemsList,
+    CommonQuestionStatus status,
+    bool hasReachedMax,
+  }) {
+    return CommonQuestionState(
+        commonItemsList: commonItemsList ?? this.commonItemsList,
+        hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+        status: status ?? this.status);
+  }
+}

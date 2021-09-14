@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:university/core/widget/app_bar.dart';
 import 'package:university/core/widget/colors.dart';
+import 'package:university/core/widget/constant.dart';
+import 'package:university/core/widget/font_style.dart';
+import 'package:university/core/widget/show_message.dart';
+import 'package:university/core/widget/text_field_app.dart';
 import 'package:university/features/feedback/presentation/bloc/bloc/feedback_bloc.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,163 +40,164 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: AppBar(
-        backgroundColor: colorSecondGrident,
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              //
-            }),
-        title: Text("Feedback"),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(FontAwesomeIcons.solidStar),
-              onPressed: () {
-                //
-              }),
-        ],
-      ),
-      body: Container(
-        color: colorFirstGrident,
-        child: ListView(
-          children: <Widget>[
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                    child: Text(
-                  "1. On a scale of 1 to 10, how happy are you at work?",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.bold),
-                )),
+      appBar: appBar(
+          context: context,
+          centerTitle: false,
+          widget: Text(
+            "Feedback",
+            style: boldStyle(
+                color: Theme.of(context).hintColor,
+                fontSize: Constant.mediumFont),
+          )),
+      body: BlocListener<FeedbackBloc, FeedbackState>(
+        listener: (context, state) {
+          if (state is SuccessSendingFeedbackState) {
+            Navigator.pop(context);
+          }
+        },
+        child: Container(
+          child: ListView(
+            children: <Widget>[
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                      child: Text(
+                    "1. On a scale of 1 to 10, how happy are you at work?",
+                    style: boldStyle(
+                      color: Theme.of(context).hintColor,
+                      fontSize: Constant.largeFont,
+                    ),
+                  )),
+                ),
               ),
-            ),
-            Container(
-              child: Align(
-                child: Material(
-                  color: colorSecondGrident,
-                  elevation: 14.0,
-                  borderRadius: BorderRadius.circular(24.0),
-                  shadowColor: Color(0x802196F3),
+              Container(
+                child: Align(
                   child: Container(
                       width: 350.0,
-                      height: 400.0,
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                                child: Text(
-                              myFeedbackText,
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 22.0),
-                            )),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                                child: Icon(
-                              myFeedback,
-                              color: myFeedbackColor,
-                              size: 100.0,
-                            )),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              child: Slider(
-                                min: 0.0,
-                                max: 10.0,
-                                divisions: 5,
-                                value: sliderValue,
-                                activeColor: Color(0xffe05f2c),
-                                inactiveColor: Colors.blueGrey,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    sliderValue = newValue;
-                                    if (sliderValue >= 0.0 &&
-                                        sliderValue <= 2.0) {
-                                      myFeedback = FontAwesomeIcons.sadTear;
-                                      myFeedbackColor = Colors.red;
-                                      myFeedbackText = "COULD BE BETTER";
-                                    }
-                                    if (sliderValue >= 2.1 &&
-                                        sliderValue <= 4.0) {
-                                      myFeedback = FontAwesomeIcons.frown;
-                                      myFeedbackColor = Colors.yellow;
-                                      myFeedbackText = "BELOW AVERAGE";
-                                    }
-                                    if (sliderValue >= 4.1 &&
-                                        sliderValue <= 6.0) {
-                                      myFeedback = FontAwesomeIcons.meh;
-                                      myFeedbackColor = Colors.amber;
-                                      myFeedbackText = "NORMAL";
-                                    }
-                                    if (sliderValue >= 6.1 &&
-                                        sliderValue <= 8.0) {
-                                      myFeedback = FontAwesomeIcons.smile;
-                                      myFeedbackColor = Colors.green;
-                                      myFeedbackText = "GOOD";
-                                    }
-                                    if (sliderValue >= 8.1 &&
-                                        sliderValue <= 10.0) {
-                                      myFeedback = FontAwesomeIcons.laugh;
-                                      myFeedbackColor = Colors.pink;
-                                      myFeedbackText = "EXCELLENT";
-                                    }
-                                  });
-                                },
+                      height: 350.0,
+                      child: Card(
+                        color: Theme.of(context).accentColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                  child: Text(
+                                myFeedbackText,
+                                style: TextStyle(
+                                    color: firstColor, fontSize: 22.0),
+                              )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                  child: Icon(
+                                myFeedback,
+                                color: myFeedbackColor,
+                                size: 80.0,
+                              )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                child: Slider(
+                                  min: 0.0,
+                                  max: 10.0,
+                                  divisions: 5,
+                                  value: sliderValue,
+                                  activeColor: Theme.of(context).primaryColor,
+                                  inactiveColor: firstColor,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      sliderValue = newValue;
+                                      if (sliderValue >= 0.0 &&
+                                          sliderValue <= 2.0) {
+                                        myFeedback = FontAwesomeIcons.sadTear;
+                                        myFeedbackColor = Colors.red;
+                                        myFeedbackText = "COULD BE BETTER";
+                                      }
+                                      if (sliderValue >= 2.1 &&
+                                          sliderValue <= 4.0) {
+                                        myFeedback = FontAwesomeIcons.frown;
+                                        myFeedbackColor = Colors.yellow;
+                                        myFeedbackText = "BELOW AVERAGE";
+                                      }
+                                      if (sliderValue >= 4.1 &&
+                                          sliderValue <= 6.0) {
+                                        myFeedback = FontAwesomeIcons.meh;
+                                        myFeedbackColor = Colors.amber;
+                                        myFeedbackText = "NORMAL";
+                                      }
+                                      if (sliderValue >= 6.1 &&
+                                          sliderValue <= 8.0) {
+                                        myFeedback = FontAwesomeIcons.smile;
+                                        myFeedbackColor = Colors.green;
+                                        myFeedbackText = "GOOD";
+                                      }
+                                      if (sliderValue >= 8.1 &&
+                                          sliderValue <= 10.0) {
+                                        myFeedback = FontAwesomeIcons.laugh;
+                                        myFeedbackColor = Colors.pink;
+                                        myFeedbackText = "EXCELLENT";
+                                      }
+                                    });
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Container(
-                              child: TextField(
-                                decoration: new InputDecoration(
-                                  border: new OutlineInputBorder(
-                                      borderSide: new BorderSide(
-                                          color: Colors.blueGrey)),
-                                  hintText: 'Add Comment',
-                                ),
-                                style: TextStyle(height: 3.0),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 8.0, right: 8.0),
+                              child: TextFieldApp(
+                                controller: _nameController,
+                                hintColor: firstColor,
+                                isTextFieldPassword: false,
+                                hintText: "Enter Question title",
+                                colorText: firstColor,
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                                child: Align(
-                              alignment: Alignment.bottomRight,
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        new BorderRadius.circular(30.0)),
-                                color: Color(0xffe05f2c),
-                                child: Text(
-                                  'Submit',
-                                  style: TextStyle(color: Color(0xffffffff)),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                  child: Align(
+                                alignment: Alignment.bottomRight,
+                                child: RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(30.0)),
+                                  color: Theme.of(context).primaryColor,
+                                  child: Text(
+                                    'Submit',
+                                    style: TextStyle(
+                                        color: Theme.of(context).accentColor),
+                                  ),
+                                  onPressed: () {
+                                    if (_nameController.text.trim().length ==
+                                        0) {
+                                      showMessage("Please add question");
+                                    } else
+                                      BlocProvider.of<FeedbackBloc>(context)
+                                        ..add(
+                                          SendingFeedbackEvent(
+                                              email: "hiro@hiro.com",
+                                              message: _nameController.text,
+                                              name: myFeedbackText,
+                                              context: context),
+                                        );
+                                  },
                                 ),
-                                onPressed: () {
-                                  BlocProvider.of<FeedbackBloc>(context)
-                                    ..add(
-                                      SendingFeedbackEvent(
-                                          email: "hiro@hiro.com",
-                                          message: _nameController.text,
-                                          name: myFeedbackText),
-                                    );
-                                },
-                              ),
-                            )),
-                          ),
-                        ],
+                              )),
+                            ),
+                          ],
+                        ),
                       )),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -24,6 +24,7 @@ class TextFieldApp extends StatelessWidget {
   final String hintText;
   final Color colorText;
   final int maxLength;
+  final Color hintColor;
   final bool withBottomBlackLine;
   final TextStyle style;
   final int maxLines;
@@ -42,6 +43,7 @@ class TextFieldApp extends StatelessWidget {
       this.hintText = "",
       this.textInputType = TextInputType.text,
       this.withIcon = true,
+      this.hintColor,
       this.focusNode,
       this.style,
       this.colorText,
@@ -73,30 +75,23 @@ class TextFieldApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return isTextFieldPassword
         ? TextField(
+            style: TextStyle(
+                color: colorText ?? Theme.of(context).hintColor, fontSize: Constant.mediumFont),
             controller: controller,
             focusNode: focusNode,
             onChanged: onChanged,
             textInputAction: textInputAction,
             onSubmitted: onSubmitted,
-            style: style == null
-                ? TextStyle(
-                    color: (colorText) ?? colorThemApp,
-                    fontSize: Constant.veryVerySmallFont)
-                : style,
             cursorColor: thirdColor,
             obscureText: !isLookAtPassword,
             decoration: InputDecoration(
-                border:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
-                enabledBorder:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
-                errorBorder:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
-                disabledBorder:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
+                border: (withBottomBlackLine == false) ? InputBorder.none : null,
+                enabledBorder: (withBottomBlackLine == false) ? InputBorder.none : null,
+                errorBorder: (withBottomBlackLine == false) ? InputBorder.none : null,
+                disabledBorder: (withBottomBlackLine == false) ? InputBorder.none : null,
                 hintStyle: TextStyle(
-                  color: thirdColor,
-                  fontSize: 10,
+                  color: hintColor ?? Theme.of(context).hintColor,
+                  fontSize: Constant.smallFont,
                 ),
                 contentPadding: EdgeInsets.only(
                     top: paddingTop ?? 10,
@@ -107,42 +102,35 @@ class TextFieldApp extends StatelessWidget {
                 hintText: hintText,
                 alignLabelWithHint: true,
                 labelStyle: TextStyle(
-                    color: thirdColor.withOpacity(0.4),
-                    height: -8,
-                    fontSize: Constant.smallFont),
+                    color: thirdColor.withOpacity(0.4), height: -8, fontSize: Constant.smallFont),
                 suffixIcon: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: IconButton(
-                    icon: Icon(
-                        isLookAtPassword
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        color: colorsIcon,
-                        size: 18),
+                    icon: Icon(isLookAtPassword ? Icons.visibility_off : Icons.visibility,
+                        color: colorsIcon, size: 18),
                     onPressed: onPressedLookAtPassword,
                   ),
                 ),
                 focusedBorder: (withBottomBlackLine == false)
                     ? InputBorder.none
                     : UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: colorThemApp, width: 1.5))),
+                        borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1.5))),
           )
         : TextField(
             key: key,
+            style: TextStyle(
+                color: colorText ?? Theme.of(context).hintColor, fontSize: Constant.mediumFont),
             onChanged: onChanged,
             keyboardType: textInputType,
             inputFormatters: (maxLength != 0)
                 ? [
                     LengthLimitingTextInputFormatter(maxLength),
-                    (textInputType == TextInputType.phone ||
-                            textInputType == TextInputType.number)
+                    (textInputType == TextInputType.phone || textInputType == TextInputType.number)
                         ? WhitelistingTextInputFormatter(RegExp("[0-9]"))
                         : BlacklistingTextInputFormatter(RegExp("[/\\\\]")),
                   ]
                 : [
-                    (textInputType == TextInputType.phone ||
-                            textInputType == TextInputType.number)
+                    (textInputType == TextInputType.phone || textInputType == TextInputType.number)
                         ? WhitelistingTextInputFormatter(RegExp("[0-9]"))
                         : BlacklistingTextInputFormatter(RegExp("[/\\\\]")),
                   ],
@@ -152,22 +140,15 @@ class TextFieldApp extends StatelessWidget {
             maxLines: maxLines ?? 1,
             textInputAction: textInputAction,
             onSubmitted: onSubmitted,
-            style: style == null
-                ? TextStyle(color: (colorText) ?? colorThemApp, fontSize: 16)
-                : style,
-            cursorColor: thirdColor,
+            cursorColor: Theme.of(context).primaryColor,
             decoration: InputDecoration(
                 filled: filled,
                 fillColor: colorFill,
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
-                border:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
-                enabledBorder:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
-                errorBorder:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
-                disabledBorder:
-                    (withBottomBlackLine == false) ? InputBorder.none : null,
+                border: (withBottomBlackLine == false) ? InputBorder.none : null,
+                enabledBorder: (withBottomBlackLine == false) ? InputBorder.none : null,
+                errorBorder: (withBottomBlackLine == false) ? InputBorder.none : null,
+                disabledBorder: (withBottomBlackLine == false) ? InputBorder.none : null,
                 contentPadding: EdgeInsets.only(
                     top: paddingTop ?? 10,
                     right: paddingRight ?? 0.0,
@@ -175,7 +156,7 @@ class TextFieldApp extends StatelessWidget {
                     left: paddingLeft ?? 4.0),
                 // hintText: hintText,
                 hintStyle: TextStyle(
-                  color: thirdColor,
+                  color: hintColor ?? Theme.of(context).hintColor,
                   fontSize: Constant.smallFont,
                 ),
                 suffixIcon: suffixIcon,
@@ -194,14 +175,12 @@ class TextFieldApp extends StatelessWidget {
                 hintText: hintText,
                 alignLabelWithHint: true,
                 labelStyle: TextStyle(
-                    color: thirdColor.withOpacity(0.4),
-                    height: -8,
-                    fontSize: Constant.smallFont),
+                    color: thirdColor.withOpacity(0.4), height: -8, fontSize: Constant.smallFont),
                 focusedBorder: (withBottomBlackLine == false)
                     ? InputBorder.none
                     : UnderlineInputBorder(
                         borderSide:
-                            BorderSide(color: colorThemApp, width: 1.50))),
+                            BorderSide(color: Theme.of(context).primaryColor, width: 1.50))),
           );
   }
 }

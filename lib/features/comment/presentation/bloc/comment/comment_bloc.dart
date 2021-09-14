@@ -56,7 +56,9 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       }, (body) {
         return SuccessDeleteComment(index: event.commentIndex);
       });
-    } catch (e) {}
+    } catch (e) {
+      yield InvalidCommentState(message: "error happened try again");
+    }
   }
 
   Stream<CommentState> _mapUpdateComment(UpdateComment event) async* {
@@ -78,7 +80,9 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         return SuccessUpdateComment(
             index: event.commentIndex, addCommentResponse: item);
       });
-    } catch (e) {}
+    } catch (e) {
+      yield InvalidCommentState(message: "error happened try again");
+    }
   }
 
   Stream<CommentState> _mapAddNewComment(AddNewComment event) async* {
@@ -102,6 +106,8 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         item.user = constantInfo.userInfo;
         return SuccessAddNewComment(addCommentResponse: item);
       });
-    } catch (e) {}
+    } catch (e) {
+      yield InvalidCommentState(message: "error happened try again");
+    }
   }
 }

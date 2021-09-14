@@ -8,10 +8,13 @@ abstract class CommonQuestionEvent extends Equatable {
 }
 
 class GetAllCommonQuestionEvent extends CommonQuestionEvent{
+  final bool reloadData;
+  GetAllCommonQuestionEvent({this.reloadData=false});
 }
 
 
 class GetAllCommonQuestionForSelectedCollageEvent extends CommonQuestionEvent{
   final String collageId;
-  GetAllCommonQuestionForSelectedCollageEvent({this.collageId});
+  final bool reloadData;
+  GetAllCommonQuestionForSelectedCollageEvent({this.collageId,this.reloadData=false});
 }

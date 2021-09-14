@@ -25,13 +25,18 @@ class CollageProfileBloc
     CollageProfileEvent event,
   ) async* {
     if (event is FetchCollageProfile) {
-      yield GettingCollageProfileLoadingState();
-      Either<Failure, CollageProfileModel> result = await getCollageProfile(6);
-      yield result.fold(
-        (failure) => GettingCollageProfileFailed(),
-            (successCollageProfileModel) =>
-            GettingCollageProfileSuccess(successCollageProfileModel),
-      );
+      yield* _mapFetchCollageProfile(event);
     }
+  }
+
+  Stream<CollageProfileState> _mapFetchCollageProfile(
+      FetchCollageProfile event) async* {
+    yield GettingCollageProfileLoadingState();
+    Either<Failure, CollageProfileModel> result = await getCollageProfile(event.collageId);
+    yield result.fold(
+      (failure) => GettingCollageProfileFailed(),
+      (successCollageProfileModel) =>
+          GettingCollageProfileSuccess(successCollageProfileModel),
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:university/core/widget/container_app_decoration.dart';
 
 import '../../../../core/entities/common_question.dart';
 import '../../../../core/widget/app_bar.dart';
@@ -13,74 +14,72 @@ class CommonQuestionContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: appBar(
-        leadingWidget: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-        ),
-        widget: Text(""),
-        centerTitle: true,
-        actions: [],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Column(
-              children: [
-                Text(
-                  "Question?",
-                  style: boldStyle(
-                      fontSize: Constant.xlargeFont + 4, color: greyColor),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "${commonQuestionItem.question}",
-                  style:
-                      boldStyle(fontSize: Constant.largeFont, color: greyColor),
-                ),
-              ],
-            ),
-            Spacer(),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: LinearGradient(
-                    colors: [
-                      colorFirstGrident,
-                      colorSecondGrident,
-                    ],
-                            stops: [0.0, 1],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  )),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Text(
-                      "Answer",
-                      style: boldStyle(
-                          fontSize: Constant.xlargeFont + 4, color: greyColor),
+          leadingWidget: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+          ),
+          widget: Text(""),
+          centerTitle: true,
+          actions: [],
+          context: context),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Column(
+                children: [
+                  Text(
+                    "Question?",
+                    style: boldStyle(
+                        fontSize: Constant.xlargeFont + 4, color: Theme.of(context).hintColor),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "${commonQuestionItem.question}",
+                    style: boldStyle(
+                      fontSize: Constant.largeFont,
+                      color: Theme.of(context).hintColor,
                     ),
-                    SizedBox(height: 5),
-                    Padding(
-                      padding:  EdgeInsets.only(bottom: 80),
-                      child: Text(
-                        "${commonQuestionItem.answer}",
-                        textAlign: TextAlign.center,
-                        style: boldStyle(
-                            fontSize: Constant.mediumFont, color: greyColor),
-                      ),
-                    ),
-                  ],
-                ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
-            )
-          ],
+              SizedBox(height: 40),
+              Center(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: containerDecoration(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 16, bottom: 8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Answer",
+                          style: boldStyle(
+                              fontSize: Constant.xlargeFont + 4,
+                              color: Theme.of(context).hintColor),
+                        ),
+                        SizedBox(height: 12),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 80),
+                          child: Text(
+                            "${commonQuestionItem.answer}",
+                            textAlign: TextAlign.center,
+                            style: boldStyle(
+                                fontSize: Constant.mediumFont, color: Theme.of(context).hintColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

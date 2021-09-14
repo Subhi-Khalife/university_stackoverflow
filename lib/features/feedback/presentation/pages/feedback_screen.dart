@@ -16,7 +16,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     feedbackBloc = FeedbackBloc();
@@ -35,25 +34,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       create: (context) => feedbackBloc,
       child: BlocBuilder<FeedbackBloc, FeedbackState>(
         builder: (context, state) {
-          if (state is FailedSendingFeedbackState) {
-            return Container(
-              color: Colors.red,
-            );
-          } else if (state is LoadingFeedbackState) {
-            return Center(
-              child: CircularProgressIndicator(
-                backgroundColor: colorThemApp,
-              ),
-            );
-          } else if (state is SuccessSendingFeedbackState) {
-            final successFeedback = state.feedbackModel;
-            showMessage(
-              successFeedback.message,
-            );
             return HomePage();
-          } else {
-            return HomePage();
-          }
         },
       ),
     );

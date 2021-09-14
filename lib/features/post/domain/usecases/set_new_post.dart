@@ -23,9 +23,23 @@ class SetNewPostParam {
   String title;
   String description;
   int tapID;
-  SetNewPostParam(
-      {@required this.description, @required this.tapID, @required this.title});
+  int subjectId;
+  SetNewPostParam({
+    @required this.description,
+    @required this.tapID,
+    @required this.title,
+    @required this.subjectId,
+  });
 
-  Map<String, dynamic> getMap() =>
-      {"title": title, "description": description, "tab_id": tapID};
+  Map<String, dynamic> getMap() => (tapID == -1)
+      ? {
+          "title": title,
+          "description": description,
+          "subject_id": subjectId,
+        }
+      : {
+          "title": title,
+          "description": description,
+          "tab_id": tapID,
+        };
 }

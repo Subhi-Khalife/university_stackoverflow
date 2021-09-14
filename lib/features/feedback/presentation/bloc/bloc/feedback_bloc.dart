@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:university/core/widget/loading_dialog.dart';
+import 'package:university/core/widget/loading_view.dart';
+import 'package:university/core/widget/show_message.dart';
 
 import '../../../../../core/error/failures.dart';
 import '../../../../../core/use_case/use_case.dart';
@@ -26,7 +30,8 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
     FeedbackEvent event,
   ) async* {
     if (event is SendingFeedbackEvent) {
-      yield LoadingFeedbackState();
+      LoadingDialog loadingView = LoadingDialog(event.context);
+      loadingView.show(event.context);
       Either<Failure, FeedbackModel> result = await sendFeedback(
         GetFeedbackParam(
           feedbackEmail: event.email,
@@ -34,10 +39,12 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
           feedbackName: event.name,
         ),
       );
-      yield result.fold(
-        (failure) => FailedSendingFeedbackState(),
-        (successAdsModel) => SuccessSendingFeedbackState(successAdsModel),
-      );
+      loadingView.dismiss(event.context);
+      yield result.fold((failure) => FailedSendingFeedbackState(),
+          (successAdsModel) {
+        showMessage("Success add feedback");
+        return SuccessSendingFeedbackState(successAdsModel);
+      });
     }
   }
 }

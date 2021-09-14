@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university/core/validation.dart';
 import 'package:university/core/widget/container_app_decoration.dart';
-import 'package:university/core/widget/splash_screen.dart';
+import 'package:university/core/widget/show_message.dart';
+import 'package:university/features/splash_screen/presentation/pages/splash_screen.dart';
 import 'package:university/features/sign_up/presentation/pages/sign_up_screen.dart';
-
 import '../../../../core/widget/app_button.dart';
 import '../../../../core/widget/colors.dart';
 import '../../../../core/widget/config_screeen.dart';
@@ -26,7 +27,7 @@ class _LoginScreen extends State<LoginScreen> {
   TextEditingController _emailController;
   TextEditingController _passwordController;
   LoginBloc loginBloc;
-
+  ValueNotifier<bool>isLookingForPassword=ValueNotifier(false);
   @override
   void initState() {
     super.initState();
@@ -48,7 +49,6 @@ class _LoginScreen extends State<LoginScreen> {
     ConfigScreen configScreen = ConfigScreen(context);
     WidgetSize widgetSize = WidgetSize(configScreen);
     return Scaffold(
-      backgroundColor: backGroupColor,
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -100,12 +100,12 @@ class _LoginScreen extends State<LoginScreen> {
                     context,
                     MaterialPageRoute(builder: (context) => SignUpScreen()),
                     (Route<dynamic> route) =>
-                        false); //  Navigator.pushAndRemoveUntil(context, LoginScreen(), (route) => false);
+                        false); 
               },
               name: "Sign up",
               elevationValue: 10,
-              fontColor: colorSecondGrident,
-              buttonColor: greyColor,
+              fontColor: Theme.of(context).primaryColor,
+              buttonColor: Theme.of(context).accentColor,
             ),
           )),
           Flexible(
@@ -120,9 +120,9 @@ class _LoginScreen extends State<LoginScreen> {
                     (Route<dynamic> route) => false);
               },
               name: "Login",
-              fontColor: Colors.black,
+              fontColor: Theme.of(context).accentColor,
               elevationValue: 10,
-              buttonColor: Color(0xff315786),
+              buttonColor: Theme.of(context).primaryColor,
             ),
           )),
         ],
@@ -157,16 +157,29 @@ class _LoginScreen extends State<LoginScreen> {
               ));
             } else {
               return AppButton(
-                buttonColor: Color(0xff315786),
-                fontColor: Colors.black,
+                buttonColor: Theme.of(context).primaryColor,
+                fontColor: Theme.of(context).accentColor,
                 elevationValue: 8,
                 function: () {
-                  BlocProvider.of<LoginBloc>(context)
-                    ..add(
-                      SendLoginRequest(
-                          email: _emailController.text,
-                          password: _passwordController.text),
-                    );
+                  if (_emailController.text.trim().length == 0) {
+                    showMessage("Please add  your email");
+                  } else if (_emailController.text.trim().length != 0) {
+                    RegExp regex = RegExp(Validation.EMAILPATTERN);
+                    if (!regex.hasMatch(_emailController.text)) {
+                      showMessage("your email is not  email type");
+                    } else {
+                      if (_passwordController.text.trim().length < 6) {
+                        showMessage("password should greater or equal 8 ");
+                      } else {
+                        BlocProvider.of<LoginBloc>(context)
+                          ..add(
+                            SendLoginRequest(
+                                email: _emailController.text,
+                                password: _passwordController.text),
+                          );
+                      }
+                    }
+                  }
                 },
                 name: "Login",
               );
@@ -188,16 +201,25 @@ class _LoginScreen extends State<LoginScreen> {
   }
 
   Widget passwordTextField() {
-    return TextFieldApp(
+    return ValueListenableBuilder(valueListenable: isLookingForPassword, builder: (context,value,_){
+return      TextFieldApp(
         controller: _passwordController,
         hintText: "Enter your password",
         withIcon: true,
         icon: Icons.email,
-        isTextFieldPassword: false,
+        isTextFieldPassword: true,
         style: TextStyle(color: Colors.black),
         prefixSvg: "lib/svg/mail_icon.svg",
+        isLookAtPassword:value ,
+        onPressedLookAtPassword: (){
+          isLookingForPassword.value=!isLookingForPassword.value;
+        },
         colorText: Colors.white,
         colorFill: Colors.white);
+    });
+    
+    
+
   }
 
   Widget emailTextField() {
@@ -209,6 +231,7 @@ class _LoginScreen extends State<LoginScreen> {
       isTextFieldPassword: false,
       style: TextStyle(color: Colors.black),
       prefixSvg: "lib/svg/mail_icon.svg",
+      textInputType: TextInputType.emailAddress,
     );
   }
 
