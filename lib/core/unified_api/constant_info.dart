@@ -1,5 +1,5 @@
 class ConstantApiInfo{
-  static String baseUrl="https://Graduation.aramlab.com/api/";
-  static String imageBaseUrl="https://Graduation.aramlab.com/";
+  static String baseUrl="https://agile-caverns-65774.herokuapp.com/api/";
+  static String imageBaseUrl="https://agile-caverns-65774.herokuapp.com/";
   
 }
